@@ -42,13 +42,13 @@ public class TeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
 
-    DcMotor motorLeftFront = null;
-    DcMotor motorRightFront = null;
-    DcMotor motorLeftBack = null;
-    DcMotor motorRightBack = null;
-    DcMotor motorLift = null;
+    private DcMotor motorLeftFront = null;
+    private DcMotor motorRightFront = null;
+    private DcMotor motorLeftBack = null;
+    private DcMotor motorRightBack = null;
+    private DcMotor motorLift = null;
 
-    int deadzone = 10; //deadzone for joysticks
+    private int deadzone = 10; //deadzone for joysticks
 
     @Override
     public void runOpMode() {
