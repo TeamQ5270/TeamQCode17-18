@@ -1,44 +1,14 @@
-/*
-Copyright (c) 2016 Robert Atkinson
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted (subject to the limitations in the disclaimer below) provided that
-the following conditions are met:
-
-Redistributions of source code must retain the above copyright notice, this list
-of conditions and the following disclaimer.
-
-Redistributions in binary form must reproduce the above copyright notice, this
-list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
-
-Neither the name of Robert Atkinson nor the names of his contributors may be used to
-endorse or promote products derived from this software without specific prior
-written permission.
-
-NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
-LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESSFOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Mecanum Drive Example", group = "Linear Opmode")
-// @Autonomous(...) is the other common choice
+@TeleOp(name = "TeleOp Drive Code", group = "Linear Opmode")
 
-public class TeleOp extends LinearOpMode {
+
+public class driveCode extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -48,7 +18,17 @@ public class TeleOp extends LinearOpMode {
     private DcMotor motorRightBack = null;
     private DcMotor motorLift = null;
 
+    private Servo leftServo = null;
+    private Servo rightServo = null;
+
     private int deadzone = 10; //deadzone for joysticks
+
+    private static final double servoMaxPosition = 1.0;
+    private static final double servoMinPosition = 0.0;
+    private static final double servoIncrement = 0.01;
+    private double position = (servoMinPosition); //start either open or closed - need to find out which
+
+    private boolean clawCycle = false; //flag for alternation of which servo arm to move
 
     @Override
     public void runOpMode() {
@@ -62,9 +42,8 @@ public class TeleOp extends LinearOpMode {
         motorRightBack = hardwareMap.dcMotor.get("rightBack");
         motorLift = hardwareMap.dcMotor.get("lift");
 
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
+        leftServo = hardwareMap.servo.get("leftLiftServo");
+        rightServo = hardwareMap.servo.get("rightLiftServo");
 
         //keep the directions as follows or else bad stuff happens:
         //left front: FORWARD
@@ -92,13 +71,12 @@ public class TeleOp extends LinearOpMode {
 
             //gamepad left stick x is inverted to keep the direction of left-right translation correct
 
-
             //don't run motors if stick is within the deadzone
             if (Math.abs(gamepad1.left_stick_x) > deadzone
                     || Math.abs(gamepad1.left_stick_y) > deadzone
                     || Math.abs(gamepad1.left_stick_y) > deadzone) {
 
-
+                //weird trig
                 double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
                 double rightX = -gamepad1.right_stick_x;
@@ -107,6 +85,7 @@ public class TeleOp extends LinearOpMode {
                 final double v3 = r * Math.sin(robotAngle) + rightX;
                 final double v4 = r * Math.cos(robotAngle) - rightX;
 
+                //set calculated powers to motors
                 motorLeftFront.setPower(v1);
                 motorRightFront.setPower(v2);
                 motorLeftBack.setPower(v3);
@@ -118,6 +97,46 @@ public class TeleOp extends LinearOpMode {
             if (Math.abs(gamepad2.right_stick_y) > deadzone
                     && motorLift.getCurrentPosition() < 2000) { //not sure what encoder position to use yet
                 motorLift.setPower(gamepad2.right_stick_y);
+            }
+
+            //open and close servos
+
+            if (gamepad2.left_bumper) { //open claw
+
+                //open claw arms simultaneously - the servos have to be cycled, apparently
+                //using clawCycle to switch between servos
+                if (clawCycle) {
+
+                    leftServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                } else if (!clawCycle) {
+
+                    rightServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                }
+
+                position -= servoIncrement;
+
+            } else if (gamepad2.right_bumper) { //close claw
+
+
+                //same as above but for closing
+                if (clawCycle) {
+
+                    leftServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                } else if (!clawCycle) {
+
+                    rightServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                }
+
+                position += servoIncrement;
+
             }
 
 
