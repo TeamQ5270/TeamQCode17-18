@@ -22,11 +22,15 @@ public class VuforiaManager {
 
     OpenGLMatrix lastLocation = null;
 
-    VuforiaLocalizer vuforia;
 
-    public void initialize() {
+    VuforiaLocalizer vuforia;
+    VuforiaTrackables loadedTrackables;
+    VuforiaTrackable target;
+    List<VuforiaTrackable> allTrackables;
+
+    public void initialize(int cameraMonitorViewID) {
         //Open the camera with the parameters
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = cameraMonitorViewID;
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         //Vuforia Key
@@ -36,42 +40,20 @@ public class VuforiaManager {
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
+        //Load the tracking targets
+        loadedTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        target = loadedTrackables.get(0);
+
+        /** For convenience, gather together all the trackable objects in one easily-iterable collection */
+        allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables.addAll(loadedTrackables);
+
+        loadedTrackables.activate();
     }
 
 
-    @Override public void runOpMode() {
-
-        //Load the tracking targets
-        VuforiaTrackables loadedTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable target = loadedTrackables.get(0);
-
-        /** For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(loadedTrackables);
-
-        //mm to inches conversion factor ratios
-        float mmPerInch        = 25.4f;
-        float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
-        float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
-
-
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start tracking");
-        telemetry.update();
-        waitForStart();
-
-
-        //Activate the tracking set
-        loadedTrackables.activate();
-        while (opModeIsActive()) {
-            //Check and see what trackables are visible
-            for (VuforiaTrackable trackable : allTrackables) {
-                telemetry.addData(trackable.getName(), RelicRecoveryVuMark.from((VuforiaTrackableDefaultListener)trackable.getListener()).toString());
-            }
-
-            //Update the telemetry
-            telemetry.update();
-        }
+    public RelicRecoveryVuMark getvisibleTarget() {
+        return RelicRecoveryVuMark.from((VuforiaTrackableDefaultListener)target.getListener());
     }
 
 }
