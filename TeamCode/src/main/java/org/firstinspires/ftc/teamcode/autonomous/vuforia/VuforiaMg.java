@@ -17,7 +17,7 @@ import java.util.List;
  * Created by John_Kesler on 10/6/2017.
  */
 
-public class VuforiaManager {
+public class VuforiaMg {
     public static final String TAG = "Vuforia Navigation Sample";
 
     OpenGLMatrix lastLocation = null;
@@ -28,7 +28,7 @@ public class VuforiaManager {
     VuforiaTrackable target;
     List<VuforiaTrackable> allTrackables;
 
-    public void initialize(int cameraMonitorViewID) {
+    public VuforiaMg(int cameraMonitorViewID) {
         //Open the camera with the parameters
         int cameraMonitorViewId = cameraMonitorViewID;
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
