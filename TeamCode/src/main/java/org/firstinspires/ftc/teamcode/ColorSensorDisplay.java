@@ -25,23 +25,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
+
 @Autonomous(name = "Color Sensor Display")
 public class ColorSensorDisplay extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private ColorSensor colorSensor;
+    LynxI2cColorRangeSensor colorRangeSensor;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-        colorSensor = hardwareMap.colorSensor.get("Color Sensor");
+        colorRangeSensor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Color Range Sensor");
     }
 
     /*
@@ -59,7 +64,7 @@ public class ColorSensorDisplay extends OpMode {
     @Override
     public void start() {
         runtime.reset();
-        colorSensor.enableLed(false);
+        colorRangeSensor.enableLed(false);
     }
 
     /*
@@ -68,9 +73,17 @@ public class ColorSensorDisplay extends OpMode {
      */
     @Override
     public void loop() {
-        telemetry.addData("Status:", "Run Time: " + runtime.toString());
-        telemetry.addData("Red: ", colorSensor.red());
-        telemetry.addData("Green: ", colorSensor.green());
-        telemetry.addData("Blue: ", colorSensor.blue());
+//        telemetry.addData("Status:", "Run Time: " + runtime.toString());
+//        telemetry.addData("Red: ", colorRangeSensor.red());
+//        telemetry.addData("Green: ", colorRangeSensor.green());
+//        telemetry.addData("Blue: ", colorRangeSensor.blue());
+        telemetry.addData("Distance (cm)",
+                String.format(Locale.US, "%.02f", colorRangeSensor.getDistance(DistanceUnit.CM)));
+
+        if(colorRangeSensor.red() > colorRangeSensor.blue()){
+            telemetry.addData("RED", colorRangeSensor.red());
+        }else{
+            telemetry.addData("BLUE", colorRangeSensor.blue());
+        }
     }
 }
