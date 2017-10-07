@@ -90,19 +90,9 @@ public class Autonomous_Main extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        int i = L.getCurrentPosition();
-        L.setPower(1.0);
-
         //Run until stop
         while(opModeIsActive()){
-            if(i > -1700){
-                i--;
-            }else if (i == 1700){
-                break;
-            }
-            L.setTargetPosition(i);
-            telemetry.addData("Encoder: ", i);
-            telemetry.update();
+
         }
     }
 }
