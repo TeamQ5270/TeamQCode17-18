@@ -32,11 +32,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -52,9 +51,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 //@Disabled
-@TeleOp(name="Mecanum Drive Example", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="newtest", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
-public class mecanum_drive_example extends LinearOpMode {
+public class newdrivetest extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -62,6 +61,16 @@ public class mecanum_drive_example extends LinearOpMode {
     DcMotor motorRightFront = null;
     DcMotor motorLeftBack = null;
     DcMotor motorRightBack = null;
+
+    private Servo leftServo = null;
+    private Servo rightServo = null;
+
+    private static final double servoMaxPosition = 1.0;
+    private static final double servoMinPosition = 0.0;
+    private static final double servoIncrement = 0.01;
+    private double position = (servoMinPosition); //start either open or closed - need to find out which
+
+    private boolean clawCycle = false; //flag for alternation of which servo arm to move
 
     @Override
     public void runOpMode() {
@@ -74,10 +83,9 @@ public class mecanum_drive_example extends LinearOpMode {
         motorRightFront = hardwareMap.dcMotor.get("FR Drive");
         motorRightBack = hardwareMap.dcMotor.get("BR Drive");
 
+        leftServo = hardwareMap.servo.get("Servo Lift L");
+        rightServo = hardwareMap.servo.get("Servo Lift R");
 
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
         motorLeftFront.setDirection(DcMotor.Direction.FORWARD);
         motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
         motorRightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -109,6 +117,46 @@ public class mecanum_drive_example extends LinearOpMode {
             motorRightFront.setPower(v2);
             motorLeftBack.setPower(v3);
             motorRightBack.setPower(v4);
+
+            //open and close servos
+
+            if (gamepad2.left_bumper) { //open claw
+
+                //open claw arms simultaneously - the servos have to be cycled, apparently
+                //using clawCycle to switch between servos
+                if (clawCycle) {
+
+                    leftServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                } else if (!clawCycle) {
+
+                    rightServo.setPosition(servoMaxPosition - position);
+                    clawCycle = !clawCycle;
+
+                }
+
+                position -= servoIncrement;
+
+            } else if (gamepad2.right_bumper) { //close claw
+
+
+                //same as above but for closing
+                if (clawCycle) {
+
+                    leftServo.setPosition(position);
+                    clawCycle = !clawCycle;
+
+                } else if (!clawCycle) {
+
+                    rightServo.setPosition(servoMaxPosition - position);
+                    clawCycle = !clawCycle;
+
+                }
+
+                position += servoIncrement;
+
+            }
 
 
         }

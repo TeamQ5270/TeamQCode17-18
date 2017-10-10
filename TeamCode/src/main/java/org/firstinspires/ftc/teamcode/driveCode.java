@@ -21,11 +21,11 @@ public class driveCode extends LinearOpMode {
     private Servo leftServo = null;
     private Servo rightServo = null;
 
-    private int deadzone = 10; //deadzone for joysticks
+    private double deadzone = 0.01; //deadzone for joysticks
 
     private static final double servoMaxPosition = 1.0;
     private static final double servoMinPosition = 0.0;
-    private static final double servoIncrement = 0.01;
+    private static final double servoIncrement = 0.05;
     private double position = (servoMinPosition); //start either open or closed - need to find out which
 
     private boolean clawCycle = false; //flag for alternation of which servo arm to move
@@ -36,14 +36,14 @@ public class driveCode extends LinearOpMode {
         telemetry.update();
 
 
-        motorLeftFront = hardwareMap.dcMotor.get("leftFront");
-        motorLeftBack = hardwareMap.dcMotor.get("leftBack");
-        motorRightFront = hardwareMap.dcMotor.get("rightFront");
-        motorRightBack = hardwareMap.dcMotor.get("rightBack");
-        motorLift = hardwareMap.dcMotor.get("lift");
+        motorLeftFront = hardwareMap.dcMotor.get("FL Drive");
+        motorLeftBack = hardwareMap.dcMotor.get("BL Drive");
+        motorRightFront = hardwareMap.dcMotor.get("FR Drive");
+        motorRightBack = hardwareMap.dcMotor.get("BR Drive");
+        motorLift = hardwareMap.dcMotor.get("Riser Lift");
 
-        leftServo = hardwareMap.servo.get("leftLiftServo");
-        rightServo = hardwareMap.servo.get("rightLiftServo");
+        leftServo = hardwareMap.servo.get("Servo Lift L");
+        rightServo = hardwareMap.servo.get("Servo Lift R");
 
         //keep the directions as follows or else bad stuff happens:
         //left front: FORWARD
@@ -57,6 +57,8 @@ public class driveCode extends LinearOpMode {
         motorRightBack.setDirection(DcMotor.Direction.REVERSE);
 
         motorLift.setDirection(DcMotor.Direction.FORWARD);
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -74,7 +76,7 @@ public class driveCode extends LinearOpMode {
             //don't run motors if stick is within the deadzone
             if (Math.abs(gamepad1.left_stick_x) > deadzone
                     || Math.abs(gamepad1.left_stick_y) > deadzone
-                    || Math.abs(gamepad1.left_stick_y) > deadzone) {
+                    || Math.abs(gamepad1.right_stick_x) > deadzone) {
 
                 //weird trig
                 double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
@@ -90,14 +92,22 @@ public class driveCode extends LinearOpMode {
                 motorRightFront.setPower(v2);
                 motorLeftBack.setPower(v3);
                 motorRightBack.setPower(v4);
+
+            } else if (Math.abs(gamepad1.left_stick_x) < deadzone
+                    && Math.abs(gamepad1.left_stick_y) < deadzone
+                    && Math.abs(gamepad1.right_stick_y) < deadzone) {
+                motorLeftFront.setPower(0);
+                motorRightFront.setPower(0);
+                motorLeftBack.setPower(0);
+                motorRightBack.setPower(0);
             }
+
 
             //move lift up and down
+            //&& motorLift.getCurrentPosition() > -2400
+            //&& motorLift.getCurrentPosition() < 0) {
 
-            if (Math.abs(gamepad2.right_stick_y) > deadzone
-                    && motorLift.getCurrentPosition() < 2000) { //not sure what encoder position to use yet
-                motorLift.setPower(gamepad2.right_stick_y);
-            }
+            motorLift.setPower(gamepad2.right_stick_y);
 
             //open and close servos
 
@@ -112,7 +122,7 @@ public class driveCode extends LinearOpMode {
 
                 } else if (!clawCycle) {
 
-                    rightServo.setPosition(position);
+                    rightServo.setPosition(servoMaxPosition - position);
                     clawCycle = !clawCycle;
 
                 }
@@ -130,7 +140,7 @@ public class driveCode extends LinearOpMode {
 
                 } else if (!clawCycle) {
 
-                    rightServo.setPosition(position);
+                    rightServo.setPosition(servoMaxPosition - position);
                     clawCycle = !clawCycle;
 
                 }
@@ -142,4 +152,6 @@ public class driveCode extends LinearOpMode {
 
         }
     }
+
+
 }

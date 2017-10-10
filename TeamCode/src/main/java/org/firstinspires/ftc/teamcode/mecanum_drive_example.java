@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Disabled
+//@Disabled
 @TeleOp(name="Mecanum Drive Example", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class mecanum_drive_example extends LinearOpMode {
@@ -69,10 +69,10 @@ public class mecanum_drive_example extends LinearOpMode {
         telemetry.update();
 
 
-        motorLeftFront = hardwareMap.dcMotor.get("leftFront");
-        motorLeftBack = hardwareMap.dcMotor.get("leftBack");
-        motorRightFront = hardwareMap.dcMotor.get("rightFront");
-        motorRightBack = hardwareMap.dcMotor.get("rightBack");
+        motorLeftFront = hardwareMap.dcMotor.get("FL Drive");
+        motorLeftBack = hardwareMap.dcMotor.get("BL Drive");
+        motorRightFront = hardwareMap.dcMotor.get("FR Drive");
+        motorRightBack = hardwareMap.dcMotor.get("BR Drive");
 
 
 
