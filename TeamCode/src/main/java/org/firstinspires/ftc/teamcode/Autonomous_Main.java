@@ -78,13 +78,8 @@ public class Autonomous_Main extends LinearOpMode {
         L = hardwareMap.get(DcMotor.class, "Riser Lift");
 
         //Motor Directions
-//        FL.setDirection(DcMotorSimple.Direction.REVERSE);
-//        RL.setDirection(DcMotorSimple.Direction.REVERSE);
-        L.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Set Motor Mode
-        L.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        L.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Wait For Play, Reset Timer
         waitForStart();
