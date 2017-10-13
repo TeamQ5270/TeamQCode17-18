@@ -30,9 +30,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.vuforia;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -62,7 +60,7 @@ public class VuforiaManagerTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        VuforiaMg vfmanager = new VuforiaMg(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        VuforiaManager vfmanager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
