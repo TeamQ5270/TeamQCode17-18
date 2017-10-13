@@ -58,10 +58,10 @@ public class Autonomous_Main extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-//    private DcMotor FL = null;
-//    private DcMotor FR = null;
-//    private DcMotor RL = null;
-//    private DcMotor RR = null;
+    private DcMotor FL = null;
+    private DcMotor FR = null;
+    private DcMotor RL = null;
+    private DcMotor RR = null;
     private DcMotor L = null;
 
     @Override
@@ -71,15 +71,13 @@ public class Autonomous_Main extends LinearOpMode {
         telemetry.update();
 
         //Motor Initialzation
-//        FL = hardwareMap.get(DcMotor.class, "FL Drive");
-//        FR = hardwareMap.get(DcMotor.class, "FR Drive");
-//        RL = hardwareMap.get(DcMotor.class, "BL Drive");
-//        RR = hardwareMap.get(DcMotor.class, "BR Drive");
+        FL = hardwareMap.get(DcMotor.class, "FL Drive");
+        FR = hardwareMap.get(DcMotor.class, "FR Drive");
+        RL = hardwareMap.get(DcMotor.class, "BL Drive");
+        RR = hardwareMap.get(DcMotor.class, "BR Drive");
         L = hardwareMap.get(DcMotor.class, "Riser Lift");
 
         //Motor Directions
-
-        //Set Motor Mode
 
         //Wait For Play, Reset Timer
         waitForStart();
