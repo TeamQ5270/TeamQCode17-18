@@ -74,9 +74,9 @@ public class ColorSensorDisplay extends OpMode {
     @Override
     public void loop() {
 //        telemetry.addData("Status:", "Run Time: " + runtime.toString());
-//        telemetry.addData("Red: ", colorRangeSensor.red());
-//        telemetry.addData("Green: ", colorRangeSensor.green());
-//        telemetry.addData("Blue: ", colorRangeSensor.blue());
+//        telemetry.addData("Red: ", colorSensor.red());
+//        telemetry.addData("Green: ", colorSensor.green());
+//        telemetry.addData("Blue: ", colorSensor.blue());
         telemetry.addData("Distance (cm)",
                 String.format(Locale.US, "%.02f", colorRangeSensor.getDistance(DistanceUnit.CM)));
 
