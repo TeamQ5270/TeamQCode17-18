@@ -18,8 +18,6 @@ import java.util.List;
  */
 
 public class VuforiaManager {
-    public static final String TAG = "Vuforia Navigation Sample";
-
     VuforiaTrackable target;
 
     public VuforiaManager(int cameraMonitorViewID) {

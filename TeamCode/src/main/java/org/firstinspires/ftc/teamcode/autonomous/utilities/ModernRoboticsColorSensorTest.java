@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous.utilities;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
-@Autonomous(name = "Color Sensor Display")
+@Autonomous(name = "Modern Robotics Color Sensor Display")
 public class ModernRoboticsColorSensorTest extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
