@@ -15,7 +15,7 @@ public class ModernRoboticsColorSensorTest extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    String colorSensorDeviceName = "TestColorSensor";
+    String colorSensorDeviceName = "Test Color Sensor";
     ColorSensor colorSensor;
 
     @Override
