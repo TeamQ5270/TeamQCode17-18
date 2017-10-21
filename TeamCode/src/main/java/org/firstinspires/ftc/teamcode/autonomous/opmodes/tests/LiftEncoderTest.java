@@ -27,18 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous.opmodes;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.eventloop.opmode.*;
-
-import static com.sun.tools.javac.main.Option.S;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,8 +47,8 @@ import static com.sun.tools.javac.main.Option.S;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Matthew Modi: @MeM5 (reddit/github), @mmmmmmmodi (instagram/snapchat) Autonomous")
-public class Autonomous_Main extends LinearOpMode {
+@Autonomous(name="LiftEncoderTest")
+public class LiftEncoderTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -83,11 +77,9 @@ public class Autonomous_Main extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-
+        L.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        L.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Run until stop
-        while(opModeIsActive()){
-
-        }
     }
 }
