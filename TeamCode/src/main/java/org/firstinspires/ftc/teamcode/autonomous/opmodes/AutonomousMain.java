@@ -23,8 +23,7 @@ public class AutonomousMain extends LinearOpMode {
     private DcMotor liftMotor = null;
 
     //Initialize Misc
-    private VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
-    private RelicRecoveryVuMark targetImage = null;
+     private RelicRecoveryVuMark targetImage = null;
 
     @Override
     public void runOpMode() {
@@ -42,6 +41,8 @@ public class AutonomousMain extends LinearOpMode {
 
 
         //Detect Vuforia Target
+
+        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         targetImage = vuforiaManager.getvisibleTarget();
 
         //Let user know that robot has been initialized
@@ -55,7 +56,7 @@ public class AutonomousMain extends LinearOpMode {
         //Run until stopped
         while(opModeIsActive()){
             //Autonomous Instructions
-            
+
 
             //Exit Loop
             break;
