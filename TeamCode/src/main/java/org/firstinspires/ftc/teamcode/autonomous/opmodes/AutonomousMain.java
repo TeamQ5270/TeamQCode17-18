@@ -43,7 +43,9 @@ public class AutonomousMain extends LinearOpMode {
         //Detect Vuforia Target
 
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
-        targetImage = vuforiaManager.getvisibleTarget();
+        do{
+            targetImage = vuforiaManager.getvisibleTarget();
+        }while(targetImage == RelicRecoveryVuMark.UNKNOWN);
 
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Initialized");
