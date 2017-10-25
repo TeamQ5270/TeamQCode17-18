@@ -1,6 +1,7 @@
 
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,6 +22,13 @@ public class AutonomousMain extends LinearOpMode {
     private DcMotor rearLeftMotor = null;
     private DcMotor rearRightMotor = null;
     private DcMotor liftMotor = null;
+
+    //Initialize Sensors
+    private LynxI2cColorRangeSensor jewelColor = null;
+    private LynxI2cColorRangeSensor frontLeftColor = null;
+    private LynxI2cColorRangeSensor frontRightColor = null;
+    private LynxI2cColorRangeSensor rearLeftColor = null;
+    private LynxI2cColorRangeSensor rearRightColor = null;
 
     //Initialize Misc
      private RelicRecoveryVuMark targetImage = null;
