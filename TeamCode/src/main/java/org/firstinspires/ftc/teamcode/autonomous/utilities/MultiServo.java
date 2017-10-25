@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous.utilities;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class MultiServo {
+    //TODO Multithreading for the servo movement
     public enum ServoPosition {IN, OUT}
 
     private static double[] positionsOutLocal;

@@ -1,6 +1,7 @@
 
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
+import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,30 +18,25 @@ public class AutonomousMain extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-
-    //TODO Also these should probably be moved into the runOpMode method for more conciseness and efficiency
-    //Setup servo management
-    //Servo position flag
-    MultiServo.ServoPosition currentPosition = MultiServo.ServoPosition.OUT; //defaults to the servos being extended
-
-    //Sensors
-
-    //Vuforia
+    //Vuforia manager
     private final VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+
 
     @Override
     public void runOpMode() {
+        //TODO read configuration from a file
+        //Assign objects to hardware devices
         //Assign motors to hardware devices (Using names from configuration)
         DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "FL Drive");
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "FR Drive");
         DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "BL Drive");
         DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "BR Drive");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "Riser Lift");
+        //Assign sensors
+        LynxI2cColorRangeSensor jewelSensor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Jewel Color");
 
+        //Set up motors
         //Motor Directions
-
-
-        //Bind motor positions to different motors
         //front motors
         frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -51,34 +47,40 @@ public class AutonomousMain extends LinearOpMode {
         liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Set up servos/servo manager
-        Servo leftServo = hardwareMap.servo.get("Servo Lift L");
-        Servo rightServo = hardwareMap.servo.get("Servo Lift R");
+        //Set up manager
+        MultiServo.ServoPosition currentPosition = MultiServo.ServoPosition.OUT; //defaults to the servos being extended
+        //Jewel
+        Servo jewelServo = hardwareMap.servo.get("Jewel Servo");
+        //Lift
+        //Assign servos
+        Servo leftLiftServo = hardwareMap.servo.get("Servo Lift L");
+        Servo rightLiftServo = hardwareMap.servo.get("Servo Lift R");
         //This is used to simplify flipping the servos in and out
-        Servo[] servos = new Servo[] {leftServo, rightServo};
-        //Setup the constant positions of the servos in the manager (positions are left servo, then right servo ^^^)
+        Servo[] servos = new Servo[] {leftLiftServo, rightLiftServo};
+        //Setup the constant positions of the liftservos in the manager (positions are left servo, then right servo ^^^)
         double servoMinPosition = 0.0;
         double servoMaxPosition = 1.0;
         MultiServo.setPositionsInLocal(new double[] {servoMaxPosition, servoMinPosition});
         MultiServo.setPositionsOutLocal(new double[] {servoMinPosition, servoMaxPosition});
 
-        /*
-        Detect Vuforia Target - run until the target is found (as of now)
-        TODO Implement a timer so that the robot will commence autonomous if a target is not found - maybe move this code into the autonomous script, and use a timer there?
-        */
-        while (true) {
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)) break;
-        }
-
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        /*
+        Detect Vuforia Target - run until the target is found or the opmode starts
+        TODO there could be a possible bug with using isStarted, needs to be tested
+        */
+        while (true) {
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()) break;
+        }
 
         //Wait For Play, Start Timer
         waitForStart();
         runtime.reset();
 
         //Run until stopped
-        //TODO this wont stop if the user presses the stop button
+        //TODO this wont stop if the user presses the stop button - make sure to check and see if the robot has to stop
         while(opModeIsActive()){
             //Autonomous Instructions
             //Check to see if a vumark was picked up, set a flag if not
