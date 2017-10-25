@@ -50,7 +50,7 @@ import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="VisionTarkerManagerTest", group="Linear Opmode")
+@Autonomous(name="VisionTarkerManagerTes", group="Linear Opmode")
 public class VuforiaManagerTest extends LinearOpMode {
 
     // Declare OpMode members.

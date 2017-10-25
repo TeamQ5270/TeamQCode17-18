@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.ServoFlipper;
+import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiServo;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="Main Autonomous")
@@ -22,7 +22,7 @@ public class AutonomousMain extends LinearOpMode {
     //TODO Also these should probably be moved into the runOpMode method for more conciseness and efficiency
     //Setup servo management
     //Servo position flag
-    ServoFlipper.ServoPosition currentPosition = ServoFlipper.ServoPosition.OUT; //defaults to the servos being extended
+    MultiServo.ServoPosition currentPosition = MultiServo.ServoPosition.OUT; //defaults to the servos being extended
     //Servo position constants
     private final double servoMaxPosition = 1.0;
     private final double servoMinPosition = 0.0;
@@ -72,8 +72,8 @@ public class AutonomousMain extends LinearOpMode {
         //This is used to simplify flipping the servos in and out
         Servo[] servos = new Servo[] {leftServo, rightServo};
         //Setup the constant positions of the servos in the manager (positions are left servo, then right servo ^^^)
-        ServoFlipper.setPositionsInLocal(new double[] {servoMaxPosition,servoMinPosition});
-        ServoFlipper.setPositionsOutLocal(new double[] {servoMinPosition,servoMaxPosition});
+        MultiServo.setPositionsInLocal(new double[] {servoMaxPosition,servoMinPosition});
+        MultiServo.setPositionsOutLocal(new double[] {servoMinPosition,servoMaxPosition});
 
         /*
         Detect Vuforia Target - run until the target is found (as of now)

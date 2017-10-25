@@ -13,9 +13,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by John_Kesler on 10/6/2017.
- */
 
 public class VuforiaManager {
     VuforiaTrackable target;
