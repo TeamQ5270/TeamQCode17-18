@@ -13,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiServo;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
+import static com.sun.tools.javac.util.LayoutCharacters.LF;
+
 @Autonomous(name="Main Autonomous")
 public class AutonomousMain extends LinearOpMode {
 
@@ -20,7 +22,6 @@ public class AutonomousMain extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     //Vuforia manager
-    private final VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
 
     //Initialize Misc
 
@@ -71,13 +72,20 @@ public class AutonomousMain extends LinearOpMode {
         /*
         Detect Vuforia Target - run until the target is found or the opmode starts
         TODO there could be a possible bug with using isStarted, needs to be tested
+        Make sure VuforiaManager is during init so that it doesn't error during app start. Also the status of the camera might change and only be availible when we determine so (and press init).
         */
 
-        RelicRecoveryVuMark targetImage = null;
+        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
         while (true) {
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()) break;
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()){
+                telemetry.addData("Vuforia Target: ", targetImage.toString());
+                telemetry.update();
+                break;
+            }
             targetImage = vuforiaManager.getvisibleTarget();
         }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
 
         //Wait For Play, Start Timer
         waitForStart();
@@ -86,19 +94,34 @@ public class AutonomousMain extends LinearOpMode {
         //Run until stopped
         //TODO this wont stop if the user presses the stop button - make sure to check and see if the robot has to stop
         while(opModeIsActive()){
-            //Autonomous Instructions
-            //Check to see if a vumark was picked up, set a flag if not
-            boolean vuMarkFound = vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN;
+            /*
+                1. Find BB Color
+                2. Find Side
+                3. Run Instructions based on vumark
+             */
 
-            //TODO find a way to get the position of the robot on the field
+            //This will be step 3
+            switch(targetImage){
+                case LEFT: {
 
+                    break;
+                }
 
-            //We need to handle a different set of instructions if the vuMark cant be found
-            if (!vuMarkFound) {
+                case CENTER: {
 
-            }
-            else {
+                    break;
+                }
 
+                case RIGHT: {
+
+                    break;
+                }
+
+                default: {
+                    //Pretty Much if vumark is UNKNOWN but might be null if something goes very wrong. This will catch those.
+
+                    break;
+                }
             }
 
             //Exit Loop
