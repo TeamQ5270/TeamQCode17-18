@@ -1,7 +1,6 @@
 
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,42 +15,27 @@ import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 public class AutonomousMain extends LinearOpMode {
 
     //How long the game has run
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
 
 
     //TODO Also these should probably be moved into the runOpMode method for more conciseness and efficiency
     //Setup servo management
     //Servo position flag
     MultiServo.ServoPosition currentPosition = MultiServo.ServoPosition.OUT; //defaults to the servos being extended
-    //Servo position constants
-    private final double servoMaxPosition = 1.0;
-    private final double servoMinPosition = 0.0;
-
-    //Initialize HardwareMaps
-    //Motors
-    private DcMotor frontLeftMotor = null;
-    private DcMotor frontRightMotor = null;
-    private DcMotor rearLeftMotor = null;
-    private DcMotor rearRightMotor = null;
-    private DcMotor liftMotor = null;
-
-    //Servos
-    private Servo leftServo = null;
-    private Servo rightServo = null;
 
     //Sensors
 
     //Vuforia
-    private VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+    private final VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
 
     @Override
     public void runOpMode() {
         //Assign motors to hardware devices (Using names from configuration)
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "FL Drive");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "FR Drive");
-        rearLeftMotor = hardwareMap.get(DcMotor.class, "BL Drive");
-        rearRightMotor = hardwareMap.get(DcMotor.class, "BR Drive");
-        liftMotor = hardwareMap.get(DcMotor.class, "Riser Lift");
+        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "FL Drive");
+        DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "FR Drive");
+        DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "BL Drive");
+        DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "BR Drive");
+        DcMotor liftMotor = hardwareMap.get(DcMotor.class, "Riser Lift");
 
         //Motor Directions
 
@@ -67,13 +51,15 @@ public class AutonomousMain extends LinearOpMode {
         liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Set up servos/servo manager
-        leftServo = hardwareMap.servo.get("Servo Lift L");
-        rightServo = hardwareMap.servo.get("Servo Lift R");
+        Servo leftServo = hardwareMap.servo.get("Servo Lift L");
+        Servo rightServo = hardwareMap.servo.get("Servo Lift R");
         //This is used to simplify flipping the servos in and out
         Servo[] servos = new Servo[] {leftServo, rightServo};
         //Setup the constant positions of the servos in the manager (positions are left servo, then right servo ^^^)
-        MultiServo.setPositionsInLocal(new double[] {servoMaxPosition,servoMinPosition});
-        MultiServo.setPositionsOutLocal(new double[] {servoMinPosition,servoMaxPosition});
+        double servoMinPosition = 0.0;
+        double servoMaxPosition = 1.0;
+        MultiServo.setPositionsInLocal(new double[] {servoMaxPosition, servoMinPosition});
+        MultiServo.setPositionsOutLocal(new double[] {servoMinPosition, servoMaxPosition});
 
         /*
         Detect Vuforia Target - run until the target is found (as of now)
