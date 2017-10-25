@@ -2,10 +2,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
-<<<<<<< HEAD
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-=======
->>>>>>> 3c0609672720ba8a3737094752ca59f6ea204d4a
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,54 +22,42 @@ public class AutonomousMain extends LinearOpMode {
     //Vuforia manager
     private final VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
 
-<<<<<<< HEAD
-    //Initialize Sensors
-    private LynxI2cColorRangeSensor jewelColor = null;
-    private LynxI2cColorRangeSensor frontLeftColor = null;
-    private LynxI2cColorRangeSensor frontRightColor = null;
-    private LynxI2cColorRangeSensor rearLeftColor = null;
-    private LynxI2cColorRangeSensor rearRightColor = null;
-
     //Initialize Misc
-     private RelicRecoveryVuMark targetImage = null;
-=======
->>>>>>> 3c0609672720ba8a3737094752ca59f6ea204d4a
 
     @Override
     public void runOpMode() {
         //TODO read configuration from a file
-        //Assign objects to hardware devices
-        //Assign motors to hardware devices (Using names from configuration)
-        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "FL Drive");
-        DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "FR Drive");
-        DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "BL Drive");
-        DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "BR Drive");
-        DcMotor liftMotor = hardwareMap.get(DcMotor.class, "Riser Lift");
-        //Assign sensors
-        LynxI2cColorRangeSensor jewelSensor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Jewel Color");
 
-        //Set up motors
+        //Create hardware devices (Using names from configuration)
+        DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive FL");
+        DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive FR");
+        DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive BL");
+        DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive BR");
+        DcMotor liftMotor = hardwareMap.get(DcMotor.class, "Motor Glyph");
+
+        LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");
+        LynxI2cColorRangeSensor frontLeftColor = null;
+        LynxI2cColorRangeSensor frontRightColor = null;
+        LynxI2cColorRangeSensor rearLeftColor = null;
+        LynxI2cColorRangeSensor rearRightColor = null;
+
+        Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");
+        Servo leftLiftServo = hardwareMap.servo.get("Servo Glyph L");
+        Servo rightLiftServo = hardwareMap.servo.get("Servo Glyph R");
+
         //Motor Directions
-        //front motors
         frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        //rear motors
         rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        //glyph lift motor
         liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //Set up servos/servo manager
-        //Set up manager
+        //Set up Servos/ServoManager
         MultiServo.ServoPosition currentPosition = MultiServo.ServoPosition.OUT; //defaults to the servos being extended
-        //Jewel
-        Servo jewelServo = hardwareMap.servo.get("Jewel Servo");
-        //Lift
-        //Assign servos
-        Servo leftLiftServo = hardwareMap.servo.get("Servo Lift L");
-        Servo rightLiftServo = hardwareMap.servo.get("Servo Lift R");
-        //This is used to simplify flipping the servos in and out
+
+        //Create servo array(This is used to simplify flipping the servos in and out)
         Servo[] servos = new Servo[] {leftLiftServo, rightLiftServo};
+
         //Setup the constant positions of the liftservos in the manager (positions are left servo, then right servo ^^^)
         double servoMinPosition = 0.0;
         double servoMaxPosition = 1.0;
@@ -87,8 +72,11 @@ public class AutonomousMain extends LinearOpMode {
         Detect Vuforia Target - run until the target is found or the opmode starts
         TODO there could be a possible bug with using isStarted, needs to be tested
         */
+
+        RelicRecoveryVuMark targetImage = null;
         while (true) {
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()) break;
+            targetImage = vuforiaManager.getvisibleTarget();
         }
 
         //Wait For Play, Start Timer

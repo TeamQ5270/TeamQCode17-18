@@ -6,8 +6,8 @@ public class MultiServo {
     //TODO Multithreading for the servo movement
     public enum ServoPosition {IN, OUT}
 
-    private static double[] positionsOutLocal;
     private static double[] positionsInLocal;
+    private static double[] positionsOutLocal;
 
     //Flip the servo objects based on inputted distances
     public static ServoPosition flipServos(Servo[] servos, double[] positionsOut, double[] positionsIn, ServoPosition previousStatus) {
