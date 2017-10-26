@@ -60,6 +60,7 @@ public class AutonomousMain extends LinearOpMode {
         Servo[] servos = new Servo[] {leftLiftServo, rightLiftServo};
 
         //Setup the constant positions of the liftservos in the manager (positions are left servo, then right servo ^^^)
+        //TODO test and get proper values for these constants
         double servoMinPosition = 0.0;
         double servoMaxPosition = 1.0;
         MultiServo.setPositionsInLocal(new double[] {servoMaxPosition, servoMinPosition});
