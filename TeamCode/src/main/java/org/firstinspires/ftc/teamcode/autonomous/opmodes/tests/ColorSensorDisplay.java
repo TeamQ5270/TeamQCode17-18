@@ -23,7 +23,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -74,9 +74,9 @@ public class ColorSensorDisplay extends OpMode {
     @Override
     public void loop() {
 //        telemetry.addData("Status:", "Run Time: " + runtime.toString());
-//        telemetry.addData("Red: ", colorRangeSensor.red());
-//        telemetry.addData("Green: ", colorRangeSensor.green());
-//        telemetry.addData("Blue: ", colorRangeSensor.blue());
+//        telemetry.addData("Red: ", colorSensor.red());
+//        telemetry.addData("Green: ", colorSensor.green());
+//        telemetry.addData("Blue: ", colorSensor.blue());
         telemetry.addData("Distance (cm)",
                 String.format(Locale.US, "%.02f", colorRangeSensor.getDistance(DistanceUnit.CM)));
 

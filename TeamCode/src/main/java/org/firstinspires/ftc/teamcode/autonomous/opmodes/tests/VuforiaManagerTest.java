@@ -27,12 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous.vuforia;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 
 /**
@@ -48,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="VisionTarkerManagerTest", group="Linear Opmode")
+@Autonomous(name="VisionTarkerManagerTes", group="Linear Opmode")
 public class VuforiaManagerTest extends LinearOpMode {
 
     // Declare OpMode members.

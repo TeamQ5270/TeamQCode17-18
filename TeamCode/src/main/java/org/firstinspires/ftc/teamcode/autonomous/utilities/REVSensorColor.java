@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous.utilities;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 
@@ -6,34 +6,34 @@ import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
  * Created by Matthew_Modi on 10/6/2017.
  */
 
-public class SensorColor {
+public class REVSensorColor {
     public static int getColor(LynxI2cColorRangeSensor colorSensor){
-        int temp_Color = 0;
+        int tempColor = 0;
         if(colorSensor.red() > colorSensor.blue()){
-            temp_Color = 1;
+            tempColor = 1;
         }else if(colorSensor.blue() > colorSensor.red()){
-            temp_Color = 2;
+            tempColor = 2;
         }
-        return temp_Color;
+        return tempColor;
     }
 
     public static double getCertainty(LynxI2cColorRangeSensor colorSensor){
-        double temp_Certainty = 0.0;
+        double tempCertainty = 0.0;
         if(getColor(colorSensor) == 1){
-            temp_Certainty = colorSensor.red()/colorSensor.blue();
+            tempCertainty = colorSensor.red()/colorSensor.blue();
         }else if(getColor(colorSensor) == 2){
-            temp_Certainty = colorSensor.blue()/colorSensor.red();
+            tempCertainty = colorSensor.blue()/colorSensor.red();
         }
-        return temp_Certainty;
+        return tempCertainty;
     }
 
     public static int getMagnitude(LynxI2cColorRangeSensor colorSensor){
-        int temp_Magnitude = 0;
+        int tempMagnitude = 0;
         if (getColor(colorSensor) == 1){
-            temp_Magnitude = colorSensor.red();
+            tempMagnitude = colorSensor.red();
         }else if(getColor(colorSensor) == 2){
-            temp_Magnitude = colorSensor.blue();
+            tempMagnitude = colorSensor.blue();
         }
-        return temp_Magnitude;
+        return tempMagnitude;
     }
 }

@@ -27,18 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.eventloop.opmode.*;
-
-import static com.sun.tools.javac.main.Option.S;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,15 +47,15 @@ import static com.sun.tools.javac.main.Option.S;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Matthew Modi: @MeM5 (reddit/github), @mmmmmmmodi (instagram/snapchat) Autonomous")
-public class Autonomous_Main extends LinearOpMode {
+@Autonomous(name="LiftEncoderTest")
+public class LiftEncoderTest extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-//    private DcMotor FL = null;
-//    private DcMotor FR = null;
-//    private DcMotor RL = null;
-//    private DcMotor RR = null;
+    private DcMotor FL = null;
+    private DcMotor FR = null;
+    private DcMotor RL = null;
+    private DcMotor RR = null;
     private DcMotor L = null;
 
     @Override
@@ -71,28 +65,21 @@ public class Autonomous_Main extends LinearOpMode {
         telemetry.update();
 
         //Motor Initialzation
-//        FL = hardwareMap.get(DcMotor.class, "FL Drive");
-//        FR = hardwareMap.get(DcMotor.class, "FR Drive");
-//        RL = hardwareMap.get(DcMotor.class, "BL Drive");
-//        RR = hardwareMap.get(DcMotor.class, "BR Drive");
+        FL = hardwareMap.get(DcMotor.class, "FL Drive");
+        FR = hardwareMap.get(DcMotor.class, "FR Drive");
+        RL = hardwareMap.get(DcMotor.class, "BL Drive");
+        RR = hardwareMap.get(DcMotor.class, "BR Drive");
         L = hardwareMap.get(DcMotor.class, "Riser Lift");
 
         //Motor Directions
-//        FL.setDirection(DcMotorSimple.Direction.REVERSE);
-//        RL.setDirection(DcMotorSimple.Direction.REVERSE);
-        L.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        //Set Motor Mode
-        L.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        L.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Wait For Play, Reset Timer
         waitForStart();
         runtime.reset();
 
-        //Run until stop
-        while(opModeIsActive()){
+        L.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        L.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        }
+        //Run until stop
     }
 }
