@@ -36,14 +36,14 @@ public class driveCode extends LinearOpMode {
         telemetry.update();
 
 
-        motorLeftFront = hardwareMap.dcMotor.get("FL Drive");
-        motorLeftBack = hardwareMap.dcMotor.get("BL Drive");
-        motorRightFront = hardwareMap.dcMotor.get("FR Drive");
-        motorRightBack = hardwareMap.dcMotor.get("BR Drive");
-        motorLift = hardwareMap.dcMotor.get("Riser Lift");
+        motorLeftFront = hardwareMap.dcMotor.get("Motor Drive FL");
+        motorLeftBack = hardwareMap.dcMotor.get("Motor Drive FR");
+        motorRightFront = hardwareMap.dcMotor.get("Motor Drive RL");
+        motorRightBack = hardwareMap.dcMotor.get("Motor Drive RR");
+        motorLift = hardwareMap.dcMotor.get("Motor Glyph");
 
-        leftServo = hardwareMap.servo.get("Servo Lift L");
-        rightServo = hardwareMap.servo.get("Servo Lift R");
+        leftServo = hardwareMap.servo.get("Servo Glyph L");
+        rightServo = hardwareMap.servo.get("Servo Glyph R");
 
         //keep the directions as follows or else bad stuff happens:
         //left front: FORWARD
