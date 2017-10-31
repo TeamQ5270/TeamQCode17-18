@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "TeleOp Drive Code", group = "Linear Opmode")
@@ -23,9 +24,9 @@ public class driveCode extends LinearOpMode {
 
     private double deadzone = 0.1; //deadzone for joysticks
 
-    private static final double servoMaxPosition = 1.0;
-    private static final double servoMinPosition = 0.0;
-    private static final double servoIncrement = 0.02; //adjust this to adjust the speed of the claw
+    private static final double servoMaxPosition = 0.7;
+    private static final double servoMinPosition = 0.15;
+    private static final double servoIncrement = 0.008; //adjust this to adjust the speed of the claw
     private double position = (servoMinPosition); //start either open or closed - need to find out which
 
     private boolean clawCycle = false; //flag for alternation of which servo arm to move
@@ -38,14 +39,14 @@ public class driveCode extends LinearOpMode {
         telemetry.update();
 
 
-        motorLeftFront = hardwareMap.dcMotor.get("FL Drive");
-        motorLeftBack = hardwareMap.dcMotor.get("BL Drive");
-        motorRightFront = hardwareMap.dcMotor.get("FR Drive");
-        motorRightBack = hardwareMap.dcMotor.get("BR Drive");
-        motorLift = hardwareMap.dcMotor.get("Riser Lift");
+        motorLeftFront = hardwareMap.dcMotor.get("Motor Drive FL");
+        motorLeftBack = hardwareMap.dcMotor.get("Motor Drive RL");
+        motorRightFront = hardwareMap.dcMotor.get("Motor Drive FR");
+        motorRightBack = hardwareMap.dcMotor.get("Motor Drive RR");
+        motorLift = hardwareMap.dcMotor.get("Motor Glyph");
 
-        leftServo = hardwareMap.servo.get("Servo Lift L");
-        rightServo = hardwareMap.servo.get("Servo Lift R");
+        leftServo = hardwareMap.servo.get("Servo Glyph L");
+        rightServo = hardwareMap.servo.get("Servo Glyph R");
 
         //keep the directions as follows or else bad stuff happens:
         //left front: FORWARD
@@ -67,6 +68,16 @@ public class driveCode extends LinearOpMode {
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reset lift
+
+
+        // DigitalChannel liftResetSense;
+        // liftResetSense= hardwareMap.get(DigitalChannel.class, "sensor_digital"); //declare touch sensor
+
+        // while (liftResetSense.getState() && !isStarted()) {
+        //   motorLift.setPower(1.0);
+        //}
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -115,7 +126,7 @@ public class driveCode extends LinearOpMode {
             //move lift up and down
             if (Math.abs(gamepad2.right_stick_y) > deadzone
                     && motorLift.getCurrentPosition() >= -2100
-                    && motorLift.getCurrentPosition() <= -275) {
+                    && motorLift.getCurrentPosition() <= -225) {
 
                 motorLift.setPower(gamepad2.right_stick_y);
 
@@ -125,7 +136,7 @@ public class driveCode extends LinearOpMode {
                         && motorLift.getCurrentPosition() <= -2000) {
                     motorLift.setPower(gamepad2.right_stick_y);
                 } else if (gamepad2.right_stick_y < 0
-                        && motorLift.getCurrentPosition() >= -275) {
+                        && motorLift.getCurrentPosition() >= -225) {
 
 
                     motorLift.setPower(gamepad2.right_stick_y);
@@ -155,7 +166,10 @@ public class driveCode extends LinearOpMode {
 
                 }
 
-                position -= servoIncrement;
+                if (position >= servoMinPosition) {
+
+                    position -= servoIncrement;
+                }
 
             } else if (gamepad2.right_bumper) { //close claw
 
@@ -173,7 +187,11 @@ public class driveCode extends LinearOpMode {
 
                 }
 
-                position += servoIncrement;
+                if (position <= servoMaxPosition) {
+
+                    position += servoIncrement;
+
+                }
 
             }
             telemetry.addData("Lift encoder value: ", motorLift.getCurrentPosition());

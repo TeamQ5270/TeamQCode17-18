@@ -1,15 +1,16 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes;
+package org.firstinspires.ftc.teamcode.teleop.opmodes.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "TeleOp Drive Code", group = "Linear Opmode")
+import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
+
+@TeleOp(name = "Multithreaded Servo Test OpMode", group = "Linear Opmode")
 
 
-public class driveCode extends LinearOpMode {
+public class ThreadedServoDriveCodeTest extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -29,7 +30,9 @@ public class driveCode extends LinearOpMode {
     private static final double servoIncrement = 0.008; //adjust this to adjust the speed of the claw
     private double position = (servoMinPosition); //start either open or closed - need to find out which
 
-    private boolean clawCycle = false; //flag for alternation of which servo arm to move
+    //private boolean clawCycle = false; //flag for alternation of which servo arm to move
+
+
 
     private boolean previouslyRaised = false;
 
@@ -146,61 +149,34 @@ public class driveCode extends LinearOpMode {
                     motorLift.setPower(0);
 
                 }
-
-
             }
 
             if (gamepad2.left_bumper) { //open claw
 
                 //open claw arms simultaneously - the servos have to be cycled, apparently
                 //using clawCycle to switch between servos
-                if (clawCycle) {
 
-                    leftServo.setPosition(position);
-                    clawCycle = !clawCycle;
-
-                } else if (!clawCycle) {
-
-                    rightServo.setPosition(servoMaxPosition - position);
-                    clawCycle = !clawCycle;
-
-                }
+                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
+                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
 
                 if (position >= servoMinPosition) {
 
                     position -= servoIncrement;
                 }
-
             } else if (gamepad2.right_bumper) { //close claw
 
+                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
+                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
 
-                //same as above but for closing
-                if (clawCycle) {
-
-                    leftServo.setPosition(position);
-                    clawCycle = !clawCycle;
-
-                } else if (!clawCycle) {
-
-                    rightServo.setPosition(servoMaxPosition - position);
-                    clawCycle = !clawCycle;
-
-                }
 
                 if (position <= servoMaxPosition) {
 
                     position += servoIncrement;
 
                 }
-
             }
             telemetry.addData("Lift encoder value: ", motorLift.getCurrentPosition());
             telemetry.update();
-
         }
-
-
     }
-
-
 }
