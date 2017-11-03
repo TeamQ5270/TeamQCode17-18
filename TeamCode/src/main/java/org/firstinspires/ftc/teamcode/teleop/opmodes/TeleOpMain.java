@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 
 @TeleOp(name = "TeleOp Drive Code", group = "Linear Opmode")
 
-public class DriveCode extends LinearOpMode {
+public class TeleOpMain extends LinearOpMode {
     /* Declare OpMode members. */
 
     //TODO add necessary motors and servos for relic arm
