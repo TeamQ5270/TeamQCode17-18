@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "Non-Threaded Drive Code DO NOT USE", group = "Linear Opmode")
 
 @Disabled
-public class OldDriveCode extends LinearOpMode {
+public class TeleOpOld extends LinearOpMode {
 
     /* Declare OpMode members. */
 
