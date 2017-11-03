@@ -66,7 +66,7 @@ public class AutonomousMain extends LinearOpMode {
         MultiServo.setPositionsOutLocal(new double[] {servoMinPosition, servoMaxPosition});
 
         //Let user know that robot has been initialized
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Core Initialized");
         telemetry.update();
 
         /*
@@ -99,30 +99,6 @@ public class AutonomousMain extends LinearOpMode {
                 2. Find Side
                 3. Run Instructions based on vumark
              */
-
-            //This will be step 3
-            switch(targetImage){
-                case LEFT: {
-
-                    break;
-                }
-
-                case CENTER: {
-
-                    break;
-                }
-
-                case RIGHT: {
-
-                    break;
-                }
-
-                default: {
-                    //Pretty Much if vumark is UNKNOWN but might be null if something goes very wrong. This will catch those.
-
-                    break;
-                }
-            }
 
             //Exit Loop
             break;
