@@ -18,10 +18,12 @@ public class OutreachPushbotDrive extends LinearOpMode {
         //Define the motors on the robot
         DcMotor leftMotor;
         DcMotor rightMotor;
+        DcMotor lMotor;
 
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
+        lMotor = hardwareMap.get(DcMotor.class, "d");
 
         //Set the directions of the motors
         leftMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -38,11 +40,9 @@ public class OutreachPushbotDrive extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //Calculate the power of the motors using sketchy math
-            float[] movementVector = new float[] {gamepad1.left_stick_x,gamepad1.left_stick_y};
-            float magnitude = (float)Math.hypot(movementVector[0],movementVector[1]);
-            leftMotor.setPower(movementVector[0]<0 ? magnitude+movementVector[0] : magnitude);
-            rightMotor.setPower(movementVector[1]>0 ? magnitude-movementVector[1] : magnitude);
+            leftMotor.setPower(gamepad1.left_stick_y);
+            rightMotor.setPower(gamepad1.right_stick_y);
+            lMotor.setPower(gamepad2.left_stick_y);
         }
     }
 
