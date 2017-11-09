@@ -95,23 +95,23 @@ public class TeleOpMain extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            //left stick translates
-            //right stick rotates
+            //right stick translates
+            //left stick rotates
             //mecanum code is from https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/6361-mecanum-wheels-drive-code-example.
             //Some modifications made by Sheridan Page
 
             //Mecanum code starts here
 
             //don't run motors if stick is within the deadzone
-            if (Math.abs(gamepad1.left_stick_x) > deadzone
-                    || Math.abs(gamepad1.left_stick_y) > deadzone
-                    || Math.abs(gamepad1.right_stick_x) > deadzone) {
+            if (Math.abs(gamepad1.right_stick_x) > deadzone
+                    || Math.abs(gamepad1.right_stick_y) > deadzone
+                    || Math.abs(gamepad1.left_stick_x) > deadzone) {
 
                 //gamepad left stick x is inverted to keep the direction of left-right translation correct
                 //weird trig
-                double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-                double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
-                double rightX = -gamepad1.right_stick_x;
+                double r = Math.hypot(-gamepad1.right_stick_x, gamepad1.right_stick_y);
+                double robotAngle = Math.atan2(gamepad1.right_stick_y, -gamepad1.right_stick_x) - Math.PI / 4;
+                double rightX = -gamepad1.left_stick_x;
                 final double v1 = r * Math.cos(robotAngle) + rightX;
                 final double v2 = r * Math.sin(robotAngle) - rightX;
                 final double v3 = r * Math.sin(robotAngle) + rightX;
