@@ -124,9 +124,9 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightBack.setPower(v4);
 
                 //if sticks are within deadzone, set all drive motor powers to 0
-            } else if (Math.abs(gamepad1.left_stick_x) < deadzone
-                    && Math.abs(gamepad1.left_stick_y) < deadzone
-                    && Math.abs(gamepad1.right_stick_y) < deadzone) {
+            } else if (Math.abs(gamepad1.right_stick_x) < deadzone
+                    && Math.abs(gamepad1.right_stick_y) < deadzone
+                    && Math.abs(gamepad1.left_stick_y) < deadzone) {
                 motorLeftFront.setPower(0);
                 motorRightFront.setPower(0);
                 motorLeftBack.setPower(0);
