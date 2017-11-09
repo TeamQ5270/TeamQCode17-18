@@ -95,23 +95,23 @@ public class TeleOpMain extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            //left stick translates
-            //right stick rotates
+            //right stick translates
+            //left stick rotates
             //mecanum code is from https://ftcforum.usfirst.org/forum/ftc-technology/android-studio/6361-mecanum-wheels-drive-code-example.
             //Some modifications made by Sheridan Page
 
             //Mecanum code starts here
 
             //don't run motors if stick is within the deadzone
-            if (Math.abs(gamepad1.left_stick_x) > deadzone
-                    || Math.abs(gamepad1.left_stick_y) > deadzone
-                    || Math.abs(gamepad1.right_stick_x) > deadzone) {
+            if (Math.abs(gamepad1.right_stick_x) > deadzone
+                    || Math.abs(gamepad1.right_stick_y) > deadzone
+                    || Math.abs(gamepad1.left_stick_x) > deadzone) {
 
                 //gamepad left stick x is inverted to keep the direction of left-right translation correct
                 //weird trig
-                double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-                double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
-                double rightX = -gamepad1.right_stick_x;
+                double r = Math.hypot(-gamepad1.right_stick_x, gamepad1.right_stick_y);
+                double robotAngle = Math.atan2(gamepad1.right_stick_y, -gamepad1.right_stick_x) - Math.PI / 4;
+                double rightX = -gamepad1.left_stick_x;
                 final double v1 = r * Math.cos(robotAngle) + rightX;
                 final double v2 = r * Math.sin(robotAngle) - rightX;
                 final double v3 = r * Math.sin(robotAngle) + rightX;
@@ -124,9 +124,9 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightBack.setPower(v4);
 
                 //if sticks are within deadzone, set all drive motor powers to 0
-            } else if (Math.abs(gamepad1.left_stick_x) < deadzone
-                    && Math.abs(gamepad1.left_stick_y) < deadzone
-                    && Math.abs(gamepad1.right_stick_y) < deadzone) {
+            } else if (Math.abs(gamepad1.right_stick_x) < deadzone
+                    && Math.abs(gamepad1.right_stick_y) < deadzone
+                    && Math.abs(gamepad1.left_stick_y) < deadzone) {
                 motorLeftFront.setPower(0);
                 motorRightFront.setPower(0);
                 motorLeftBack.setPower(0);
@@ -155,6 +155,11 @@ public class TeleOpMain extends LinearOpMode {
                 } else {
                     motorLift.setPower(0);
                 }
+            }
+
+            if (gamepad2.a && gamepad2.y) { //reset lift encoder position if desired
+                motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
             if (gamepad2.left_bumper) { //open claw
