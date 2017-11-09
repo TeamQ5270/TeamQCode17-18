@@ -59,7 +59,8 @@ public class AutonomousMain extends LinearOpMode {
         //Create servo array(This is used to simplify flipping the servos in and out)
         Servo[] servos = new Servo[] {leftLiftServo, rightLiftServo};
 
-        //Setup the constant positions of the liftservos in the manager (positions are left servo, then right servo ^^^)
+        //Setup the contant positions of the liftservos in the manager (positions are left servo, then right servo ^^^)
+        //TODO test and get proper values for these constants
         double servoMinPosition = 0.0;
         double servoMaxPosition = 1.0;
         MultiServo.setPositionsInLocal(new double[] {servoMaxPosition, servoMinPosition});
