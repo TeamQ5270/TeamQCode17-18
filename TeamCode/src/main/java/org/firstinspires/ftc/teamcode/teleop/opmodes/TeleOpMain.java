@@ -157,6 +157,11 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
+            if (gamepad2.a && gamepad2.y) { //reset lift encoder position if desired
+                motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
             if (gamepad2.left_bumper) { //open claw
 
                 //open claw arms simultaneously using ThreadedServoMovement class
