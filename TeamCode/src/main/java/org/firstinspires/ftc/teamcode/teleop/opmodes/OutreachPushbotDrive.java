@@ -18,20 +18,22 @@ public class OutreachPushbotDrive extends LinearOpMode {
         //Define the motors on the robot
         DcMotor leftMotor;
         DcMotor rightMotor;
-        DcMotor lMotor;
+        DcMotor lift;
 
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
-        lMotor = hardwareMap.get(DcMotor.class, "d");
+        lift = hardwareMap.get(DcMotor.class, "lift motor");
 
         //Set the directions of the motors
-        leftMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Set the braking of the motors
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -40,9 +42,9 @@ public class OutreachPushbotDrive extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            leftMotor.setPower(gamepad1.left_stick_y);
-            rightMotor.setPower(gamepad1.right_stick_y);
-            lMotor.setPower(gamepad2.left_stick_y);
+            leftMotor.setPower(gamepad1.right_stick_y);
+            rightMotor.setPower(gamepad1.left_stick_y);
+            lift.setPower(gamepad2.right_stick_y/5);
         }
     }
 
