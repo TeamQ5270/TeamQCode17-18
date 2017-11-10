@@ -1,3 +1,4 @@
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

@@ -26,21 +26,30 @@ public class SafeZoneParking extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        //TODO read configuration from a file
-
+        /*
         //Create hardware devices (Using names from configuration)
         DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive FL");
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive FR");
         DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive BL");
         DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive BR");
-
-        //Motor Directions
         frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
         DcMotor[] motors = new DcMotor[] {frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor};
+        */
+
+        //Define the motors on the robot
+        DcMotor leftMotor;
+        DcMotor rightMotor;
+        //Set the motors to be actual classes
+        leftMotor = hardwareMap.get(DcMotor.class, "left motor");
+        rightMotor = hardwareMap.get(DcMotor.class, "right motor");
+        //Set the directions of the motors
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        DcMotor[] motors = new DcMotor[] {leftMotor, rightMotor};
+
 
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Core Initialized");
@@ -56,7 +65,6 @@ public class SafeZoneParking extends LinearOpMode {
             int motorSize = 40;
             //int motorSize = 20;
             MultiMotor.moveToPosition(motors, motorSize == 40 ? 3208 : 1604, 0.5f);
-            stop();
         }
         //End OpMode
         stop();
