@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiServo;
 
 @Autonomous(name="Pathtest", group="AutonomousTest")
+@Disabled
 public class PathTest extends LinearOpMode {
 
     /* Declare OpMode members. */

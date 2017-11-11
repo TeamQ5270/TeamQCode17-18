@@ -21,4 +21,13 @@ public class MultiMotor {
         }
         setOpMode(motors, DcMotor.RunMode.RUN_TO_POSITION);
     }
+
+    public static boolean busyMotors(DcMotor[] motors) {
+        for (DcMotor m : motors) {
+            if (m.isBusy()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

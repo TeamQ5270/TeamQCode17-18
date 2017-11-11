@@ -59,12 +59,14 @@ public class SafeZoneParking extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+
+        int motorSize = 40;
+        //int motorSize = 20;
+        MultiMotor.moveToPosition(motors, motorSize == 40 ? /*3208*/89 : 1604, 0.5f);
+
         //Run until stopped
         //TODO this wont stop if the user presses the stop button - make sure to check and see if the robot has to stop
         while(opModeIsActive()) {
-            int motorSize = 40;
-            //int motorSize = 20;
-            MultiMotor.moveToPosition(motors, motorSize == 40 ? 3208 : 1604, 0.5f);
         }
         //End OpMode
         stop();
