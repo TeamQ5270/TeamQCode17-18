@@ -36,4 +36,14 @@ public class MultiMotor {
             m.setPower(power);
         }
     }
+
+    public static void moveToPositionAndyMark40(DcMotor[] motors, float distance, float power, float wheelDiameter) {
+        //Calculate ticks
+        float andyMarkTicks = 1120;
+        float circumference = (float)Math.PI*wheelDiameter;
+        float ticks = (andyMarkTicks*distance)/circumference;
+
+        //Move to tick position
+        moveToPosition(motors, (int)ticks, power);
+    }
 }
