@@ -26,7 +26,7 @@ public class SafeZoneParking extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /*
+
         //Create hardware devices (Using names from configuration)
         DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive FL");
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive FR");
@@ -37,18 +37,6 @@ public class SafeZoneParking extends LinearOpMode {
         rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         DcMotor[] motors = new DcMotor[] {frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor};
-        */
-
-        //Define the motors on the robot
-        DcMotor leftMotor;
-        DcMotor rightMotor;
-        //Set the motors to be actual classes
-        leftMotor = hardwareMap.get(DcMotor.class, "left motor");
-        rightMotor = hardwareMap.get(DcMotor.class, "right motor");
-        //Set the directions of the motors
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
-        DcMotor[] motors = new DcMotor[] {leftMotor, rightMotor};
 
 
         //Let user know that robot has been initialized
