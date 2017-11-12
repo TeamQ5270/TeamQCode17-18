@@ -16,10 +16,10 @@ public class MultiMotor {
     public static void moveToPosition(DcMotor[] motors, int position, float power) {
         setOpMode(motors, DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         for (DcMotor m : motors) {
+            m.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             m.setTargetPosition(position);
             m.setPower(power);
         }
-        setOpMode(motors, DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public static boolean busyMotors(DcMotor[] motors) {
@@ -29,5 +29,11 @@ public class MultiMotor {
             }
         }
         return false;
+    }
+
+    public static void setPower(DcMotor[] motors, float power) {
+        for (DcMotor m : motors) {
+            m.setPower(power);
+        }
     }
 }
