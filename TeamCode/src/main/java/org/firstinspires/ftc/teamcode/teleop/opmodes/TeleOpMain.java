@@ -103,15 +103,15 @@ public class TeleOpMain extends LinearOpMode {
             //Mecanum code starts here
 
             //don't run motors if stick is within the deadzone
-            if (Math.abs(gamepad1.right_stick_x) > deadzone
-                    || Math.abs(gamepad1.right_stick_y) > deadzone
-                    || Math.abs(gamepad1.left_stick_x) > deadzone) {
+            if (Math.abs(gamepad1.left_stick_x) > deadzone
+                    || Math.abs(gamepad1.left_stick_y) > deadzone
+                    || Math.abs(gamepad1.right_stick_x) > deadzone) {
 
                 //gamepad left stick x is inverted to keep the direction of left-right translation correct
                 //weird trig
-                double r = Math.hypot(-gamepad1.right_stick_x, gamepad1.right_stick_y);
-                double robotAngle = Math.atan2(gamepad1.right_stick_y, -gamepad1.right_stick_x) - Math.PI / 4;
-                double rightX = -gamepad1.left_stick_x;
+                double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
+                double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
+                double rightX = -gamepad1.right_stick_x;
                 final double v1 = r * Math.cos(robotAngle) + rightX;
                 final double v2 = r * Math.sin(robotAngle) - rightX;
                 final double v3 = r * Math.sin(robotAngle) + rightX;
@@ -124,9 +124,9 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightBack.setPower(v4);
 
                 //if sticks are within deadzone, set all drive motor powers to 0
-            } else if (Math.abs(gamepad1.right_stick_x) < deadzone
-                    && Math.abs(gamepad1.right_stick_y) < deadzone
-                    && Math.abs(gamepad1.left_stick_y) < deadzone) {
+            } else if (Math.abs(gamepad1.left_stick_x) < deadzone
+                    && Math.abs(gamepad1.left_stick_y) < deadzone
+                    && Math.abs(gamepad1.right_stick_y) < deadzone) {
                 motorLeftFront.setPower(0);
                 motorRightFront.setPower(0);
                 motorLeftBack.setPower(0);
@@ -137,20 +137,20 @@ public class TeleOpMain extends LinearOpMode {
             //also checks to make sure encoder values are within the safe range
             //IF WE CHANGE THE STRING OR MODIFY THE LIFT, MAKE SURE VALUES ARE RE-EVALUATED
             if (Math.abs(gamepad2.right_stick_y) > deadzone
-                    && motorLift.getCurrentPosition() >= -2100
-                    && motorLift.getCurrentPosition() <= -225) {
+                    && motorLift.getCurrentPosition() >= -5600
+                    && motorLift.getCurrentPosition() <= -600) {
 
-                motorLift.setPower(gamepad2.right_stick_y);
+                motorLift.setPower(gamepad2.right_stick_y/2);
 
             } else {
                 //Allow lift to return to the safe zone if it is at max or min
                 if (gamepad2.right_stick_y > 0
-                        && motorLift.getCurrentPosition() <= -2000) {
-                    motorLift.setPower(gamepad2.right_stick_y);
+                        && motorLift.getCurrentPosition() <= -5600) {
+                    motorLift.setPower(gamepad2.right_stick_y/2);
                 } else if (gamepad2.right_stick_y < 0
-                        && motorLift.getCurrentPosition() >= -225) {
+                        && motorLift.getCurrentPosition() >= -600) {
 
-                    motorLift.setPower(gamepad2.right_stick_y);
+                    motorLift.setPower(gamepad2.right_stick_y/2);
 
                 } else {
                     motorLift.setPower(0);
