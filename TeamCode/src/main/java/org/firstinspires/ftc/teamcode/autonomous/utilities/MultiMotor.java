@@ -37,6 +37,13 @@ public class MultiMotor {
         }
     }
 
+    /**
+     *
+     * @param motors the motor array passed into the class
+     * @param distance how far to move, in whatever units (as long as they match the diameter's units)
+     * @param power the power to move the motors at
+     * @param wheelDiameter the diameter of the wheels, same units as distance
+     */
     public static void moveToPositionAndyMark40(DcMotor[] motors, float distance, float power, float wheelDiameter) {
         //Calculate ticks
         float andyMarkTicks = 1120;
