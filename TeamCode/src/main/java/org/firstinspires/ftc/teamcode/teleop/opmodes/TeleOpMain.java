@@ -31,7 +31,7 @@ public class TeleOpMain extends LinearOpMode {
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
     private static final double servoMaxPosition = 0.7;
-    private static final double servoMinPosition = 0.15;
+    private static final double servoMinPosition = 0.25;
     private double position = (servoMinPosition); //start open, with servos at minimum position
 
     //declare general servo variables
@@ -146,11 +146,11 @@ public class TeleOpMain extends LinearOpMode {
                 //Allow lift to return to the safe zone if it is at max or min
                 if (gamepad2.right_stick_y > 0
                         && motorLift.getCurrentPosition() <= -5600) {
-                    motorLift.setPower(gamepad2.right_stick_y/2);
+                    motorLift.setPower(gamepad2.right_stick_y/4);
                 } else if (gamepad2.right_stick_y < 0
                         && motorLift.getCurrentPosition() >= -600) {
 
-                    motorLift.setPower(gamepad2.right_stick_y/2);
+                    motorLift.setPower(gamepad2.right_stick_y/4);
 
                 } else {
                     motorLift.setPower(0);
