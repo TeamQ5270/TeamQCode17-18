@@ -121,11 +121,9 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightFront.setPower(v2);
                 motorLeftBack.setPower(v3);
                 motorRightBack.setPower(v4);
-
-<<<<<<< Updated upstream
+                
                 //if sticks are within deadzone, set all drive motor powers to 0
-=======
->>>>>>> Stashed changes
+
             } else if (Math.abs(gamepad1.left_stick_x) < deadzone
                     && Math.abs(gamepad1.left_stick_y) < deadzone
                     && Math.abs(gamepad1.right_stick_y) < deadzone) {
@@ -148,11 +146,8 @@ public class TeleOpMain extends LinearOpMode {
                 //Allow lift to return to the safe zone if it is at max or min
                 if (gamepad2.right_stick_y > 0
                         && motorLift.getCurrentPosition() <= -5600) {
-<<<<<<< Updated upstream
                     motorLift.setPower(gamepad2.right_stick_y/4);
-=======
-                    motorLift.setPower(gamepad2.right_stick_y);
->>>>>>> Stashed changes
+
                 } else if (gamepad2.right_stick_y < 0
                         && motorLift.getCurrentPosition() >= -600) {
 
