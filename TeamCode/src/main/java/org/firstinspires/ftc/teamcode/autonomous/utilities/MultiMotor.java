@@ -54,13 +54,13 @@ public class MultiMotor {
         moveToPosition(motors, (int)ticks, power);
     }
 
-    public static void turnToPositionAndyMark40(DcMotor[] leftMotors, DcMotor[] rightMotors, float distance, float power, float wheelDiameter) {
+    public static void turnToPositionAndyMark40(DcMotor[] leftMotors, DcMotor[] rightMotors, float degrees, float power) {
         //Get the distance for each wheel set
-        float circ = 38.29f;
-        float convertedDistance = (circ*distance)/360;
+        float tickPerDeg = 13.8f;
+        float convertedDistance = tickPerDeg*degrees;
 
         //Move motors
-        moveToPositionAndyMark40(leftMotors,convertedDistance,power,wheelDiameter);
-        moveToPositionAndyMark40(rightMotors,-convertedDistance,power,wheelDiameter);
+        moveToPosition(leftMotors,(int)convertedDistance,power);
+        moveToPosition(rightMotors,(int)-convertedDistance,power);
     }
 }

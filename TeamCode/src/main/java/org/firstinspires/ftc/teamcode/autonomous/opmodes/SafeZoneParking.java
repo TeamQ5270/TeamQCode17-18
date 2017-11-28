@@ -37,26 +37,8 @@ public class SafeZoneParking extends LinearOpMode {
         rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         DcMotor[] motors = new DcMotor[] {frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor};
-<<<<<<< Updated upstream
         DcMotor[] leftMotors = new DcMotor[] {frontLeftMotor, rearLeftMotor};
         DcMotor[] rightMotors = new DcMotor[] {frontRightMotor, frontRightMotor};
-=======
-
-/*
-
-        //Define the motors on the robot
-        DcMotor leftMotor;
-        DcMotor rightMotor;
-        //Set the motors to be actual classes
-        leftMotor = hardwareMap.get(DcMotor.class, "left motor");
-        rightMotor = hardwareMap.get(DcMotor.class, "right motor");
-        //Set the directions of the motors
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
-        DcMotor[] motors = new DcMotor[] {leftMotor, rightMotor};
-*/
-
->>>>>>> Stashed changes
 
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Core Initialized");
@@ -71,12 +53,12 @@ public class SafeZoneParking extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(motors, 36, 0.5f, 4);
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
-/*
 
-        MultiMotor.turnToPositionAndyMark40(leftMotors,rightMotors,360,0.5f,4);
+
+        MultiMotor.turnToPositionAndyMark40(leftMotors,rightMotors,360,0.5f);
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
-*/
+
 
         //End OpMode
         stop();
