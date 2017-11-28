@@ -107,7 +107,6 @@ public class TeleOpMain extends LinearOpMode {
                     || Math.abs(gamepad1.left_stick_y) > deadzone
                     || Math.abs(gamepad1.right_stick_x) > deadzone) {
 
-                //gamepad left stick x is inverted to keep the direction of left-right translation correct
                 //weird trig
                 double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
@@ -122,8 +121,9 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightFront.setPower(v2);
                 motorLeftBack.setPower(v3);
                 motorRightBack.setPower(v4);
-
+                
                 //if sticks are within deadzone, set all drive motor powers to 0
+
             } else if (Math.abs(gamepad1.left_stick_x) < deadzone
                     && Math.abs(gamepad1.left_stick_y) < deadzone
                     && Math.abs(gamepad1.right_stick_y) < deadzone) {
@@ -147,6 +147,7 @@ public class TeleOpMain extends LinearOpMode {
                 if (gamepad2.right_stick_y > 0
                         && motorLift.getCurrentPosition() <= -5600) {
                     motorLift.setPower(gamepad2.right_stick_y/4);
+
                 } else if (gamepad2.right_stick_y < 0
                         && motorLift.getCurrentPosition() >= -600) {
 
