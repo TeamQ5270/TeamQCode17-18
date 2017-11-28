@@ -50,15 +50,15 @@ public class SafeZoneParking extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        //Move forwards
         MultiMotor.moveToPositionAndyMark40(motors, 36, 0.5f, 4);
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
 
-
+        //Turn 360 degrees
         MultiMotor.turnToPositionAndyMark40(leftMotors,rightMotors,360,0.5f);
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
-
 
         //End OpMode
         stop();
