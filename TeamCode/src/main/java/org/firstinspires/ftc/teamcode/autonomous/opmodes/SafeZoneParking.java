@@ -38,7 +38,7 @@ public class SafeZoneParking extends LinearOpMode {
         rearRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         DcMotor[] motors = new DcMotor[] {frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor};
         DcMotor[] leftMotors = new DcMotor[] {frontLeftMotor, rearLeftMotor};
-        DcMotor[] rightMotors = new DcMotor[] {frontRightMotor, frontRightMotor};
+        DcMotor[] rightMotors = new DcMotor[] {frontRightMotor, rearRightMotor};
 
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Core Initialized");
