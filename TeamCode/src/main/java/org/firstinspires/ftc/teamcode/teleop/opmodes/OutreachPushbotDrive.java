@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
@@ -24,12 +25,14 @@ public class OutreachPushbotDrive extends LinearOpMode {
         DcMotor rightMotor;
         DcMotor rGrab;
         DcMotor lGrab;
+        GyroSensor gyro;
 
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
         rGrab = hardwareMap.get(DcMotor.class, "right grabber");
         lGrab = hardwareMap.get(DcMotor.class, "left grabber");
+        gyro = hardwareMap.get(GyroSensor.class, "gyro");
 
         //Set the directions of the motors
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -48,6 +51,8 @@ public class OutreachPushbotDrive extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        gyro.calibrate();
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             leftMotor.setPower(gamepad1.right_stick_y);
@@ -61,8 +66,12 @@ public class OutreachPushbotDrive extends LinearOpMode {
             else {
                 MultiMotor.setPower(grabbers, 0);
             }
+
+            telemetry.addData("Gyro X: ", gyro.rawX());
+            telemetry.addData("Gyro Y: ", gyro.rawY());
+            telemetry.addData("Gyro Z: ", gyro.rawZ());
+            telemetry.addData("Gyro: ", gyro.getHeading());
+            telemetry.update();
         }
     }
-
-
 }
