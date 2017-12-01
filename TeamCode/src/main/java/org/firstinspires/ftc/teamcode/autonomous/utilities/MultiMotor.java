@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.utilities;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 
 /**
  * Created by John_Kesler on 11/9/2017.
@@ -62,5 +63,29 @@ public class MultiMotor {
         //Move motors
         moveToPosition(leftMotors,(int)convertedDistance,power);
         moveToPosition(rightMotors,(int)-convertedDistance,power);
+    }
+
+    public static boolean turnBetter(DcMotor[] left, DcMotor[] right, int targetPosition, int currentPosition, float speed, float okErrror) {
+        if (targetPosition<=targetPosition+okErrror&&targetPosition>=targetPosition-okErrror) {
+            return false;
+        }
+        float speedBoi = clamp(PMove(targetPosition,currentPosition,speed),-1,1);
+        setPower(left, speedBoi);
+        setPower(right, -speedBoi);
+        return true;
+    }
+
+    public static void turnToDegrees(DcMotor[] left, DcMotor[] right, GyroSensor gyro, int degreesToTurn, float speed) {
+        int tolerance = 1;
+        while (!turnBetter(left, right, 180-degreesToTurn, gyro.getHeading(), speed, tolerance)); //Turn using the passed in values, and +-tolerance degree
+    }
+
+    public static float PMove(float setPoint, float measuredOutput, float Kp) {
+        float error = setPoint-measuredOutput;
+        return error*Kp;
+    }
+
+    public static float clamp(float val, float min, float max) {
+        return Math.max(min, Math.min(max, val));
     }
 }
