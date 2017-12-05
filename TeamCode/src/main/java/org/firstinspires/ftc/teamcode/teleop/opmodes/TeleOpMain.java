@@ -37,6 +37,9 @@ public class TeleOpMain extends LinearOpMode {
     //declare general servo variables
     private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
 
+    private final double liftLimitTop = -5900;
+    private final double liftLimitBottom = -300;
+
 
     @Override
     public void runOpMode() {
@@ -137,19 +140,19 @@ public class TeleOpMain extends LinearOpMode {
             //also checks to make sure encoder values are within the safe range
             //IF WE CHANGE THE STRING OR MODIFY THE LIFT, MAKE SURE VALUES ARE RE-EVALUATED
             if (Math.abs(gamepad2.right_stick_y) > deadzone
-                    && motorLift.getCurrentPosition() >= -5600
-                    && motorLift.getCurrentPosition() <= -600) {
+                    && motorLift.getCurrentPosition() >= liftLimitTop
+                    && motorLift.getCurrentPosition() <= liftLimitBottom) {
 
                 motorLift.setPower(gamepad2.right_stick_y/2);
 
             } else {
                 //Allow lift to return to the safe zone if it is at max or min
                 if (gamepad2.right_stick_y > 0
-                        && motorLift.getCurrentPosition() <= -5600) {
+                        && motorLift.getCurrentPosition() <= liftLimitTop) {
                     motorLift.setPower(gamepad2.right_stick_y/4);
 
                 } else if (gamepad2.right_stick_y < 0
-                        && motorLift.getCurrentPosition() >= -600) {
+                        && motorLift.getCurrentPosition() >= liftLimitBottom) {
 
                     motorLift.setPower(gamepad2.right_stick_y/4);
 
