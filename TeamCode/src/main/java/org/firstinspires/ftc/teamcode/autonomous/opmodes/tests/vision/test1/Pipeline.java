@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test1;
 import android.app.Activity;
 import android.content.Context;
 
-import org.firstinspires.ftc.teamcode.res.opencv.android.CameraBridgeViewBase;
-import org.firstinspires.ftc.teamcode.res.opencv.android.JavaCameraView;
-import org.firstinspires.ftc.teamcode.res.opencv.core.Mat;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.JavaCameraView;
+import org.opencv.core.Mat;
+
 
 /**
  * Created by Matthew_Modi on 11/29/2017.

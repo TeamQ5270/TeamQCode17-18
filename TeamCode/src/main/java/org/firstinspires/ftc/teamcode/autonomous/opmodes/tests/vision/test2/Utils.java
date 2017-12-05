@@ -54,9 +54,9 @@ public class Utils implements CameraBridgeViewBase.CvCameraViewListener2{
             public void run() {
                 ViewGroup l = (ViewGroup) activity.findViewById(resID); //R.id.RelativeLayout);
                 if (view != null) {
-                    //l.removeView(view);
+                    l.removeView(view);
                 }
-                //l.addView(cameraView);
+                l.addView(cameraView);
                 view = cameraView;
             }
         });
@@ -71,7 +71,7 @@ public class Utils implements CameraBridgeViewBase.CvCameraViewListener2{
                 //cameraMonitorViewId
                 ViewGroup l = (ViewGroup) activity.findViewById(resID); // .id.RelativeLayout);
                 if (view != null) {
-                    //l.removeView(view);
+                    l.removeView(view);
                 }
                 view = null;
             }
@@ -87,7 +87,7 @@ public class Utils implements CameraBridgeViewBase.CvCameraViewListener2{
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Imgproc.cvtColor(inputFrame.rgba(), hsv, Imgproc.COLOR_RGB2HSV, 3);
 
-        Core.inRange(hsv, new Scalar(150, 150, 150), new Scalar(200, 200, 200), thresholded);
+        Core.inRange(hsv, new Scalar(19, 24, 33), new Scalar(126, 146, 177), thresholded);
 
         Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
         return thresholded_rgba;
