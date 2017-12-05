@@ -6,9 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorHTGyro;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiServo;
@@ -32,6 +34,7 @@ public class SafeZoneParking extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive FR");
         DcMotor rearLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive RL");
         DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive RR");
+        GyroSensor gyro = hardwareMap.get(GyroSensor.class, "Gyro Sensor");
         frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rearLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -39,6 +42,7 @@ public class SafeZoneParking extends LinearOpMode {
         DcMotor[] motors = new DcMotor[] {frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor};
         DcMotor[] leftMotors = new DcMotor[] {frontLeftMotor, rearLeftMotor};
         DcMotor[] rightMotors = new DcMotor[] {frontRightMotor, rearRightMotor};
+        gyro.calibrate();
 
         //Let user know that robot has been initialized
         telemetry.addData("Status", "Core Initialized");
@@ -55,10 +59,8 @@ public class SafeZoneParking extends LinearOpMode {
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
 
-        //Turn 360 degrees
-        MultiMotor.turnToPositionAndyMark40(leftMotors,rightMotors,360,0.5f);
-        while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
-        MultiMotor.setPower(motors, 0);
+        //Turn 180 degrees
+        MultiMotor.turnToDegrees(leftMotors,rightMotors,gyro,180,1);
 
         //End OpMode
         stop();

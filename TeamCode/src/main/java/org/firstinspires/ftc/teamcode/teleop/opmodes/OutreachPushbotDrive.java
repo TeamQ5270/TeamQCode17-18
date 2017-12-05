@@ -25,14 +25,11 @@ public class OutreachPushbotDrive extends LinearOpMode {
         DcMotor rightMotor;
         DcMotor rGrab;
         DcMotor lGrab;
-        GyroSensor gyro;
-
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
         rGrab = hardwareMap.get(DcMotor.class, "right grabber");
         lGrab = hardwareMap.get(DcMotor.class, "left grabber");
-        gyro = hardwareMap.get(GyroSensor.class, "gyro");
 
         //Set the directions of the motors
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -51,12 +48,11 @@ public class OutreachPushbotDrive extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        gyro.calibrate();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            leftMotor.setPower(gamepad1.right_stick_y);
-            rightMotor.setPower(gamepad1.left_stick_y);
+            leftMotor.setPower(gamepad1.left_stick_y);
+            rightMotor.setPower(gamepad1.right_stick_y);
             if (gamepad2.left_trigger>0.05f) {
                 MultiMotor.setPower(grabbers, grabSpeed);
             }
@@ -66,12 +62,6 @@ public class OutreachPushbotDrive extends LinearOpMode {
             else {
                 MultiMotor.setPower(grabbers, 0);
             }
-
-            telemetry.addData("Gyro X: ", gyro.rawX());
-            telemetry.addData("Gyro Y: ", gyro.rawY());
-            telemetry.addData("Gyro Z: ", gyro.rawZ());
-            telemetry.addData("Gyro: ", gyro.getHeading());
-            telemetry.update();
         }
     }
 }
