@@ -39,8 +39,8 @@ public class TeleOpMain extends LinearOpMode {
 
 
     //lift limit variables
-    private final double liftLimitTop = -5900;
-    private final double liftLimitBottom = -300;
+    private final double liftLimitTop = -5600;
+    private final double liftLimitBottom = 50;
 
 
     @Override
