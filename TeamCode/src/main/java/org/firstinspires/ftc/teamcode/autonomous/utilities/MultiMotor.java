@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous.utilities;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 
@@ -77,14 +78,16 @@ public class MultiMotor {
         return false;
     }
 
-    public static void turnToDegrees(DcMotor[] left, DcMotor[] right, GyroSensor gyro, int degreesToTurn, float speed) {
+    public static void turnToDegrees(DcMotor[] left, DcMotor[] right, ModernRoboticsI2cGyro gyro, int degreesToTurn, float speed) {
         int tolerance = 1;
+        //!MultiMotor.turnBetter(leftMotors, rightMotors, 90, gyro.getHeading(), 0.005f, 1)&&opModeIsActive()
         while (!turnBetter(left, right, degreesToTurn, gyro.getHeading(), speed, tolerance)); //Turn using the passed in values, and +-tolerance degree
     }
 
     public static float PMove(float setPoint, float measuredOutput, float Kp) {
         float error = setPoint-measuredOutput;
-        return clamp(error*Kp,-1,1);
+        float value = error*Kp>0?1:-1;
+        return clamp(Math.abs(error*Kp),0.3f,1)*value;
     }
 
     public static float clamp(float val, float min, float max) {
