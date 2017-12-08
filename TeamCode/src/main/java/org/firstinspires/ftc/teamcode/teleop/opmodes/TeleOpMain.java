@@ -31,14 +31,16 @@ public class TeleOpMain extends LinearOpMode {
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
     private static final double servoMaxPosition = 0.7;
-    private static final double servoMinPosition = 0.25;
+    private static final double servoMinPosition = 0.4;
     private double position = (servoMinPosition); //start open, with servos at minimum position
 
     //declare general servo variables
     private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
 
-    private final double liftLimitTop = -5900;
-    private final double liftLimitBottom = -300;
+
+    //lift limit variables
+    private final double liftLimitTop = -5600;
+    private final double liftLimitBottom = 50;
 
 
     @Override
@@ -141,29 +143,30 @@ public class TeleOpMain extends LinearOpMode {
             //IF WE CHANGE THE STRING OR MODIFY THE LIFT, MAKE SURE VALUES ARE RE-EVALUATED
             if (Math.abs(gamepad2.right_stick_y) > deadzone
                     && motorLift.getCurrentPosition() >= liftLimitTop
-                    && motorLift.getCurrentPosition() <= liftLimitBottom) {
+                    && motorLift.getCurrentPosition() <= liftLimitBottom
+                    && !gamepad2.y) {
 
-                motorLift.setPower(gamepad2.right_stick_y/2);
+                motorLift.setPower(gamepad2.right_stick_y);
 
             } else {
                 //Allow lift to return to the safe zone if it is at max or min
                 if (gamepad2.right_stick_y > 0
                         && motorLift.getCurrentPosition() <= liftLimitTop) {
-                    motorLift.setPower(gamepad2.right_stick_y/4);
+                    motorLift.setPower(gamepad2.right_stick_y);
 
                 } else if (gamepad2.right_stick_y < 0
                         && motorLift.getCurrentPosition() >= liftLimitBottom) {
 
-                    motorLift.setPower(gamepad2.right_stick_y/4);
+                    motorLift.setPower(gamepad2.right_stick_y);
 
                 } else {
                     motorLift.setPower(0);
                 }
             }
 
-            if (gamepad2.a && gamepad2.y) { //reset lift encoder position if desired
-                motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            if (gamepad2.y
+                    && Math.abs(gamepad2.right_stick_y) > deadzone) { //disable encoder limits while button is pressed
+                motorLift.setPower(gamepad2.right_stick_y);
             }
 
             if (gamepad2.left_bumper) { //open claw

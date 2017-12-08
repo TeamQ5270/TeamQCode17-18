@@ -59,9 +59,6 @@ public class SafeZoneParking extends LinearOpMode {
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
 
-        //Turn 180 degrees
-        MultiMotor.turnToDegrees(leftMotors,rightMotors,gyro,180,1);
-
         //End OpMode
         stop();
     }
