@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.autonomous.opmodes;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
