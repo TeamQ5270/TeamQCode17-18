@@ -14,7 +14,7 @@ import java.io.PrintWriter;
  * Created by Matthew_Modi on 11/16/2017.
  */
 
-@Autonomous (name = "GlyphRecognitionTest1")
+@Autonomous (name = "Glyph Recognition Test 1")
 public class GlyphRecognitionTest extends LinearOpMode{
 
     private final ElapsedTime runtime = new ElapsedTime();

@@ -8,25 +8,29 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by Matthew_Modi on 12/1/2017.
  */
 
-@Autonomous(name = "Glyph Recognition")
+@Autonomous(name = "Glyph Recognition Test 2")
 public class RecognitionTest extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
 
-    Utils utils = new Utils();
+    CV cv = new CV();
 
     @Override
     public void runOpMode(){
 
-        utils.init(hardwareMap.appContext, 99);
-        utils.enable();
+        cv.init(hardwareMap.appContext, 99);
+        while(!Utils.getInitComplete()){
+
+        }
+        cv.enable();
 
         waitForStart();
         runtime.reset();
 
         while(opModeIsActive()){
-
+            telemetry.addData("Mat: ", Utils.getCurrentMat().get(0, 0).toString());
+            telemetry.update();
         }
-        utils.disable();
+        cv.disable();
     }
 }
