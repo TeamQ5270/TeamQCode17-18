@@ -20,6 +20,7 @@ public class TeleOpMain extends LinearOpMode {
     private DcMotor motorLeftBack = null;
     private DcMotor motorRightBack = null;
     private DcMotor motorLift = null;
+    private DcMotor motorRelicArm = null;
 
     //declare servos
     private Servo leftServo = null;
@@ -30,17 +31,20 @@ public class TeleOpMain extends LinearOpMode {
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
-    private static final double servoMaxPosition = 0.7;
-    private static final double servoMinPosition = 0.4;
+    private static final double servoMaxPosition = 1.0;
+    private static final double servoMinPosition = 0.0;
     private double position = (servoMinPosition); //start open, with servos at minimum position
 
     //declare general servo variables
-    private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
+    private static final double servoIncrement = 0.004; //adjust this to adjust the speed of all servos
 
 
     //lift limit variables
-    private final double liftLimitTop = -5600;
-    private final double liftLimitBottom = 50;
+    private final int liftLimitTop = -5600;
+    private final int liftLimitBottom = 50;
+
+    private final int relicLimitExtended = 7000;
+    private final int relicLimitRetracted = 50;
 
 
     @Override
@@ -56,6 +60,7 @@ public class TeleOpMain extends LinearOpMode {
         motorRightFront = hardwareMap.dcMotor.get("Motor Drive FR");
         motorRightBack = hardwareMap.dcMotor.get("Motor Drive RR");
         motorLift = hardwareMap.dcMotor.get("Motor Glyph");
+        motorRelicArm = hardwareMap.dcMotor.get("Motor Relic");
 
         //assign appropriate servos from config to the servos
         leftServo = hardwareMap.servo.get("Servo Glyph L");
@@ -72,6 +77,7 @@ public class TeleOpMain extends LinearOpMode {
         motorRightFront.setDirection(DcMotor.Direction.REVERSE);
         motorRightBack.setDirection(DcMotor.Direction.REVERSE);
         motorLift.setDirection(DcMotor.Direction.FORWARD);
+        motorRelicArm.setDirection(DcMotor.Direction.FORWARD);
 
         //set zero power behavior to BRAKE
         motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -79,10 +85,14 @@ public class TeleOpMain extends LinearOpMode {
         motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //reset lift encoder to zero, then enable lift encoder for lift limiter
         motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motorRelicArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRelicArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //TODO: add ability to automatically reset lift to zero during init
 
@@ -138,13 +148,14 @@ public class TeleOpMain extends LinearOpMode {
                 motorRightBack.setPower(0);
             }
 
+            //GLYPH LIFT
+
             //move lift up and down if stick is not in deadzone
             //also checks to make sure encoder values are within the safe range
             //IF WE CHANGE THE STRING OR MODIFY THE LIFT, MAKE SURE VALUES ARE RE-EVALUATED
             if (Math.abs(gamepad2.right_stick_y) > deadzone
                     && motorLift.getCurrentPosition() >= liftLimitTop
-                    && motorLift.getCurrentPosition() <= liftLimitBottom
-                    && !gamepad2.y) {
+                    && motorLift.getCurrentPosition() <= liftLimitBottom) {
 
                 motorLift.setPower(gamepad2.right_stick_y);
 
@@ -164,10 +175,37 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            if (gamepad2.y
+            //RELIC ARM
+
+            //move relic arm in and out if stick is not in deadzone
+            //also checks to make sure encoder values are within the safe range
+            //IF WE CHANGE THE STRING OR MODIFY THE SLIDE, MAKE SURE VALUES ARE RE-EVALUATED
+            if (Math.abs(gamepad2.left_stick_y) > deadzone
+                    && motorRelicArm.getCurrentPosition() >= relicLimitExtended
+                    && motorRelicArm.getCurrentPosition() <= relicLimitRetracted) {
+
+                motorRelicArm.setPower(gamepad2.right_stick_y);
+
+            } else {
+                //Allow lift to return to the safe zone if it is at max or min
+                if (gamepad2.left_stick_y > 0
+                        && motorRelicArm.getCurrentPosition() <= relicLimitExtended) {
+                    motorRelicArm.setPower(gamepad2.left_stick_y);
+
+                } else if (gamepad2.left_stick_y < 0
+                        && motorRelicArm.getCurrentPosition() >= relicLimitRetracted) {
+
+                    motorRelicArm.setPower(gamepad2.left_stick_y);
+
+                } else {
+                    motorRelicArm.setPower(0);
+                }
+            }
+
+            /*if (gamepad2.y
                     && Math.abs(gamepad2.right_stick_y) > deadzone) { //disable encoder limits while button is pressed
                 motorLift.setPower(gamepad2.right_stick_y);
-            }
+            }*/
 
             if (gamepad2.left_bumper) { //open claw
 
