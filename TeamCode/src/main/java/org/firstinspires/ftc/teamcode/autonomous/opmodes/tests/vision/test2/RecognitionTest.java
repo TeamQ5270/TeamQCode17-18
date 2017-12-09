@@ -28,8 +28,15 @@ public class RecognitionTest extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive()){
-            telemetry.addData("Mat: ", Utils.getCurrentMat().get(0, 0)[2]);
+            telemetry.addData("HSVC: ", Utils.toString(Utils.getHsvc()) + "\nHSVR: " + Utils.toString(Utils.getHsvr()));
             telemetry.update();
+
+            if(gamepad1.left_bumper){
+                Utils.setHsvc(new double[]{Utils.getHsvc()[0] - (gamepad1.right_stick_y * 20), Utils.getHsvc()[1] + (gamepad1.left_stick_x * 20), Utils.getHsvc()[2] - (gamepad1.left_stick_y * 20)});
+            }else if(gamepad1.right_bumper){
+                Utils.setHsvr(new double[]{Utils.getHsvr()[0] - (gamepad1.right_stick_y * 10), Utils.getHsvr()[1] + (gamepad1.left_stick_x * 10), Utils.getHsvr()[2] - (gamepad1.left_stick_y * 10)});
+            }
+            sleep(100);
         }
         cv.disable();
     }

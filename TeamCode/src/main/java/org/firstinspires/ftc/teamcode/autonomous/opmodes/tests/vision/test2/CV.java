@@ -12,6 +12,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import static org.opencv.ml.SVM.C;
+
 /**
  * Created by Matthew_Modi on 12/1/2017.
  */
@@ -89,7 +91,7 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
         Imgproc.cvtColor(inputFrame.rgba(), hsv, Imgproc.COLOR_RGB2HSV, 3);
         Utils.setCurrentMat(hsv);
 
-        Core.inRange(hsv, new Scalar(0, 200, 200), new Scalar(30, 255, 255), thresholded);
+        Core.inRange(hsv, new Scalar(Utils.getHsvLower()), new Scalar(Utils.getHsvUpper()), thresholded);
 
         Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
         return thresholded_rgba;
