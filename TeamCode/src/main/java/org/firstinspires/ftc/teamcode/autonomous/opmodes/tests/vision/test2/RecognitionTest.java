@@ -28,9 +28,11 @@ public class RecognitionTest extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive()){
-            telemetry.addData("Mat: ", Utils.getCurrentMat().get(0, 0).toString());
+            telemetry.addData("Mat: ", Utils.getCurrentMat().get(0, 0)[2]);
             telemetry.update();
         }
         cv.disable();
     }
+
+
 }

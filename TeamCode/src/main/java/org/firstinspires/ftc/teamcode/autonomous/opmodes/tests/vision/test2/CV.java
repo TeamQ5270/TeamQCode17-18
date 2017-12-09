@@ -89,7 +89,7 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
         Imgproc.cvtColor(inputFrame.rgba(), hsv, Imgproc.COLOR_RGB2HSV, 3);
         Utils.setCurrentMat(hsv);
 
-        Core.inRange(hsv, new Scalar(0, 100, 100), new Scalar(30, 255, 255), thresholded);
+        Core.inRange(hsv, new Scalar(0, 200, 200), new Scalar(30, 255, 255), thresholded);
 
         Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
         return thresholded_rgba;
