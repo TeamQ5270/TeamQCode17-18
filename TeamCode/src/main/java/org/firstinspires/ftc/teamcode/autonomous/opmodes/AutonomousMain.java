@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 import static com.sun.tools.javac.util.LayoutCharacters.LF;
 
+@Disabled
 @Autonomous(name="Main Autonomous")
 public class AutonomousMain extends LinearOpMode {
 

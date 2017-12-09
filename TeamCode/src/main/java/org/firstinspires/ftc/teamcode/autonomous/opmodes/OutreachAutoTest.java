@@ -66,10 +66,7 @@ public class OutreachAutoTest extends LinearOpMode {
 
         //Turn 90 degrees
         while (!MultiMotor.turnBetter(leftMotors, rightMotors, 90, gyro.getHeading(), 0.005f, 1)&&opModeIsActive()) {}
-        sleep(1000);
         //Reverse
-        gyro.calibrate();
-        while (!MultiMotor.turnBetter(leftMotors, rightMotors, 270, gyro.getHeading(), 0.005f, 1)&&opModeIsActive()) {}
         MultiMotor.moveToPositionAndyMark40(motors, 36, -1f, 4);
         while(opModeIsActive()&&MultiMotor.busyMotors(motors)) {}
         MultiMotor.setPower(motors, 0);
