@@ -20,7 +20,7 @@ public class RecognitionTest extends LinearOpMode {
 
         cv.init(hardwareMap.appContext, 99);
         while(!Utils.getInitComplete()){
-
+            this.log("CV Status: ", "Waiting");
         }
         cv.enable();
 
@@ -28,8 +28,8 @@ public class RecognitionTest extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive()){
-            telemetry.addData("HSVC: ", Utils.toString(Utils.getHsvc()) + "\nHSVR: " + Utils.toString(Utils.getHsvr()));
-            telemetry.update();
+            this.log("HSVC: ", Utils.toString(Utils.getHsvc()) + "\nHSVR: " + Utils.toString(Utils.getHsvr()) + "\n");
+            this.log("HSVL: ", Utils.toString(Utils.getHsvLower()) + "\nHSVU: " + Utils.toString(Utils.getHsvUpper()));
 
             if(gamepad1.left_bumper){
                 Utils.setHsvc(new double[]{Utils.getHsvc()[0] - (gamepad1.right_stick_y * 20), Utils.getHsvc()[1] + (gamepad1.left_stick_x * 20), Utils.getHsvc()[2] - (gamepad1.left_stick_y * 20)});
@@ -41,5 +41,8 @@ public class RecognitionTest extends LinearOpMode {
         cv.disable();
     }
 
-
+    public void log(String tag, String message){
+        telemetry.addData(tag, message);
+        telemetry.update();
+    }
 }
