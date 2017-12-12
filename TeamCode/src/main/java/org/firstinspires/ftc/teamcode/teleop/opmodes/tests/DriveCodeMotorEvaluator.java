@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "DriveCodeMotorEvaluator", group = "Linear Opmode")
+@TeleOp(name = "DriveCodeMotorEvaluator 1", group = "Linear Opmode")
 
 
 public class DriveCodeMotorEvaluator extends LinearOpMode {
