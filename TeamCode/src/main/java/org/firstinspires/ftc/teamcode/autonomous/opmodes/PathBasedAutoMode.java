@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 
-@Autonomous(name="Path Follow Test")
-public class PathFollowTest extends LinearOpMode {
+@Autonomous(name="Path Follow OpMode")
+public class PathBasedAutoMode extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
