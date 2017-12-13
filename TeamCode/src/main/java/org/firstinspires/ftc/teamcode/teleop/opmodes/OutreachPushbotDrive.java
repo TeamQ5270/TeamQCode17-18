@@ -28,21 +28,18 @@ public class OutreachPushbotDrive extends LinearOpMode {
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
-        rGrab = hardwareMap.get(DcMotor.class, "right grabber");
-        lGrab = hardwareMap.get(DcMotor.class, "left grabber");
+
+        DcMotor liftThing = hardwareMap.get(DcMotor.class, "liftThing");
 
         //Set the directions of the motors
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
-        rGrab.setDirection(DcMotor.Direction.FORWARD);
-        lGrab.setDirection(DcMotor.Direction.REVERSE);
+        liftThing.setDirection(DcMotor.Direction.FORWARD);
 
         //Set the braking of the motors
         leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rGrab.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lGrab.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        DcMotor[] grabbers = new DcMotor[] {rGrab, lGrab};
+        liftThing.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -53,15 +50,7 @@ public class OutreachPushbotDrive extends LinearOpMode {
         while (opModeIsActive()) {
             leftMotor.setPower(gamepad1.left_stick_y);
             rightMotor.setPower(gamepad1.right_stick_y);
-            if (gamepad2.left_trigger>0.05f) {
-                MultiMotor.setPower(grabbers, grabSpeed);
-            }
-            else if (gamepad2.right_trigger>0.05f) {
-                MultiMotor.setPower(grabbers, -grabSpeed);
-            }
-            else {
-                MultiMotor.setPower(grabbers, 0);
-            }
+            liftThing.setPower(gamepad2.right_stick_y);
         }
     }
 }
