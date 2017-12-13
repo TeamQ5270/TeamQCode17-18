@@ -20,12 +20,21 @@ public class RecognitionTest extends LinearOpMode {
 
         cv.init(hardwareMap.appContext, 99);
         while(!Utils.getInitComplete()){
-            this.log("CV Status: ", "Waiting");
+            this.log("CV Status: ", "Waiting for init.");
+            this.updateLog();
         }
         cv.enable();
 
         waitForStart();
         runtime.reset();
+
+        while(Utils.getCurrentMat() == null){
+            this.log("CV Status: ", "Waiting for first frame.");
+            this.updateLog();
+        }
+
+        Utils.setHsvc(Utils.getCurrentMat().get(0,0));
+        Utils.setHsvr(new double[]{50, 50, 50});
 
         while(opModeIsActive()){
             this.log("HSVC: ", Utils.toString(Utils.getHsvc()) + "\nHSVR: " + Utils.toString(Utils.getHsvr()) + "\n");
@@ -37,8 +46,10 @@ public class RecognitionTest extends LinearOpMode {
             }else if(gamepad1.right_bumper){
                 Utils.setHsvr(new double[]{Utils.getHsvr()[0] - (gamepad1.right_stick_y * 10), Utils.getHsvr()[1] + (gamepad1.left_stick_x * 10), Utils.getHsvr()[2] - (gamepad1.left_stick_y * 10)});
             }
+            sleep(200);
         }
         cv.disable();
+        Utils.setInitComplete(false);
     }
 
     public void log(String tag, String message){
