@@ -4,16 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-
+import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
-import org.firstinspires.ftc.teamcode.teleop.opmodes.utilities.TeleOpRobot;
 
 @TeleOp(name = "Refactored TeleOp Drive Code IN PROGRESS", group = "Linear Opmode")
 @Disabled
 public class NewTeleopInProgress extends LinearOpMode {
 
-    //make TeleOpRobot object
-    private TeleOpRobot robot = new TeleOpRobot();
+    //make Robot object
+    private Robot robot = new Robot();
 
     //these variables get rid of magic numbers - you're welcome, Matthew
     //indicies of motor values returned by robot.getDriveMotors()
@@ -38,106 +37,181 @@ public class NewTeleopInProgress extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        //wait until driver presses PLAY
         waitForStart();
 
+        //run until OpMode is stopped
         while (opModeIsActive()) {
-            mecanumDrive();
-            glyphLift();
-            glyphClaw();
+            controlRobot();
         }
-
-
     }
 
-    public void mecanumDrive() {
+    public void controlRobot() {
         if (Math.abs(gamepad1.left_stick_x) > robot.getDeadzone()
                 || Math.abs(gamepad1.left_stick_y) > robot.getDeadzone()
                 || Math.abs(gamepad1.right_stick_x) > robot.getDeadzone()) {
 
-            //weird trig
-            double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x)
-                    - Math.PI / weirdFourInMecanumCalcs;
-            double rightX = -gamepad1.right_stick_x;
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) - rightX;
-            final double v3 = r * Math.sin(robotAngle) + rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
-
-            //set calculated powers to motors
-            robot.getDriveMotors()[mLeftFrontIdx].setPower(v1);
-            robot.getDriveMotors()[mRightFrontIdx].setPower(v2);
-            robot.getDriveMotors()[mLeftBackIdx].setPower(v3);
-            robot.getDriveMotors()[mRightBackIdx].setPower(v4);
-
-            //if sticks are within deadzone, set all drive motor powers to 0
+            mecanumDrive();
 
         } else if (Math.abs(gamepad1.left_stick_x) < robot.getDeadzone()
                 && Math.abs(gamepad1.left_stick_y) < robot.getDeadzone()
                 && Math.abs(gamepad1.right_stick_y) < robot.getDeadzone()) {
-            robot.getDriveMotors()[mLeftFrontIdx].setPower(motorZeroPower);
-            robot.getDriveMotors()[mRightFrontIdx].setPower(motorZeroPower);
-            robot.getDriveMotors()[mLeftBackIdx].setPower(motorZeroPower);
-            robot.getDriveMotors()[mRightBackIdx].setPower(motorZeroPower);
+
+            mecanumDriveStop();
+        } else if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()) {
+
+            glyphLift();
+        } else if (gamepad2.left_bumper) {
+            openGlyphClaw();
+        } else if (gamepad2.right_bumper) {
+            closeGlyphClaw();
+        } else if (Math.abs(gamepad2.left_stick_y) > robot.getDeadzone()) {
+            relicArm();
+        } else if (gamepad2.y || gamepad2.a) {
+            rotateClaw();
+        } else if (gamepad2.x) { //TODO finish controlRobot method
+
+        } else if (gamepad2.b) {
+
         }
     }
 
+    public void mecanumDrive() {
+
+        //weird trig
+        double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x)
+                - Math.PI / weirdFourInMecanumCalcs;
+        double rightX = -gamepad1.right_stick_x;
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
+
+        //set calculated powers to motors
+        robot.getDriveMotors()[mLeftFrontIdx].setPower(v1);
+        robot.getDriveMotors()[mRightFrontIdx].setPower(v2);
+        robot.getDriveMotors()[mLeftBackIdx].setPower(v3);
+        robot.getDriveMotors()[mRightBackIdx].setPower(v4);
+
+        //if sticks are within deadzone, set all drive motor powers to 0
+
+    }
+
+    public void mecanumDriveStop() {
+        robot.getDriveMotors()[mLeftFrontIdx].setPower(motorZeroPower);
+        robot.getDriveMotors()[mRightFrontIdx].setPower(motorZeroPower);
+        robot.getDriveMotors()[mLeftBackIdx].setPower(motorZeroPower);
+        robot.getDriveMotors()[mRightBackIdx].setPower(motorZeroPower);
+    }
+
     public void glyphLift() {
-        if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
-                && robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
+        if (robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
                 && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()) {
 
             robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
         } else {
             //Allow lift to return to the safe zone if it is at max or min
-            if (gamepad2.right_stick_y > 0
+            if (gamepad2.right_stick_y > joystickZero
                     && robot.getMotorLift().getCurrentPosition() <= robot.getLiftTop()) {
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
-            } else if (gamepad2.right_stick_y < 0
+            } else if (gamepad2.right_stick_y < joystickZero
                     && robot.getMotorLift().getCurrentPosition() >= robot.getLiftBottom()) {
 
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
             } else {
-                robot.getMotorLift().setPower(0);
+                robot.getMotorLift().setPower(joystickZero);
             }
         }
     }
 
-    public void glyphClaw() {
-        if (gamepad2.left_bumper) { //open claw
+    public void openGlyphClaw() {
 
-            //open claw arms simultaneously using ThreadedServoMovement class
 
-            ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(robot.getLeftServo(), robot.getClawPosition());
-            ThreadedServoMovement moveRightServo = new ThreadedServoMovement(robot.getRightServo(), robot.getServoMaxPosition() - position);
+        //open claw arms simultaneously using ThreadedServoMovement class
 
-            //start servo objects
-            moveLeftServo.start();
-            moveRightServo.start();
+        ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
+                (robot.getLeftServo(), robot.getClawPosition());
+        ThreadedServoMovement moveRightServo = new ThreadedServoMovement
+                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
 
-            //limit servo to allowed positions, set by servoMinPosition
-            if (position >= servoMinPosition) {
+        //start servo objects
+        moveLeftServo.start();
+        moveRightServo.start();
 
-                position -= servoIncrement;
-            }
-        } else if (gamepad2.right_bumper) { //close claw
+        //limit servo to allowed positions, set by servoMinPosition
+        if (robot.getClawPosition() >= robot.getGlyphServoMinPosition()) {
+            robot.setClawPosition(robot.getClawPosition() - robot.getServoIncrement());
+        }
+    }
 
-            //close claw arms simultaneously using ThreadedServoMovement class
-            ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
-            ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
+    public void closeGlyphClaw() {
+        //close claw arms simultaneously using ThreadedServoMovement class
+        ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
+                (robot.getLeftServo(), robot.getClawPosition());
+        ThreadedServoMovement moveRightServo = new ThreadedServoMovement
+                (robot.getLeftServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
 
-            //start servo objects
-            moveLeftServo.start();
-            moveRightServo.start();
+        //start servo objects
+        moveLeftServo.start();
+        moveRightServo.start();
 
-            //limit servo to allowed positions, set by servoMaxPosition
-            if (position <= servoMaxPosition) {
+        //limit servo to allowed positions, set by servoMaxPosition
+        if (robot.getClawPosition() <= robot.getGlyphServoMaxPosition()) {
 
-                position += servoIncrement;
+            robot.setClawPosition(robot.getClawPosition() + robot.getServoIncrement());
+        }
+    }
+
+    public void relicArm() {
+
+        if (robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitExtended()
+                && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitRetracted()) {
+            robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+        } else {
+            //Allow lift to return to the safe zone if it is at max or min
+            if (gamepad2.left_stick_y > joystickZero
+                    && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitExtended()) {
+                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+
+            } else if (gamepad2.left_stick_y < joystickZero
+                    && robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitRetracted()) {
+
+                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+
+            } else {
+                robot.getMotorRelicArm().setPower(motorZeroPower);
             }
         }
+    }
+
+    public void rotateClaw() {
+        //TODO finish this method
+    }
+
+    public void openRelicClaw() {
+        if (gamepad2.x) { //rotate relic claw
+
+            robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
+
+            if (robot.getRelicClawServoPosition() >= robot.getRelicClawServoMinPosition()) {
+
+                robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() - robot.getServoIncrement());
+            }
+        }
+    }
+
+    public void closeRelicClaw() {
+
+        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
+        if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
+
+            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() + robot.getServoIncrement());
+        }
+
+
     }
 }

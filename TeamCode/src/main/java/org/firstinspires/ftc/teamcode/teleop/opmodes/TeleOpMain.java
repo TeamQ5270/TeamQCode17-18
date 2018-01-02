@@ -273,7 +273,7 @@ public class TeleOpMain extends LinearOpMode {
 
             }
 
-            //opsn and close relic claw
+            //open and close relic claw
 
             if (gamepad2.x) { //rotate relic claw
 

@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes.utilities;
+package org.firstinspires.ftc.teamcode.Utils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-public class TeleOpRobot {
+public class Robot {
     //declare motors
     /* Declare OpMode members. */
 
@@ -24,19 +24,17 @@ public class TeleOpRobot {
     private Servo relicServo = null;
     private Servo relicClawServo = null;
 
-
-
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
-    private static final double servoMaxPosition = 1.0;
-    private static final double servoMinPosition = 0.0;
+    private static final double glyphServoMaxPosition = 1.0;
+    private static final double glyphServoMinPosition = 0.0;
 
 
 
-    private double clawPosition = (servoMinPosition); //start open, with servos at minimum position
+    private double clawPosition = (glyphServoMinPosition); //start open, with servos at minimum position
 
     private static final double relicServoMaxPosition = 1.0;
     private static final double relicServoMinPosition = 0.0;
@@ -61,7 +59,7 @@ public class TeleOpRobot {
     HardwareMap hwMap = null;
 
     //constructor
-    public TeleOpRobot() {
+    public Robot() {
 
     }
 
@@ -115,34 +113,29 @@ public class TeleOpRobot {
     public DcMotor[] getDriveMotors() {
 
         //left front -- right front -- left back -- right back
+        //keep these in the same order or bad stuff happens
 
-        DcMotor[] driveMotors = {
+        return new DcMotor[] {
             motorLeftFront,
             motorRightFront,
             motorLeftBack,
             motorRightBack
         };
-
-        return driveMotors;
     }
 
     public DcMotor[] getLeftDriveMotors() {
 
-        DcMotor[] leftDriveMotors = {
-            motorLeftFront,
-            motorLeftBack
+        return new DcMotor[] {
+                motorLeftFront,
+                motorLeftBack
         };
-
-        return leftDriveMotors;
     }
 
     public DcMotor[] getRightDriveMotors() {
-        DcMotor[] rightDriveMotors = {
-                motorRightFront,
-                motorRightBack
+        return new DcMotor[]  {
+            motorRightFront,
+            motorRightBack
         };
-
-        return rightDriveMotors;
     }
 
     public double getDeadzone() {
@@ -170,18 +163,62 @@ public class TeleOpRobot {
     }
 
     public Servo getLeftServo() {
-
         return leftServo;
     }
-
-
 
     public double getRelicClawServoPosition() {
         return relicClawServoPosition;
     }
 
     public static double getRelicClawServoMaxPosition() {
-
         return relicClawServoMaxPosition;
     }
+
+    public static double getGlyphServoMinPosition() {
+        return glyphServoMinPosition;
+    }
+
+    public static double getGlyphServoMaxPosition() {
+        return glyphServoMaxPosition;
+    }
+
+    public double getClawPosition() {
+        return clawPosition;
+    }
+
+    public static double getServoIncrement() {
+        return servoIncrement;
+    }
+
+    public int getRelicLimitExtended() {
+        return relicLimitExtended;
+    }
+
+    public int getRelicLimitRetracted() {
+        return relicLimitRetracted;
+    }
+
+    public Servo getRelicServo() {
+        return relicServo;
+    }
+
+    public Servo getRelicClawServo() {
+        return relicClawServo;
+    }
+
+    public static double getRelicClawServoMinPosition() {
+        return relicClawServoMinPosition;
+    }
+
+    //setters
+
+    public void setClawPosition(double clawPosition) {
+        this.clawPosition = clawPosition;
+    }
+
+    public void setRelicClawServoPosition(double relicServoPosition) {
+        this.relicClawServoPosition = relicServoPosition;
+    }
+
+
 }
