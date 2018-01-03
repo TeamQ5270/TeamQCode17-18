@@ -50,7 +50,7 @@ public class OutreachPushbotDrive extends LinearOpMode {
         while (opModeIsActive()) {
             leftMotor.setPower(gamepad1.left_stick_y);
             rightMotor.setPower(gamepad1.right_stick_y);
-            liftThing.setPower(gamepad2.right_stick_y/2);
+            liftThing.setPower(gamepad2.right_stick_y);
         }
     }
 }
