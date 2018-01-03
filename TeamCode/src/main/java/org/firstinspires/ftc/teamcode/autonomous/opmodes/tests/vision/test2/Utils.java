@@ -8,29 +8,10 @@ import org.opencv.core.Mat;
 
 public class Utils {
     private static boolean initComplete = false;
-    private static boolean frameSet = false;
+    private static Mat currentMat = null;
 
     private static double[] hsvc = new double[3];
     private static double[] hsvr = new double[3];
-
-
-    private static Mat currentMat = null;
-
-    public static int getHeightCenter(){
-        return (int) (currentMat.height() / 2);
-    }
-
-    public static int getWidthCenter(){
-        return (int) (currentMat.width() / 2);
-    }
-
-    public static boolean getFrameSet(){
-        return frameSet;
-    }
-
-    public static void setFrameSet(boolean value){
-        frameSet = value;
-    }
 
     public static boolean getInitComplete(){
         return initComplete;
