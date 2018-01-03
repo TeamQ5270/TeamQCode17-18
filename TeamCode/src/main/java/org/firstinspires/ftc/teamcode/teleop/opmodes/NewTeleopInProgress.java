@@ -69,10 +69,10 @@ public class NewTeleopInProgress extends LinearOpMode {
             relicArm();
         } else if (gamepad2.y || gamepad2.a) {
             rotateClaw();
-        } else if (gamepad2.x) { //TODO finish controlRobot method
-
+        } else if (gamepad2.x) {
+            openRelicClaw();
         } else if (gamepad2.b) {
-
+            closeRelicClaw();
         }
     }
 
@@ -190,18 +190,27 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     public void rotateClaw() {
         //TODO finish this method
+
+        robot.getRelicRotatorServo().setPosition(robot.getRelicRotatorServoPosition());
+        if (robot.getRelicRotatorServoPosition() >= robot.getRelicRotatorServoMinPosition()
+                && gamepad2.y) {
+            robot.setRelicRotatorServoPosition(robot.getRelicRotatorServoPosition() + robot.getServoIncrement());
+        } else if (robot.getRelicRotatorServoPosition() <= robot.getRelicRotatorServoMaxPosition()
+                && gamepad2.a) {
+            robot.setRelicRotatorServoPosition(robot.getRelicRotatorServoPosition() - robot.getServoIncrement());
+        }
+
     }
 
     public void openRelicClaw() {
-        if (gamepad2.x) { //rotate relic claw
 
-            robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
+        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
 
-            if (robot.getRelicClawServoPosition() >= robot.getRelicClawServoMinPosition()) {
+        if (robot.getRelicClawServoPosition() >= robot.getRelicClawServoMinPosition()) {
 
-                robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() - robot.getServoIncrement());
-            }
+            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() + robot.getServoIncrement());
         }
+
     }
 
     public void closeRelicClaw() {
@@ -209,7 +218,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
         if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
 
-            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() + robot.getServoIncrement());
+            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() - robot.getServoIncrement());
         }
 
 

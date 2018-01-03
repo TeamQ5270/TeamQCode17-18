@@ -21,7 +21,7 @@ public class Robot {
     private Servo leftServo = null;
     private Servo rightServo = null;
 
-    private Servo relicServo = null;
+    private Servo relicRotatorServo = null;
     private Servo relicClawServo = null;
 
     //declare other variables
@@ -31,16 +31,15 @@ public class Robot {
     //adjust these to adjust how far the claw opens and closes
     private static final double glyphServoMaxPosition = 1.0;
     private static final double glyphServoMinPosition = 0.0;
-
-
-
     private double clawPosition = (glyphServoMinPosition); //start open, with servos at minimum position
 
-    private static final double relicServoMaxPosition = 1.0;
-    private static final double relicServoMinPosition = 0.0;
-    private double relicServoPosition = relicServoMinPosition; //start at one extreme
 
+    //relic rotator servo
+    private static final double relicRotatorServoMaxPosition = 1.0;
+    private static final double relicRotatorServoMinPosition = 0.0;
+    private double relicRotatorServoPosition = relicRotatorServoMinPosition; //start at one extreme
 
+    //relic claw servo
     private static final double relicClawServoMaxPosition = 1.0;
     private static final double relicClawServoMinPosition = 0.0;
     private double relicClawServoPosition = relicClawServoMinPosition;
@@ -78,7 +77,7 @@ public class Robot {
         leftServo = hwMap.servo.get("Servo Glyph L");
         rightServo = hwMap.servo.get("Servo Glyph R");
 
-        relicServo = hwMap.servo.get("Servo Relic");
+        relicRotatorServo = hwMap.servo.get("Servo Relic");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
 
         //assign motor directions
@@ -198,8 +197,8 @@ public class Robot {
         return relicLimitRetracted;
     }
 
-    public Servo getRelicServo() {
-        return relicServo;
+    public Servo getRelicRotatorServo() {
+        return relicRotatorServo;
     }
 
     public Servo getRelicClawServo() {
@@ -208,6 +207,18 @@ public class Robot {
 
     public static double getRelicClawServoMinPosition() {
         return relicClawServoMinPosition;
+    }
+
+    public double getRelicRotatorServoPosition() {
+        return relicRotatorServoPosition;
+    }
+
+    public static double getRelicRotatorServoMaxPosition() {
+        return relicRotatorServoMaxPosition;
+    }
+
+    public static double getRelicRotatorServoMinPosition() {
+        return relicRotatorServoMinPosition;
     }
 
     //setters
@@ -220,5 +231,7 @@ public class Robot {
         this.relicClawServoPosition = relicServoPosition;
     }
 
-
+    public void setRelicRotatorServoPosition(double relicRotatorServoPosition) {
+        this.relicRotatorServoPosition = relicRotatorServoPosition;
+    }
 }
