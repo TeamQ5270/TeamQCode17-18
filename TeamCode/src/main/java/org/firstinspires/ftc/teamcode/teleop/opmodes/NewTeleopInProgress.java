@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
 @TeleOp(name = "Refactored TeleOp Drive Code IN PROGRESS", group = "Linear Opmode")
-@Disabled
+
 public class NewTeleopInProgress extends LinearOpMode {
 
     //make Robot object
