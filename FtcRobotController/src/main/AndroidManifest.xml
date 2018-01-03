@@ -18,11 +18,19 @@
   <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
   <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
 
+<<<<<<< HEAD
   <!--&lt;!&ndash; Allows access to the flashlight &ndash;&gt;-->
   <!--<permission android:name="android.permission.FLASHLIGHT"-->
       <!--android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"-->
       <!--android:protectionLevel="normal"-->
       <!--android:label="@string/permlab_flashlight" />-->
+=======
+  <!-- Allows access to the flashlight -->
+  <permission android:name="android.permission.FLASHLIGHT"
+      android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+      android:protectionLevel="normal"
+      android:label="@string/permlab_flashlight" />
+>>>>>>> parent of 6e7257d... Revert "Just Pushing"
 
   <application
     android:allowBackup="true"
