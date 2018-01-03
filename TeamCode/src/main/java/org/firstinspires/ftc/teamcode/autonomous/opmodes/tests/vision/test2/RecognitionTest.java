@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test2;
 
+import android.hardware.Camera;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureRequest;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -18,6 +23,10 @@ public class RecognitionTest extends LinearOpMode {
     @Override
     public void runOpMode(){
 
+        //Start flash
+//        Camera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+
+        //Wait for Init before starting video
         cv.init(hardwareMap.appContext, 99);
         while(!Utils.getInitComplete()){
             this.log("CV Status: ", "Waiting for init.");
@@ -25,16 +34,19 @@ public class RecognitionTest extends LinearOpMode {
         }
         cv.enable();
 
+        //Wait for play to reset game timer
         waitForStart();
         runtime.reset();
 
+        //Wait for first frame to start processing
         while(Utils.getCurrentMat() == null){
             this.log("CV Status: ", "Waiting for first frame.");
             this.updateLog();
         }
 
-        Utils.setHsvc(Utils.getCurrentMat().get(0,0));
-        Utils.setHsvr(new double[]{50, 50, 50});
+        Utils.setHsvc(Utils.getCurrentMat().get(Utils.getHeightCenter(),Utils.getWidthCenter()));
+        Utils.setHsvr(new double[]{50, 50, 100});
+        Utils.setFrameSet(true);
 
         while(opModeIsActive()){
             this.log("HSVC: ", Utils.toString(Utils.getHsvc()) + "\nHSVR: " + Utils.toString(Utils.getHsvr()) + "\n");
@@ -50,6 +62,7 @@ public class RecognitionTest extends LinearOpMode {
         }
         cv.disable();
         Utils.setInitComplete(false);
+        Utils.setFrameSet(false);
     }
 
     public void log(String tag, String message){

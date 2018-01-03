@@ -18,6 +18,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import static org.opencv.ml.SVM.C;
+
 /**
  * This class is an implementation of the Bridge View between OpenCV and Java Camera.
  * This class relays on the functionality available in base class and only implements
@@ -355,4 +357,12 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
             Log.d(TAG, "Finish processing thread");
         }
     }
+
+//    public void flashOn(){
+//        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+//    }
+//
+//    public void flashOff(){
+//        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+//    }
 }
