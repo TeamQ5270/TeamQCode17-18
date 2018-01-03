@@ -206,6 +206,7 @@ public class TeleOpMain extends LinearOpMode {
                     && Math.abs(gamepad2.right_stick_y) > deadzone) { //disable encoder limits while button is pressed
                 motorLift.setPower(gamepad2.right_stick_y);
             }*/
+<<<<<<< HEAD
 
             if (gamepad2.left_bumper) { //open claw
 
@@ -224,6 +225,27 @@ public class TeleOpMain extends LinearOpMode {
                 }
             } else if (gamepad2.right_bumper) { //close claw
 
+=======
+
+            if (gamepad2.left_bumper) { //open claw
+
+                //open claw arms simultaneously using ThreadedServoMovement class
+
+                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
+                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
+
+                //start servo objects
+                moveLeftServo.start();
+                moveRightServo.start();
+
+                //limit servo to allowed positions, set by servoMinPosition
+                if (position >= servoMinPosition) {
+
+                    position -= servoIncrement;
+                }
+            } else if (gamepad2.right_bumper) { //close claw
+
+>>>>>>> parent of 9535265... Merge branch 'master' of https://github.com/TeamQ5270/TeamQCode17-18
                 //close claw arms simultaneously using ThreadedServoMovement class
                 ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
                 ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);

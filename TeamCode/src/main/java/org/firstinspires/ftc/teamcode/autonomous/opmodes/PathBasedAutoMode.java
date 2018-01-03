@@ -2,7 +2,6 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,21 +15,13 @@ public class PathBasedAutoMode extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    //Define the motors on the robot
-    DcMotor leftMotor;
-    DcMotor rightMotor;
-    ModernRoboticsI2cGyro gyro;
-    ModernRoboticsTouchSensor touch;
-
-    boolean swapSide = false;
-
-    public float swapSide(float in) {
-        return in<180?180-in:540-in;
-    }
-
     public int breakAndAction(int currentCommand, int nextCommand) {
         if (currentCommand==-1) { //placeholder, format is if command equals something do something and return the next command
             return -1;
+        }
+        else if (currentCommand==2) {
+            sleep(3000);
+            return nextCommand;
         }
         else {
             return nextCommand;
@@ -51,18 +42,21 @@ public class PathBasedAutoMode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        String commandsRaw = "357.3974377975002,36.451391247799016,-357.3974377975002,2\n" +
-                "182.60256220249983,36.451391247799016,174.79487559500035,2\n" +
-                "90.0,48.41379310344828,92.60256220249983,-1\n";
+        String commandsRaw = "358.68308759420677,36.00951122869964,-358.68308759420677,2\n" +
+                "233.29127149169108,58.84161210487923,125.39181610251569,-1\n" +
+                "91.46880071438582,48.42970560777392,141.82247077730526,1\n";
 
         float[][] commands = parseCommand(commandsRaw);
 
+        //Define the motors on the robot
+        DcMotor leftMotor;
+        DcMotor rightMotor;
+        ModernRoboticsI2cGyro gyro;
 
         //Set the motors to be actual classes
         leftMotor = hardwareMap.get(DcMotor.class, "left motor");
         rightMotor = hardwareMap.get(DcMotor.class, "right motor");
         gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
-        touch = hardwareMap.get(ModernRoboticsTouchSensor.class, "touch");
 
         //Set the directions of the motors
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -81,12 +75,6 @@ public class PathBasedAutoMode extends LinearOpMode {
 
         MultiMotor.setOpMode(motors, DcMotor.RunMode.RUN_USING_ENCODER);
 
-        //Get current side
-        //TODO get a valid sensor hooked up and working for this
-        if (touch.isPressed()) {
-            swapSide=true;
-        }
-
         //Wait For Play, Start Timer
         waitForStart();
         runtime.reset();
@@ -94,7 +82,7 @@ public class PathBasedAutoMode extends LinearOpMode {
         int op = 0;
         while (op!=-1) {
             float[] command = commands[op];
-            float a = swapSide?swapSide(command[0]):command[0];
+            float a = command[0];
             float d = command[1];
             float ra = command[2];
 
