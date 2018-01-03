@@ -22,14 +22,12 @@ public class AutonomousMain extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    //Vuforia manager
 
     //Initialize Misc
 
+
     @Override
     public void runOpMode() {
-        //TODO read configuration from a file
-
         //Create hardware devices (Using names from configuration)
         DcMotor frontLeftMotor = hardwareMap.get(DcMotor.class, "Motor Drive FL");
         DcMotor frontRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive FR");
@@ -37,11 +35,7 @@ public class AutonomousMain extends LinearOpMode {
         DcMotor rearRightMotor = hardwareMap.get(DcMotor.class, "Motor Drive BR");
         DcMotor liftMotor = hardwareMap.get(DcMotor.class, "Motor Glyph");
 
-        LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");
-        LynxI2cColorRangeSensor frontLeftColor = null;
-        LynxI2cColorRangeSensor frontRightColor = null;
-        LynxI2cColorRangeSensor rearLeftColor = null;
-        LynxI2cColorRangeSensor rearRightColor = null;
+        LynxI2cColorRangeSensor groundColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");
 
         Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");
         Servo leftLiftServo = hardwareMap.servo.get("Servo Glyph L");
