@@ -214,9 +214,14 @@ public class TeleOpMain extends LinearOpMode {
                 ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
                 ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
 
+<<<<<<< HEAD
+            //open and close relic claw
+=======
                 //start servo objects
                 moveLeftServo.start();
                 moveRightServo.start();
+>>>>>>> parent of d85a603... Added getLeftDriveMotors and getRightDriveMotors to TeleOpRobot. TeleOpInProgress is currently not working
+
                 //limit servo to allowed positions, set by servoMinPosition
                 if (position >= servoMinPosition) {
 
