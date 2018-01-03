@@ -24,7 +24,7 @@ public class RecognitionTest extends LinearOpMode {
     public void runOpMode(){
 
         //Start flash
-        Camera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+//        Camera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
 
         //Wait for Init before starting video
         cv.init(hardwareMap.appContext, 99);
