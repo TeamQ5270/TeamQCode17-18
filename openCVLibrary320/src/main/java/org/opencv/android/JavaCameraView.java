@@ -358,7 +358,6 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
         }
     }
 
-<<<<<<< HEAD
 //    public void flashOn(){
 //        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
 //    }
@@ -366,13 +365,11 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 //    public void flashOff(){
 //        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 //    }
-=======
-    public void flashOn(){
-        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-    }
+//    public void flashOn(){
+//        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+//    }
 
-    public void flashOff(){
-        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-    }
->>>>>>> parent of 6e7257d... Revert "Just Pushing"
+//    public void flashOff(){
+//        mCamera.Parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+//    }
 }
