@@ -9,7 +9,6 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
@@ -31,7 +30,6 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
     private View view;
 
     private Mat hsv = new Mat();
-    private Mat rgba = new Mat();
     private Mat thresholded = new Mat();
     private Mat thresholded_rgba = new Mat();
 
@@ -90,18 +88,13 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        rgba = inputFrame.rgba();
-        Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV, 3);
+        Imgproc.cvtColor(inputFrame.rgba(), hsv, Imgproc.COLOR_RGB2HSV, 3);
         Utils.setCurrentMat(hsv);
 
-        if(Utils.getFrameSet()){
-            Core.inRange(hsv, new Scalar(Utils.getHsvLower()), new Scalar(Utils.getHsvUpper()), thresholded);
+        Core.inRange(hsv, new Scalar(Utils.getHsvLower()), new Scalar(Utils.getHsvUpper()), thresholded);
 
-            Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
-            return thresholded_rgba;
-        }
-        Imgproc.rectangle(rgba, new Point(Utils.getWidthCenter() - 20, Utils.getHeightCenter() - 20), new Point(Utils.getWidthCenter() + 20, Utils.getHeightCenter() + 20), new Scalar(255, 255, 255));
-        return rgba;
+        Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
+        return thresholded_rgba;
     }
 
     @Override
