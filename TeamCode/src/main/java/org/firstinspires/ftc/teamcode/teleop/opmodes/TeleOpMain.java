@@ -12,8 +12,6 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 public class TeleOpMain extends LinearOpMode {
     /* Declare OpMode members. */
 
-    //TODO add necessary motors and servos for relic arm
-
     //declare motors
     private DcMotor motorLeftFront = null;
     private DcMotor motorRightFront = null;
@@ -26,6 +24,9 @@ public class TeleOpMain extends LinearOpMode {
     private Servo leftServo = null;
     private Servo rightServo = null;
 
+    private Servo relicServo = null;
+    private Servo relicClawServo = null;
+
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
 
@@ -35,8 +36,20 @@ public class TeleOpMain extends LinearOpMode {
     private static final double servoMinPosition = 0.0;
     private double position = (servoMinPosition); //start open, with servos at minimum position
 
+    private static final double relicServoMaxPosition = 1.0;
+    private static final double relicServoMinPosition = 0.0;
+    private double relicServoPosition = relicServoMinPosition; //start at one extreme
+
+
+    private static final double relicClawServoMaxPosition = 1.0;
+    private static final double relicClawServoMinPosition = 0.0;
+    private double relicClawServoPosition = relicClawServoMinPosition;
+
+
     //declare general servo variables
-    private static final double servoIncrement = 0.004; //adjust this to adjust the speed of all servos
+    private static final double servoIncrement = 0.005; //adjust this to adjust the speed of all servos
+
+
 
 
     //lift limit variables
@@ -65,6 +78,9 @@ public class TeleOpMain extends LinearOpMode {
         //assign appropriate servos from config to the servos
         leftServo = hardwareMap.servo.get("Servo Glyph L");
         rightServo = hardwareMap.servo.get("Servo Glyph R");
+
+        relicServo = hardwareMap.servo.get("Servo Relic");
+        relicClawServo = hardwareMap.servo.get("Servo Relic Claw");
 
         //assign motor directions
         //keep the directions as follows or else bad stuff happens:
@@ -175,8 +191,46 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            //RELIC ARM
 
+
+
+
+
+
+            if (gamepad2.left_bumper) { //open claw
+
+                //open claw arms simultaneously using ThreadedServoMovement class
+
+                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
+                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
+
+                //start servo objects
+                moveLeftServo.start();
+                moveRightServo.start();
+
+                //limit servo to allowed positions, set by servoMinPosition
+                if (position >= servoMinPosition) {
+
+                    position -= servoIncrement;
+                }
+            } else if (gamepad2.right_bumper) { //close claw
+
+                //close claw arms simultaneously using ThreadedServoMovement class
+                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
+                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
+
+                //start servo objects
+                moveLeftServo.start();
+                moveRightServo.start();
+
+                //limit servo to allowed positions, set by servoMaxPosition
+                if (position <= servoMaxPosition) {
+
+                    position += servoIncrement;
+                }
+            }
+
+            //RELIC ARM
             //move relic arm in and out if stick is not in deadzone
             //also checks to make sure encoder values are within the safe range
             //IF WE CHANGE THE STRING OR MODIFY THE SLIDE, MAKE SURE VALUES ARE RE-EVALUATED
@@ -202,48 +256,42 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            /*if (gamepad2.y
-                    && Math.abs(gamepad2.right_stick_y) > deadzone) { //disable encoder limits while button is pressed
-                motorLift.setPower(gamepad2.right_stick_y);
-            }*/
+            if (gamepad2.y) { //rotate relic claw
 
-            if (gamepad2.left_bumper) { //open claw
+                relicServo.setPosition(relicServoPosition);
 
-                //open claw arms simultaneously using ThreadedServoMovement class
+                if (relicServoPosition >= relicServoMinPosition) {
 
-                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
-                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
-
-<<<<<<< HEAD
-            //open and close relic claw
-=======
-                //start servo objects
-                moveLeftServo.start();
-                moveRightServo.start();
->>>>>>> parent of d85a603... Added getLeftDriveMotors and getRightDriveMotors to TeleOpRobot. TeleOpInProgress is currently not working
-
-                //limit servo to allowed positions, set by servoMinPosition
-                if (position >= servoMinPosition) {
-
-                    position -= servoIncrement;
+                    relicServoPosition -= servoIncrement;
                 }
-            } else if (gamepad2.right_bumper) { //close claw
+            } else if (gamepad2.a) {
 
-                //close claw arms simultaneously using ThreadedServoMovement class
-                ThreadedServoMovement moveLeftServo = new ThreadedServoMovement(leftServo, position);
-                ThreadedServoMovement moveRightServo = new ThreadedServoMovement(rightServo, servoMaxPosition - position);
+                if (relicServoPosition <= relicServoMaxPosition) {
 
-                //start servo objects
-                moveLeftServo.start();
-                moveRightServo.start();
-
-                //limit servo to allowed positions, set by servoMaxPosition
-                if (position <= servoMaxPosition) {
-
-                    position += servoIncrement;
+                    relicServoPosition += servoIncrement;
                 }
+
             }
-            //TODO add code for relic arm
+
+            //open and close relic claw
+
+            if (gamepad2.x) { //rotate relic claw
+
+                relicClawServo.setPosition(relicClawServoPosition);
+
+                if (relicClawServoPosition >= relicClawServoMinPosition) {
+
+                    relicClawServoPosition -= servoIncrement;
+                }
+            } else if (gamepad2.b) {
+
+                if (relicClawServoPosition <= relicClawServoMaxPosition) {
+
+                    relicClawServoPosition += servoIncrement;
+                }
+
+            }
+
 
             //set telemetry TODO add telemetry for current servo positions
             telemetry.addData("Lift encoder value: ", motorLift.getCurrentPosition());
