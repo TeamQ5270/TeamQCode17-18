@@ -86,21 +86,22 @@ public class AutonomousMain extends LinearOpMode {
         PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
 
         //calculate and move to the position to get the glyph in the box
-        double cryptoboxMoveDistance = 0.0d;
+        double cryptoboxMoveDistance = 0.0;
         switch (targetImage) {
             case UNKNOWN:
-                cryptoboxMoveDistance=0.0f;
+                cryptoboxMoveDistance=23.0;
                 break;
             case CENTER:
-                cryptoboxMoveDistance=0.0f;
+                cryptoboxMoveDistance=4.0;
                 break;
             case LEFT:
-                cryptoboxMoveDistance=0.0f;
+                cryptoboxMoveDistance=10.0;
                 break;
             case RIGHT:
-                cryptoboxMoveDistance=0.0f;
+                cryptoboxMoveDistance=19.0;
                 break;
         }
+        double cryptoboxMoveDistanceOut=23.0-cryptoboxMoveDistance;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
 
