@@ -116,7 +116,9 @@ public class AutonomousMain extends LinearOpMode {
 
         //put the glyph in the box
         //strafe to the side
-        
+        double strafeDistanceOutOfCryptoBox = 6;
+        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalRight(),(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalLeft(),(float)strafeDistanceOutOfCryptoBox,-(float)straightPower,4);
 
 
         //End OpMode
