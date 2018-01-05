@@ -1,11 +1,7 @@
-package com.disnodeteam.dogecv.detectors;
+package org.firstinspires.ftc.teamcode.Utils.doggoSeeVee.detectors;
 
 
-import com.disnodeteam.dogecv.DogeCV;
-import com.disnodeteam.dogecv.OpenCVPipeline;
-import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
-import com.disnodeteam.dogecv.filters.HSVColorFilter;
-import com.disnodeteam.dogecv.filters.LeviColorFilter;
+import org.firstinspires.ftc.teamcode.Utils.doggoSeeVee.*;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -21,11 +17,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Victo on 11/5/2017.
- */
-
-public class GenericDetector extends OpenCVPipeline {
+public class GenericDetector extends com.disnodeteam.dogecv.OpenCVPipeline {
 
     public enum GenericDetectionMode {
         PERFECT_AREA, MAX_AREA
@@ -42,7 +34,7 @@ public class GenericDetector extends OpenCVPipeline {
     public boolean rotateMat = false;
     public GenericDetectionSpeed speed = GenericDetectionSpeed.BALANCED;
 
-    public DogeCVColorFilter colorFilter = new HSVColorFilter(new Scalar(50,50,50), new Scalar(50,50,50));
+    public com.disnodeteam.dogecv.filters.DogeCVColorFilter colorFilter = new com.disnodeteam.dogecv.filters.HSVColorFilter(new Scalar(50,50,50), new Scalar(50,50,50));
 
     public double perfectArea = 6500;
     public double areaWeight = 0.05; // Since we're dealing with 100's of pixels

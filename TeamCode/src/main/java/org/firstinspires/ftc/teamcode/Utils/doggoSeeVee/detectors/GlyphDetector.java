@@ -1,4 +1,4 @@
-package com.disnodeteam.dogecv.detectors;
+package org.firstinspires.ftc.teamcode.Utils.doggoSeeVee.detectors;
 
 import com.disnodeteam.dogecv.OpenCVPipeline;
 
