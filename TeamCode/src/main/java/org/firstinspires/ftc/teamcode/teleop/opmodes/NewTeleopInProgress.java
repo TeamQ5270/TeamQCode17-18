@@ -23,8 +23,8 @@ public class NewTeleopInProgress extends LinearOpMode {
     private int mRightBackIdx = 3;
 
     //more un-magicked numbers
-    private int motorZeroPower = 0;
-    private int joystickZero = 0;
+    private double motorZeroPower = 0.0;
+    private double joystickZero = 0.0;
     private int weirdFourInMecanumCalcs = 4;
 
     @Override
@@ -43,6 +43,9 @@ public class NewTeleopInProgress extends LinearOpMode {
         //run until OpMode is stopped
         while (opModeIsActive()) {
             controlRobot();
+
+            telemetry.addData("Lift position: ", robot.getMotorLift().getCurrentPosition());
+            telemetry.update();
         }
     }
 
@@ -60,9 +63,14 @@ public class NewTeleopInProgress extends LinearOpMode {
             mecanumDriveStop();
         }
 
-        if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()) {
+        if (Math.abs(gamepad2.right_stick_y) > joystickZero) {
 
             glyphLift();
+
+        }
+
+        if (Math.abs(gamepad2.right_stick_y) <= robot.getDeadzone()) {
+            robot.getMotorLift().setPower(motorZeroPower);
         }
 
         if (gamepad2.left_bumper) {
@@ -71,7 +79,7 @@ public class NewTeleopInProgress extends LinearOpMode {
             closeGlyphClaw();
         }
 
-        if (Math.abs(gamepad2.left_stick_y) > robot.getDeadzone()) {
+        if (Math.abs(gamepad2.left_stick_y) > joystickZero) {
             relicArm();
         }
 
@@ -116,11 +124,14 @@ public class NewTeleopInProgress extends LinearOpMode {
     }
 
     public void glyphLift() {
-        if (robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
+        if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
+                && robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
                 && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()) {
 
             robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
+        } else if (Math.abs(gamepad2.right_stick_y) <= robot.getDeadzone()) {
+            robot.getMotorLift().setPower(motorZeroPower);
         } else {
             //Allow lift to return to the safe zone if it is at max or min
             if (gamepad2.right_stick_y > joystickZero
@@ -129,17 +140,17 @@ public class NewTeleopInProgress extends LinearOpMode {
 
             } else if (gamepad2.right_stick_y < joystickZero
                     && robot.getMotorLift().getCurrentPosition() >= robot.getLiftBottom()) {
-
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
+            } else if (Math.abs(gamepad2.right_stick_y) <= robot.getDeadzone()){
+                robot.getMotorLift().setPower(motorZeroPower);
             } else {
                 robot.getMotorLift().setPower(motorZeroPower);
             }
         }
 
-        telemetry.addData("Lift position: ", robot.getMotorLift().getCurrentPosition());
-        telemetry.update();
     }
+
 
     public void openGlyphClaw() {
 
@@ -166,7 +177,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
                 (robot.getLeftServo(), robot.getClawPosition());
         ThreadedServoMovement moveRightServo = new ThreadedServoMovement
-                (robot.getLeftServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
+                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
 
         //start servo objects
         moveLeftServo.start();
