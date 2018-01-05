@@ -21,6 +21,7 @@ public class AutonomousMain extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
+    //TODO verify and correct these constants
     private final double maxTimeVuforia = 5;
     private double straightPower = 0.75f;
     private double turnPower = 0.25f;
@@ -49,18 +50,6 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.addData("Status", "Core Initialized");
         telemetry.update();
 
-        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
-        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (true&&getRuntime()<maxTimeVuforia) {
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()){
-                telemetry.addData("Vuforia Target: ", targetImage.toString());
-                telemetry.update();
-                break;
-            }
-            targetImage = vuforiaManager.getvisibleTarget();
-        }
-        telemetry.addData("Vuforia Target: ", targetImage.toString());
-
         boolean sideColor = false; //true if red
         //get color of the side the robot is on
         int colorR = boardColor.red();
@@ -74,10 +63,24 @@ public class AutonomousMain extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        //TODO make this less fragile
+        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
+        while (getRuntime()<maxTimeVuforia) {
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){
+                telemetry.addData("Vuforia Target: ", targetImage.toString());
+                telemetry.update();
+                break;
+            }
+            targetImage = vuforiaManager.getvisibleTarget();
+        }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
+
         //get the jewel and knock it off
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
+        //TODO get the correct move distance
         double jewelMoveDistance = 16.5;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)jewelMoveDistance,-(float)straightPower,4);
@@ -89,12 +92,14 @@ public class AutonomousMain extends LinearOpMode {
         jewelServo.setPosition(servoNoDistance);
 
         //go to cryptobox starting position using the movetoposition algorithm thing
+        //TODO get the correct movement paths for the robot
         String moveA = "";
         String moveB = "";
         String move = sideField?moveB:moveA;
         PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
 
         //calculate and move to the position to get the glyph in the box
+        //TODO veryify the movement distanced for each step of the glyph movement
         double cryptoboxMoveDistance = 0.0;
         switch (targetImage) {
             case UNKNOWN:
@@ -113,6 +118,15 @@ public class AutonomousMain extends LinearOpMode {
         double cryptoboxMoveDistanceOut=23.0-cryptoboxMoveDistance;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,-(float)straightPower,4);
+
+        //put the glyph in the box
+        //strafe to the side
+        //TODO get the correct value for this
+        double strafeDistanceOutOfCryptoBox = 6;
+        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalRight(),(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalLeft(),(float)strafeDistanceOutOfCryptoBox,-(float)straightPower,4);
+
+        //TODO get turning into the cryptobox and deploying the glyph
 
         //End OpMode
         stop();
