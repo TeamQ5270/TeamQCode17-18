@@ -1,12 +1,8 @@
 
 package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
-import android.util.MutableLong;
-
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,11 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiServo;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
-
-import static com.sun.tools.javac.util.LayoutCharacters.LF;
 
 @Disabled
 @Autonomous(name="Main Autonomous")
@@ -28,8 +21,12 @@ public class AutonomousMain extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    //Maximum amount of time to run the vuforia seeker (seconds)
     private final double maxTimeVuforia = 5;
+    private double straightPower = 0.75f;
+    private double turnPower = 0.25f;
+    private double servoHalfDistance = 0.5f;
+    private double servoFullDistance = 1f;
+    private double servoNoDistance = 0f;
 
     //Vuforia manager
 
@@ -37,8 +34,6 @@ public class AutonomousMain extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        double straightPower = 0.75f;
-        double turnPower = 0.25f;
 
         Robot robot = new Robot();
         robot.init(hardwareMap);
@@ -79,6 +74,20 @@ public class AutonomousMain extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        //get the jewel and knock it off
+        //move the servo out
+        jewelServo.setPosition(servoHalfDistance);
+        //get the color of the jewel and swing servo
+        jewelServo.setPosition(jewelColor.red()>jewelColor.blue()&&sideColor /* Servo is facing the same jewel as the side */
+                ? servoFullDistance:servoNoDistance);
+        //wait for the servo
+        jewelServo.setPosition(servoNoDistance);
+
+        double jewelMoveDistance = 16.5;
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)jewelMoveDistance,-(float)straightPower,4);
+        //knock off the jewel
+
         //go to cryptobox starting position using the movetoposition algorithm thing
         String moveA = "";
         String moveB = "";
@@ -103,7 +112,7 @@ public class AutonomousMain extends LinearOpMode {
         }
         double cryptoboxMoveDistanceOut=23.0-cryptoboxMoveDistance;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,-(float)straightPower,4);
 
         //End OpMode
         stop();
