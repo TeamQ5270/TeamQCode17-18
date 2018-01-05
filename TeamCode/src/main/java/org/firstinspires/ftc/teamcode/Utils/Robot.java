@@ -57,41 +57,39 @@ public class Robot {
 
     HardwareMap hwMap = null;
 
-    //constructor
-    public Robot() {
+    boolean standardInit;
+    boolean driveMotorBrakes;
 
+    //standard constructor
+    public Robot() {
+        standardInit = true;
     }
 
+    /*
+    * This constructor is useful for initializing the robot differently than normal
+    * (e.g not having drive motors brake).
+    *
+    * @param driveMotorBraking set drive motor zero power behavior
+    *
+    */
+    public Robot(boolean driveMotorBraking) {
+        standardInit = false;
+    }
+
+
+
     public void init(HardwareMap ahwMap) {
+        if (standardInit) {
+            standardInit(ahwMap);
+        } else {
+            customInit(ahwMap);
+        }
+    }
+
+    private void standardInit(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
-        //assign appropriate motors from config to the motors
-        motorLeftFront = hwMap.dcMotor.get("Motor Drive FL");
-        motorLeftBack = hwMap.dcMotor.get("Motor Drive RL");
-        motorRightFront = hwMap.dcMotor.get("Motor Drive FR");
-        motorRightBack = hwMap.dcMotor.get("Motor Drive RR");
-        motorLift = hwMap.dcMotor.get("Motor Glyph");
-        motorRelicArm = hwMap.dcMotor.get("Motor Relic");
-
-        //assign appropriate servos from config to the servos
-        leftServo = hwMap.servo.get("Servo Glyph L");
-        rightServo = hwMap.servo.get("Servo Glyph R");
-
-        relicRotatorServo = hwMap.servo.get("Servo Relic");
-        relicClawServo = hwMap.servo.get("Servo Relic Claw");
-
-        //assign motor directions
-        //keep the directions as follows or else bad stuff happens:
-        //left front: FORWARD
-        //left back: FORWARD
-        //right front: REVERSE
-        //right back: REVERSE
-        motorLeftFront.setDirection(DcMotor.Direction.FORWARD);
-        motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
-        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
-        motorRightBack.setDirection(DcMotor.Direction.REVERSE);
-        motorLift.setDirection(DcMotor.Direction.FORWARD);
-        motorRelicArm.setDirection(DcMotor.Direction.FORWARD);
+        getConfig(ahwMap);
 
         //set zero power behavior to BRAKE
         motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -108,6 +106,62 @@ public class Robot {
         motorRelicArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRelicArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    private void customInit(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+
+        getConfig(ahwMap);
+
+        if (driveMotorBrakes) {
+            motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        } else if (!driveMotorBrakes) {
+            motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+    }
+
+    private void getConfig(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+
+        //assign appropriate motors from config to the motors
+        motorLeftFront = hwMap.dcMotor.get("Motor Drive FL");
+        motorLeftBack = hwMap.dcMotor.get("Motor Drive RL");
+        motorRightFront = hwMap.dcMotor.get("Motor Drive FR");
+        motorRightBack = hwMap.dcMotor.get("Motor Drive RR");
+        motorLift = hwMap.dcMotor.get("Motor Glyph");
+        motorRelicArm = hwMap.dcMotor.get("Motor Relic");
+
+        //assign appropriate servos from config to the servos
+        leftServo = hwMap.servo.get("Servo Glyph L");
+        rightServo = hwMap.servo.get("Servo Glyph R");
+
+        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
+        relicClawServo = hwMap.servo.get("Servo Relic Claw");
+
+        //assign motor directions
+        //keep the directions as follows or else bad stuff happens:
+        //left front: FORWARD
+        //left back: FORWARD
+        //right front: REVERSE
+        //right back: REVERSE
+        motorLeftFront.setDirection(DcMotor.Direction.FORWARD);
+        motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
+        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
+        motorRightBack.setDirection(DcMotor.Direction.REVERSE);
+        motorLift.setDirection(DcMotor.Direction.FORWARD);
+        motorRelicArm.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+
 
     public DcMotor[] getDriveMotors() {
 

@@ -58,18 +58,28 @@ public class NewTeleopInProgress extends LinearOpMode {
                 && Math.abs(gamepad1.right_stick_y) < robot.getDeadzone()) {
 
             mecanumDriveStop();
-        } else if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()) {
+        }
+
+        if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()) {
 
             glyphLift();
-        } else if (gamepad2.left_bumper) {
+        }
+
+        if (gamepad2.left_bumper) {
             openGlyphClaw();
         } else if (gamepad2.right_bumper) {
             closeGlyphClaw();
-        } else if (Math.abs(gamepad2.left_stick_y) > robot.getDeadzone()) {
+        }
+
+        if (Math.abs(gamepad2.left_stick_y) > robot.getDeadzone()) {
             relicArm();
-        } else if (gamepad2.y || gamepad2.a) {
+        }
+
+        if (gamepad2.y || gamepad2.a) {
             rotateClaw();
-        } else if (gamepad2.x) {
+        }
+
+        if (gamepad2.x) {
             openRelicClaw();
         } else if (gamepad2.b) {
             closeRelicClaw();
@@ -123,9 +133,12 @@ public class NewTeleopInProgress extends LinearOpMode {
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
             } else {
-                robot.getMotorLift().setPower(joystickZero);
+                robot.getMotorLift().setPower(motorZeroPower);
             }
         }
+
+        telemetry.addData("Lift position: ", robot.getMotorLift().getCurrentPosition());
+        telemetry.update();
     }
 
     public void openGlyphClaw() {
