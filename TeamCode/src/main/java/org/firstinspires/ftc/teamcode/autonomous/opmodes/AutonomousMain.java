@@ -114,6 +114,11 @@ public class AutonomousMain extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,-(float)straightPower,4);
 
+        //put the glyph in the box
+        //strafe to the side
+        
+
+
         //End OpMode
         stop();
     }
