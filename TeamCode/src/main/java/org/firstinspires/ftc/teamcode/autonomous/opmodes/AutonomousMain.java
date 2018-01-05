@@ -50,18 +50,6 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.addData("Status", "Core Initialized");
         telemetry.update();
 
-        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
-        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (true&&getRuntime()<maxTimeVuforia) {
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)&&!isStarted()){
-                telemetry.addData("Vuforia Target: ", targetImage.toString());
-                telemetry.update();
-                break;
-            }
-            targetImage = vuforiaManager.getvisibleTarget();
-        }
-        telemetry.addData("Vuforia Target: ", targetImage.toString());
-
         boolean sideColor = false; //true if red
         //get color of the side the robot is on
         int colorR = boardColor.red();
@@ -74,6 +62,19 @@ public class AutonomousMain extends LinearOpMode {
         //Wait For Play, Start Timer
         waitForStart();
         runtime.reset();
+
+        //TODO make this less fragile
+        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
+        while (getRuntime()<maxTimeVuforia) {
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){
+                telemetry.addData("Vuforia Target: ", targetImage.toString());
+                telemetry.update();
+                break;
+            }
+            targetImage = vuforiaManager.getvisibleTarget();
+        }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
 
         //get the jewel and knock it off
         //move the servo out
