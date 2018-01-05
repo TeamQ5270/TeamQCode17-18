@@ -21,6 +21,7 @@ public class AutonomousMain extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
+    //TODO verify and correct these constants
     private final double maxTimeVuforia = 5;
     private double straightPower = 0.75f;
     private double turnPower = 0.25f;
@@ -78,6 +79,7 @@ public class AutonomousMain extends LinearOpMode {
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
+        //TODO get the correct move distance
         double jewelMoveDistance = 16.5;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)jewelMoveDistance,-(float)straightPower,4);
@@ -89,12 +91,14 @@ public class AutonomousMain extends LinearOpMode {
         jewelServo.setPosition(servoNoDistance);
 
         //go to cryptobox starting position using the movetoposition algorithm thing
+        //TODO get the correct movement paths for the robot
         String moveA = "";
         String moveB = "";
         String move = sideField?moveB:moveA;
         PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
 
         //calculate and move to the position to get the glyph in the box
+        //TODO veryify the movement distanced for each step of the glyph movement
         double cryptoboxMoveDistance = 0.0;
         switch (targetImage) {
             case UNKNOWN:
@@ -116,10 +120,12 @@ public class AutonomousMain extends LinearOpMode {
 
         //put the glyph in the box
         //strafe to the side
+        //TODO get the correct value for this
         double strafeDistanceOutOfCryptoBox = 6;
         MultiMotor.moveToPositionAndyMark40(robot.getDiagonalRight(),(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getDiagonalLeft(),(float)strafeDistanceOutOfCryptoBox,-(float)straightPower,4);
 
+        //TODO get turning into the cryptobox and deploying the glyph
 
         //End OpMode
         stop();
