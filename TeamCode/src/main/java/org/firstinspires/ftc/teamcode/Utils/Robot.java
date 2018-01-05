@@ -275,6 +275,10 @@ public class Robot {
         return relicRotatorServoMinPosition;
     }
 
+    public DcMotor[] getDiagonalLeft() { return new DcMotor[] {motorLeftFront, motorRightBack}; };
+
+    public DcMotor[] getDiagonalRight() { return new DcMotor[] {motorRightFront, motorLeftBack}; };
+
     //setters
 
     public void setClawPosition(double clawPosition) {
