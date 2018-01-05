@@ -77,16 +77,16 @@ public class AutonomousMain extends LinearOpMode {
         //get the jewel and knock it off
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
+        //move to the jewel
+        double jewelMoveDistance = 16.5;
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)jewelMoveDistance,-(float)straightPower,4);
+        //knock off the jewel
         //get the color of the jewel and swing servo
         jewelServo.setPosition(jewelColor.red()>jewelColor.blue()&&sideColor /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
         //wait for the servo
         jewelServo.setPosition(servoNoDistance);
-
-        double jewelMoveDistance = 16.5;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)jewelMoveDistance,-(float)straightPower,4);
-        //knock off the jewel
 
         //go to cryptobox starting position using the movetoposition algorithm thing
         String moveA = "";
