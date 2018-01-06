@@ -29,8 +29,8 @@ public class Robot {
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
-    private static final double glyphServoMaxPosition = 1.0;
-    private static final double glyphServoMinPosition = 0.0;
+    private static final double glyphServoMaxPosition = 0.33; //closed
+    private static final double glyphServoMinPosition = 0.0; //open
     private double clawPosition = (glyphServoMinPosition); //start open, with servos at minimum position
 
 
@@ -46,7 +46,7 @@ public class Robot {
 
 
     //declare general servo variables
-    private static final double servoIncrement = 0.005; //adjust this to adjust the speed of all servos
+    private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
 
     //lift limit variables
     private final int liftTop = -5600;

@@ -99,7 +99,7 @@ public class AutonomousMain extends LinearOpMode {
         PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
 
         //calculate and move to the position to get the glyph in the box
-        //TODO veryify the movement distanced for each step of the glyph movement
+        //TODO verify the movement distanced for each step of the glyph movement
         double cryptoboxMoveDistance = 0.0;
         switch (targetImage) {
             case UNKNOWN:
