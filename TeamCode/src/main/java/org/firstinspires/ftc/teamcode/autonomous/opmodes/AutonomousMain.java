@@ -93,10 +93,10 @@ public class AutonomousMain extends LinearOpMode {
 
         //go to cryptobox starting position using the movetoposition algorithm thing
         //TODO get the correct movement paths for the robot
-        String moveA = "133.74095479282474,53.26531532699925,-133.74095479282474,0\n" +
-                "271.7899106082461,13.247843249861067,-138.04895581542135,1\n";
-        String moveB = "231.70983680775691,20.033740861092753,-231.70983680775691,0\n" +
-                "180,7.448275862068965,51.709836807756915,1\n";
+        String moveA = "133.74095479282474,53.26531532699925,-133.74095479282474,1\n" +
+                "271.7899106082461,13.247843249861067,-138.04895581542135,-1\n";
+        String moveB = "231.70983680775691,20.033740861092753,-231.70983680775691,1\n" +
+                "180,7.448275862068965,51.709836807756915,-1\n";
         String move = sideField?moveB:moveA;
         PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
 
