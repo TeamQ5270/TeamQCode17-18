@@ -79,7 +79,7 @@ public class TeleOpMain extends LinearOpMode {
         leftServo = hardwareMap.servo.get("Servo Glyph L");
         rightServo = hardwareMap.servo.get("Servo Glyph R");
 
-        relicServo = hardwareMap.servo.get("Servo Relic");
+        relicServo = hardwareMap.servo.get("Servo Relic Rotator");
         relicClawServo = hardwareMap.servo.get("Servo Relic Claw");
 
         //assign motor directions
