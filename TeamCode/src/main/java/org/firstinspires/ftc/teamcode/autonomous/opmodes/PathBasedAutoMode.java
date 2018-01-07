@@ -4,13 +4,16 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 
+
 @Autonomous(name="Path Follow OpMode")
+@Disabled
 public class PathBasedAutoMode extends LinearOpMode {
 
     //How long the game has run
