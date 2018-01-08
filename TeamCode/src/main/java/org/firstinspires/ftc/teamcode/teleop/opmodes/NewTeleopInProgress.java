@@ -40,6 +40,8 @@ public class NewTeleopInProgress extends LinearOpMode {
         //wait until driver presses PLAY
         waitForStart();
 
+        zeroGlyphClaw();
+
         //run until OpMode is stopped
         while (opModeIsActive()) {
             controlRobot();
@@ -197,6 +199,11 @@ public class NewTeleopInProgress extends LinearOpMode {
 
             robot.setClawPosition(robot.getClawPosition() + robot.getServoIncrement());
         }
+    }
+
+    public void zeroGlyphClaw() {
+        robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
     }
 
     public void relicArm() {

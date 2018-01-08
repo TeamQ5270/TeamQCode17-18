@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Disabled
+
 @Autonomous(name="Main Autonomous")
 public class AutonomousMain extends LinearOpMode {
 
