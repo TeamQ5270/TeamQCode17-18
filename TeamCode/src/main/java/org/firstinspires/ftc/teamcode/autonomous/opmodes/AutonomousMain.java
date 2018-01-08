@@ -83,7 +83,7 @@ public class AutonomousMain extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)jewelMoveDistance,(float)straightPower,4);
         //knock off the jewel
         //get the color of the jewel and swing servo
-        jewelServo.setPosition(jewelColor.red()>jewelColor.blue()&&sideColor /* Servo is facing the same jewel as the side */
+        jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
         //wait for the servo
         jewelServo.setPosition(servoNoDistance);
