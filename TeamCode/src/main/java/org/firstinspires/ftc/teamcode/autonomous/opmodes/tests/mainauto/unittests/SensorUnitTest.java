@@ -39,12 +39,8 @@ public class SensorUnitTest extends LinearOpMode {
         int colorB = boardColor.blue();
         boolean sideColor = colorR>colorB;  //true if red
 
-        //Wait For Play, Start Timer
-        waitForStart();
-        runtime.reset();
 
-        /* ----- GAME STARTED ----- */
-
+        //TODO this should either be run in a seperate thread or given more time to handle or done before the game starts
         //Read the vuforia vumark(tm)
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
@@ -57,6 +53,12 @@ public class SensorUnitTest extends LinearOpMode {
             targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
+
+        //Wait For Play, Start Timer
+        waitForStart();
+        runtime.reset();
+
+        /* ----- GAME STARTED ----- */
 
         while (opModeIsActive()) {
             telemetry.addData("Vuforia: ", targetImage.toString());

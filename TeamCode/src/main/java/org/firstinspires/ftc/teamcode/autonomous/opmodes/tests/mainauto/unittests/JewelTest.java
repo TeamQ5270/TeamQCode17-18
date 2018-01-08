@@ -57,14 +57,12 @@ public class JewelTest extends LinearOpMode {
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
-        //TODO get the correct move distance
-        double jewelMoveDistance = 16.5;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)jewelMoveDistance,(float)straightPower,4);
+        sleep(3000);
         //knock off the jewel
         //get the color of the jewel and swing servo
-        jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
+        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
+        sleep(3000);
         //wait for the servo
         jewelServo.setPosition(servoHalfDistance);
 
