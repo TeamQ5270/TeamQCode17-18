@@ -54,17 +54,12 @@ public class BoxTest extends LinearOpMode {
         //get side of the field that the robot is on
         boolean sideField = false;  //true if on doublebox side
 
-        //Wait For Play, Start Timer
-        waitForStart();
-        runtime.reset();
-
-        /* ----- GAME STARTED ----- */
 
         //Read the vuforia vumark(tm)
         //TODO make this code a bit more readable
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
+        while (!isStarted()) {                                                          //while the timeout has not occued
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
@@ -73,6 +68,26 @@ public class BoxTest extends LinearOpMode {
             targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
+
+        //Wait For Play, Start Timer
+        waitForStart();
+        runtime.reset();
+
+        /* ----- GAME STARTED ----- */
+
+
+        //Read the vuforia vumark(tm)
+        //TODO make this code a bit more readable
+        while (getRuntime()<maxTimeVuforia&&targetImage==RelicRecoveryVuMark.UNKNOWN) {                                           //while the timeout has not occued
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+                telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
+                telemetry.update();
+                break;
+            }
+            targetImage = vuforiaManager.getvisibleTarget();
+        }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
+
 
         //calculate and move to the position to get the glyph in the box
         //TODO verify the movement distanced for each step of the glyph movement
@@ -92,8 +107,8 @@ public class BoxTest extends LinearOpMode {
                 break;
         }
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
-
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
         //End OpMode
         stop();
     }
