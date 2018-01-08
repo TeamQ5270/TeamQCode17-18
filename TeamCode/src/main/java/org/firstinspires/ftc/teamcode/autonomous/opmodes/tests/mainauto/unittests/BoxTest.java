@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Main Autonomous")
+@Autonomous(name="Cryptobox Unit Test")
 public class BoxTest extends LinearOpMode {
 
     //How long the game has run
