@@ -96,18 +96,18 @@ public class BoxTest extends LinearOpMode {
             case UNKNOWN:
                 cryptoboxMoveDistance=23.0;
                 break;
-            case CENTER:
+            case RIGHT:
                 cryptoboxMoveDistance=4.0;
                 break;
-            case LEFT:
-                cryptoboxMoveDistance=10.0;
+            case CENTER:
+                cryptoboxMoveDistance=11.0;
                 break;
-            case RIGHT:
+            case LEFT:
                 cryptoboxMoveDistance=19.0;
                 break;
         }
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
         //End OpMode
         stop();
