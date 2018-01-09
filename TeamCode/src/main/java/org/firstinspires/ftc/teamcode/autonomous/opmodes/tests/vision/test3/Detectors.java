@@ -38,4 +38,8 @@ public class Detectors {
         Mat out = jewelDetector.processFrame(in, gray);
         return out;
     }
+
+    public JewelDetector getJewelDetector(){
+        return jewelDetector;
+    }
 }

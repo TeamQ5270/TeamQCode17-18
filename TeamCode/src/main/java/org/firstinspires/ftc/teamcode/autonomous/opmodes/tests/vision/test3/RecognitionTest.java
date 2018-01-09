@@ -25,11 +25,14 @@ public class RecognitionTest extends LinearOpMode {
             this.updateLog();
         }
         cv.enable();
+        this.log("Status: ", "Running");
+        this.updateLog();
 
         while(opModeIsActive()){
-            this.log("Status: ", "Running");
+            this.log("Jewel Order: ", Utils.getJewelOrder().toString());
             this.updateLog();
         }
+
         cv.disable();
         Utils.setInitComplete(false);
     }
