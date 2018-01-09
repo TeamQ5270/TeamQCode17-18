@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-
 @Autonomous(name="Main Autonomous")
 public class AutonomousMain extends LinearOpMode {
 
@@ -62,6 +61,7 @@ public class AutonomousMain extends LinearOpMode {
         /* ----- GAME STARTED ----- */
 
         //Read the vuforia vumark(tm)
+        //TODO make this code a bit more readable
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
         while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
@@ -84,7 +84,7 @@ public class AutonomousMain extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)jewelMoveDistance,(float)straightPower,4);
         //knock off the jewel
         //get the color of the jewel and swing servo
-        jewelServo.setPosition(jewelColor.red()>jewelColor.blue()&&sideColor /* Servo is facing the same jewel as the side */
+        jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
         //wait for the servo
         jewelServo.setPosition(servoNoDistance);

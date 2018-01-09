@@ -35,7 +35,11 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
     private Mat thresholded = new Mat();
     private Mat thresholded_rgba = new Mat();
 
+    private Detectors detectors;
+
     public void init(final Context context, final int camNum){
+        detectors = new Detectors();
+        detectors.init();
         this.context = context;
         activity = (Activity) context;
         final CameraBridgeViewBase.CvCameraViewListener2 self = this;
@@ -90,18 +94,19 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        rgba = inputFrame.rgba();
-        Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV, 3);
-        Utils.setCurrentMat(hsv);
-
-        if(Utils.getFrameSet()){
-            Core.inRange(hsv, new Scalar(Utils.getHsvLower()), new Scalar(Utils.getHsvUpper()), thresholded);
-
-            Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
-            return thresholded_rgba;
-        }
-        Imgproc.rectangle(rgba, new Point(Utils.getWidthCenter() - 20, Utils.getHeightCenter() - 20), new Point(Utils.getWidthCenter() + 20, Utils.getHeightCenter() + 20), new Scalar(255, 255, 255));
-        return rgba;
+//        rgba = inputFrame.rgba();
+//        Imgproc.cvtColor(rgba, hsv, Imgproc.COLOR_RGB2HSV, 3);
+//        Utils.setCurrentMat(hsv);
+//
+//        if(Utils.getFrameSet()){
+//            Core.inRange(hsv, new Scalar(Utils.getHsvLower()), new Scalar(Utils.getHsvUpper()), thresholded);
+//
+//            Imgproc.cvtColor(thresholded, thresholded_rgba, Imgproc.COLOR_GRAY2BGR);
+//            return thresholded_rgba;
+//        }
+//        Imgproc.rectangle(rgba, new Point(Utils.getWidthCenter() - 20, Utils.getHeightCenter() - 20), new Point(Utils.getWidthCenter() + 20, Utils.getHeightCenter() + 20), new Scalar(255, 255, 255));
+//        return rgba;
+        return detectors.processJewel(inputFrame.rgba());
     }
 
     @Override

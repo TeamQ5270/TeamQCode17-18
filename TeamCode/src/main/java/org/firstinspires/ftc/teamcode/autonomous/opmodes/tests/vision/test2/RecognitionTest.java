@@ -6,6 +6,7 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by Matthew_Modi on 12/1/2017.
  */
 
+@Disabled
 @Autonomous(name = "Glyph Recognition Test 2")
 public class RecognitionTest extends LinearOpMode {
 
