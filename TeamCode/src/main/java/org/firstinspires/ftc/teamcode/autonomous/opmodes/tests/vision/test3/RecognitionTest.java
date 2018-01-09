@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.Utils;
 
 /**
@@ -24,10 +25,15 @@ public class RecognitionTest extends LinearOpMode {
     private double servoNoDistance = 0f;            //away from the jewel sensorh
 
 
-    Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
+    Robot robot = new Robot();
+
+    Servo jewelServo;     //Jewel servo
 
     @Override
     public void runOpMode(){
+
+        robot.init(hardwareMap);
+        jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");
         cv.init(hardwareMap.appContext, 99);
         while(!Utils.getInitComplete()){
             this.log("CV Status: ", "Waiting for init.");
