@@ -29,9 +29,9 @@ public class Robot {
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
-    private static final double glyphServoMaxPosition = 0.33; //closed
+    private static final double glyphServoMaxPosition = 1.0; //closed
     private static final double glyphServoMinPosition = 0.0; //open
-    private double clawPosition = (glyphServoMinPosition); //start open, with servos at minimum position
+    private double clawPosition = 0.0; //start open, with servos at minimum position
 
 
     //relic rotator servo

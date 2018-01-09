@@ -15,7 +15,7 @@ public class NewTeleopInProgress extends LinearOpMode {
     private Robot robot = new Robot();
 
     //these variables get rid of magic numbers - you're welcome, Matthew
-    //indicies of motor values returned by robot.getDriveMotors()
+    //indices of motor values returned by robot.getDriveMotors()
     //left front -- right front -- left back -- right back
     private int mLeftFrontIdx = 0;
     private int mRightFrontIdx = 1;
@@ -40,6 +40,8 @@ public class NewTeleopInProgress extends LinearOpMode {
         //wait until driver presses PLAY
         waitForStart();
 
+        zeroGlyphClaw();
+
         //run until OpMode is stopped
         while (opModeIsActive()) {
             controlRobot();
@@ -51,7 +53,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    public void controlRobot() {
+    private void controlRobot() {
         if (Math.abs(gamepad1.left_stick_x) > robot.getDeadzone()
                 || Math.abs(gamepad1.left_stick_y) > robot.getDeadzone()
                 || Math.abs(gamepad1.right_stick_x) > robot.getDeadzone()) {
@@ -108,7 +110,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    public void mecanumDrive() {
+    private void mecanumDrive() {
 
         //weird trig
         double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
@@ -130,14 +132,14 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     }
 
-    public void mecanumDriveStop() {
+    private void mecanumDriveStop() {
         robot.getDriveMotors()[mLeftFrontIdx].setPower(motorZeroPower);
         robot.getDriveMotors()[mRightFrontIdx].setPower(motorZeroPower);
         robot.getDriveMotors()[mLeftBackIdx].setPower(motorZeroPower);
         robot.getDriveMotors()[mRightBackIdx].setPower(motorZeroPower);
     }
 
-    public void glyphLift() {
+    private void glyphLift() {
         if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
                 && robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
                 && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()) {
@@ -161,7 +163,7 @@ public class NewTeleopInProgress extends LinearOpMode {
     }
 
 
-    public void openGlyphClaw() {
+    private void openGlyphClaw() {
 
 
         //open claw arms simultaneously using ThreadedServoMovement class
@@ -181,7 +183,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    public void closeGlyphClaw() {
+    private void closeGlyphClaw() {
         //close claw arms simultaneously using ThreadedServoMovement class
         ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
                 (robot.getLeftServo(), robot.getClawPosition());
@@ -199,7 +201,12 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    public void relicArm() {
+    private void zeroGlyphClaw() {
+        robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
+    }
+
+    private void relicArm() {
 
         if (robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitExtended()
                 && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitRetracted()) {
@@ -221,7 +228,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    public void rotateClaw() {
+    private void rotateClaw() {
         //TODO finish this method
 
         robot.getRelicRotatorServo().setPosition(robot.getRelicRotatorServoPosition());
@@ -235,7 +242,7 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     }
 
-    public void openRelicClaw() {
+    private void openRelicClaw() {
 
         robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
 
@@ -246,7 +253,7 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     }
 
-    public void closeRelicClaw() {
+    private void closeRelicClaw() {
 
         robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
         if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
