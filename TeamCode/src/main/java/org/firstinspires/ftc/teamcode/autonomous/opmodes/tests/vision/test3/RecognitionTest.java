@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3;
 
+import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.Utils;
@@ -17,6 +19,13 @@ public class RecognitionTest extends LinearOpMode {
 
     CV cv = new CV();
 
+    private double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
+    private double servoFullDistance = 1f;          //pivoted towards the jewel sensor
+    private double servoNoDistance = 0f;            //away from the jewel sensorh
+
+
+    Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
+
     @Override
     public void runOpMode(){
         cv.init(hardwareMap.appContext, 99);
@@ -28,9 +37,17 @@ public class RecognitionTest extends LinearOpMode {
         this.log("Status: ", "Running");
         this.updateLog();
 
+        jewelServo.setPosition(servoHalfDistance);
+
+        int i = 0;
         while(opModeIsActive()){
+            i++;
+            if(i>10) {
+                jewelServo.setPosition(Utils.getJewelOrder() == JewelDetector.JewelOrder.RED_BLUE ? servoFullDistance : servoNoDistance);
+            }
             this.log("Jewel Order: ", Utils.getJewelOrder().toString());
             this.updateLog();
+            sleep(100);
         }
 
         cv.disable();
