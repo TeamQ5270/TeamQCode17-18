@@ -15,7 +15,7 @@ public class NewTeleopInProgress extends LinearOpMode {
     private Robot robot = new Robot();
 
     //these variables get rid of magic numbers - you're welcome, Matthew
-    //indicies of motor values returned by robot.getDriveMotors()
+    //indices of motor values returned by robot.getDriveMotors()
     //left front -- right front -- left back -- right back
     private int mLeftFrontIdx = 0;
     private int mRightFrontIdx = 1;
