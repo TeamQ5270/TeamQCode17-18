@@ -1,12 +1,12 @@
 
-package org.firstinspires.ftc.teamcode.autonomous.opmodes;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.mainauto.unittests;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Main Autonomous")
-public class AutonomousMain extends LinearOpMode {
+@Autonomous(name="Cryptobox Unit Test")
+public class BoxTest extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
@@ -54,17 +54,12 @@ public class AutonomousMain extends LinearOpMode {
         //get side of the field that the robot is on
         boolean sideField = false;  //true if on doublebox side
 
-        //Wait For Play, Start Timer
-        waitForStart();
-        runtime.reset();
-
-        /* ----- GAME STARTED ----- */
 
         //Read the vuforia vumark(tm)
         //TODO make this code a bit more readable
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
+        while (!isStarted()) {                                                          //while the timeout has not occued
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
@@ -74,29 +69,25 @@ public class AutonomousMain extends LinearOpMode {
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
 
-        //get the jewel and knock it off
-        //move the servo out
-        jewelServo.setPosition(servoHalfDistance);
-        //move to the jewel
-        //TODO get the correct move distance
-        double jewelMoveDistance = 16.5;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)jewelMoveDistance,(float)straightPower,4);
-        //knock off the jewel
-        //get the color of the jewel and swing servo
-        jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
-                ? servoFullDistance:servoNoDistance);
-        //wait for the servo
-        jewelServo.setPosition(servoNoDistance);
+        //Wait For Play, Start Timer
+        waitForStart();
+        runtime.reset();
 
-        //go to cryptobox starting position using the movetoposition algorithm thing
-        //TODO get the correct movement paths for the robot
-        String moveA = "133.74095479282474,53.26531532699925,-133.74095479282474,1\n" +
-                "271.7899106082461,13.247843249861067,-138.04895581542135,-1\n";
-        String moveB = "231.70983680775691,20.033740861092753,-231.70983680775691,1\n" +
-                "180,7.448275862068965,51.709836807756915,-1\n";
-        String move = sideField?moveB:moveA;
-        PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
+        /* ----- GAME STARTED ----- */
+
+
+        //Read the vuforia vumark(tm)
+        //TODO make this code a bit more readable
+        while (getRuntime()<maxTimeVuforia&&targetImage==RelicRecoveryVuMark.UNKNOWN) {                                           //while the timeout has not occued
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+                telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
+                telemetry.update();
+                break;
+            }
+            targetImage = vuforiaManager.getvisibleTarget();
+        }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
+
 
         //calculate and move to the position to get the glyph in the box
         //TODO verify the movement distanced for each step of the glyph movement
@@ -115,31 +106,9 @@ public class AutonomousMain extends LinearOpMode {
                 cryptoboxMoveDistance=19.0;
                 break;
         }
-        double cryptoboxMoveDistanceOut=23.0-cryptoboxMoveDistance;
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
-
-        //put the glyph in the box
-        //strafe to the side
-        //TODO get the correct value for this
-        double strafeDistanceOutOfCryptoBox = 6;
-        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalRight(),(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalLeft(),-(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
-
-        //TODO get turning into the cryptobox and deploying the glyph
-        //turn to the right
-        MultiMotor.turnToPositionAndyMark40(robot.getLeftDriveMotors(),robot.getRightDriveMotors(),270,(float)turnPower);
-        //move into box
-        float distanceIntoBox = 6;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(), distanceIntoBox, (float)straightPower, 4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(), -distanceIntoBox, (float)straightPower, 4);
-        //release grabbers
-        new ThreadedServoMovement(robot.getLeftServo(),robot.getGlyphServoMinPosition()).run();
-        new ThreadedServoMovement(robot.getRightServo(),robot.getGlyphServoMaxPosition()).run();
-        //move back a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(), -distanceIntoBox/2, (float)straightPower, 4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(), distanceIntoBox/2, (float)straightPower, 4);
-
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
         //End OpMode
         stop();
     }
