@@ -61,7 +61,7 @@ public class BoxTest extends LinearOpMode {
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
         while (!isStarted()) {                                                          //while the timeout has not occued
             targetImage = vuforiaManager.getvisibleTarget();
-            if ((vuforiaManager.getvisibleTarget() != RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)) {   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
                 break;
@@ -79,12 +79,12 @@ public class BoxTest extends LinearOpMode {
         //Read the vuforia vumark(tm)
         //TODO make this code a bit more readable
         while (getRuntime()<maxTimeVuforia&&targetImage==RelicRecoveryVuMark.UNKNOWN) {                                           //while the timeout has not occued
+            targetImage = vuforiaManager.getvisibleTarget();
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
                 break;
             }
-            targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
 
