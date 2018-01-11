@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.mainauto.unittests;
 
+import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,6 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
+import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.CV;
+import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.Utils;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
@@ -52,19 +55,22 @@ public class JewelTest extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        CV cv = new CV();
 
         //get the jewel and knock it off
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
-        sleep(3000);
-        //knock off the jewel
-        //get the color of the jewel and swing servo
-        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
-                ? servoFullDistance:servoNoDistance);
-        sleep(3000);
-        //wait for the servo
-        jewelServo.setPosition(servoHalfDistance);
+//        sleep(3000);
+//        //knock off the jewel
+//        //get the color of the jewel and swing servo
+//        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
+//                ? servoFullDistance:servoNoDistance);
+//        sleep(3000);
+//        //wait for the servo
+//        jewelServo.setPosition(servoHalfDistance);
+
+        jewelServo.setPosition(Utils.getJewelOrder() == JewelDetector.JewelOrder.RED_BLUE ? servoFullDistance : servoNoDistance);
 
         //End OpMode
         stop();

@@ -60,12 +60,12 @@ public class BoxTest extends LinearOpMode {
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
         while (!isStarted()) {                                                          //while the timeout has not occued
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+            targetImage = vuforiaManager.getvisibleTarget();
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)) {   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
                 break;
             }
-            targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
 
@@ -79,12 +79,12 @@ public class BoxTest extends LinearOpMode {
         //Read the vuforia vumark(tm)
         //TODO make this code a bit more readable
         while (getRuntime()<maxTimeVuforia&&targetImage==RelicRecoveryVuMark.UNKNOWN) {                                           //while the timeout has not occued
+            targetImage = vuforiaManager.getvisibleTarget();
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
                 break;
             }
-            targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
 
@@ -96,18 +96,18 @@ public class BoxTest extends LinearOpMode {
             case UNKNOWN:
                 cryptoboxMoveDistance=23.0;
                 break;
-            case CENTER:
+            case RIGHT:
                 cryptoboxMoveDistance=4.0;
                 break;
-            case LEFT:
-                cryptoboxMoveDistance=10.0;
+            case CENTER:
+                cryptoboxMoveDistance=11.0;
                 break;
-            case RIGHT:
+            case LEFT:
                 cryptoboxMoveDistance=19.0;
                 break;
         }
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
         //End OpMode
         stop();

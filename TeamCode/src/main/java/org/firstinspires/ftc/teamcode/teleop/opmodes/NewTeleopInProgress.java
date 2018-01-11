@@ -203,7 +203,7 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     private void zeroGlyphClaw() {
         robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
-        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition() - robot.getClawPosition());
     }
 
     private void relicArm() {
