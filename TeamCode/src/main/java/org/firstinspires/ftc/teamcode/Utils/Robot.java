@@ -25,12 +25,13 @@ public class Robot {
     private Servo relicClawServo = null;
 
     //declare other variables
-    private double deadzone = 0.1; //deadzone for joysticks
+    private final double deadzone = 0.1; //deadzone for joysticks
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
     private static final double glyphServoMaxPosition = 1.0; //closed
     private static final double glyphServoMinPosition = 0.0; //open
+
     private double clawPosition = 0.0; //start open, with servos at minimum position
 
 
@@ -55,10 +56,10 @@ public class Robot {
     private final int relicLimitExtended = 7000;
     private final int relicLimitRetracted = 50;
 
-    HardwareMap hwMap = null;
+    private HardwareMap hwMap = null;
 
-    boolean standardInit;
-    boolean driveMotorBrakes;
+    private boolean standardInit;
+    private boolean driveMotorBrakes;
 
     //standard constructor
     public Robot() {

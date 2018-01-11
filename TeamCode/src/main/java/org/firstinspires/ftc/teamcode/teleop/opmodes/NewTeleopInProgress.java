@@ -17,15 +17,15 @@ public class NewTeleopInProgress extends LinearOpMode {
     //these variables get rid of magic numbers - you're welcome, Matthew
     //indices of motor values returned by robot.getDriveMotors()
     //left front -- right front -- left back -- right back
-    private int mLeftFrontIdx = 0;
-    private int mRightFrontIdx = 1;
-    private int mLeftBackIdx = 2;
-    private int mRightBackIdx = 3;
+    private final int mLeftFrontIdx = 0;
+    private final int mRightFrontIdx = 1;
+    private final int mLeftBackIdx = 2;
+    private final int mRightBackIdx = 3;
 
     //more un-magicked numbers
-    private double motorZeroPower = 0.0;
-    private double joystickZero = 0.0;
-    private int weirdFourInMecanumCalcs = 4;
+    private final double motorZeroPower = 0.0;
+    private final double joystickZero = 0.0;
+    private final int weirdFourInMecanumCalcs = 4;
 
     @Override
     public void runOpMode() {
