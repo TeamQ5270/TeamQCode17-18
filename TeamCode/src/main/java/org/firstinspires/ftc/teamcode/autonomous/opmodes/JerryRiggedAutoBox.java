@@ -8,15 +8,11 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
-import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="JerryRiggedAutonomous")
-public class JerryRiggedAuto extends LinearOpMode {
+@Autonomous(name="JerryRiggedAutonomousWithBox")
+public class JerryRiggedAutoBox extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
@@ -79,6 +75,17 @@ public class JerryRiggedAuto extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
         sleep(1000);
+
+        //turn 90 degrees
+        MultiMotor.bestTurn(robot.getDriveMotors(),robot.getLeftDriveMotors(),robot.getRightDriveMotors(),90,gyro);
+        //go straight for a bit
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),36,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        //turn 90 degrees
+        MultiMotor.bestTurn(robot.getDriveMotors(),robot.getLeftDriveMotors(),robot.getRightDriveMotors(),90,gyro);
+        //go straight for a bit
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),18.6f,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
 
         //End OpMode
         stop();

@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
 
 public class PathBasedMovement {
     public static void followPath(String commandSet, boolean swapSide, DcMotor[] leftMotors, DcMotor[] rightMotors, GyroSensor gyro) {
+        gyro.calibrate();
+        while (gyro.isCalibrating()) {}
         DcMotor[] motors = new DcMotor[leftMotors.length+rightMotors.length];
         for (int i=0;i<leftMotors.length;i++) {
             motors[i] = leftMotors[i];

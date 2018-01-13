@@ -87,4 +87,9 @@ public class MultiMotor {
     public static float clamp(float val, float min, float max) {
         return Math.max(min, Math.min(max, val));
     }
+
+    public static void bestTurn(DcMotor[] motors, DcMotor[] leftMotors, DcMotor[] rightMotors, int heading, GyroSensor gyro) {
+        while (!MultiMotor.turnBetter(leftMotors, rightMotors, (int) heading, gyro.getHeading(), 0.005f, 1)) {}
+        MultiMotor.setPower(motors, 0);
+    }
 }

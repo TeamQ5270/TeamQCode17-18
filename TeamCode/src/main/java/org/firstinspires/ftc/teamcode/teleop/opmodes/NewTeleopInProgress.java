@@ -17,15 +17,15 @@ public class NewTeleopInProgress extends LinearOpMode {
     //these variables get rid of magic numbers - you're welcome, Matthew
     //indices of motor values returned by robot.getDriveMotors()
     //left front -- right front -- left back -- right back
-    private int mLeftFrontIdx = 0;
-    private int mRightFrontIdx = 1;
-    private int mLeftBackIdx = 2;
-    private int mRightBackIdx = 3;
+    private final int mLeftFrontIdx = 0;
+    private final int mRightFrontIdx = 1;
+    private final int mLeftBackIdx = 2;
+    private final int mRightBackIdx = 3;
 
     //more un-magicked numbers
-    private double motorZeroPower = 0.0;
-    private double joystickZero = 0.0;
-    private int weirdFourInMecanumCalcs = 4;
+    private final double motorZeroPower = 0.0;
+    private final double joystickZero = 0.0;
+    private final int weirdFourInMecanumCalcs = 4;
 
     @Override
     public void runOpMode() {
@@ -108,6 +108,10 @@ public class NewTeleopInProgress extends LinearOpMode {
         } else if (gamepad2.b) {
             closeRelicClaw();
         }
+
+        if (gamepad2.dpad_up && gamepad2.x) {
+            robot.resetLiftEncoder();
+        }
     }
 
     private void mecanumDrive() {
@@ -171,7 +175,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
                 (robot.getLeftServo(), robot.getClawPosition());
         ThreadedServoMovement moveRightServo = new ThreadedServoMovement
-                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
+                (robot.getRightServo(), 1.0 - robot.getClawPosition());
 
         //start servo objects
         moveLeftServo.start();
@@ -188,7 +192,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
                 (robot.getLeftServo(), robot.getClawPosition());
         ThreadedServoMovement moveRightServo = new ThreadedServoMovement
-                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
+                (robot.getRightServo(), 1.0 - robot.getClawPosition());
 
         //start servo objects
         moveLeftServo.start();
@@ -201,9 +205,16 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
+    /*private void siumulGlyph() {
+        ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
+                (robot.getLeftServo(), robot.getClawPosition());
+        ThreadedServoMovement moveRightServo = new ThreadedServoMovement
+                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
+    }*/
+
     private void zeroGlyphClaw() {
-        robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
-        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition() - robot.getClawPosition());
+        robot.getLeftServo().setPosition(0); //sorry for magic numbers
+        robot.getRightServo().setPosition(1);
     }
 
     private void relicArm() {
