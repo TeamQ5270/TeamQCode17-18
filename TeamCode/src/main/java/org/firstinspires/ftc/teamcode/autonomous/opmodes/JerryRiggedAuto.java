@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.mainauto.unittests;
 
-import com.disnodeteam.dogecv.detectors.JewelDetector;
+package org.firstinspires.ftc.teamcode.autonomous.opmodes;
+
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -10,15 +10,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
-import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.CV;
-import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.Utils;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Jewel Unit Test")
-public class JewelTest extends LinearOpMode {
+@Autonomous(name="JerryRiggedAutonomous")
+public class JerryRiggedAuto extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
@@ -40,6 +38,8 @@ public class JewelTest extends LinearOpMode {
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
 
+        GyroSensor gyro = hardwareMap.get(GyroSensor.class, "Sensor Gyro");     //Gyro to use when turning
+
         Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
 
         //Let user know that robot has been initialized
@@ -51,26 +51,41 @@ public class JewelTest extends LinearOpMode {
         int colorB = boardColor.blue();
         boolean sideColor = colorR>colorB;  //true if red
 
+        //get side of the field that the robot is on
+        boolean sideField = false;  //true if on doublebox side
+
         //Wait For Play, Start Timer
         waitForStart();
         runtime.reset();
 
-        CV cv = new CV();
+        /* ----- GAME STARTED ----- */
 
         //get the jewel and knock it off
+        float boardMoveDistance = 13.2f;
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
-        sleep(3000);
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),boardMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),boardMoveDistance,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        sleep(1000);
         //knock off the jewel
         //get the color of the jewel and swing servo
         jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
-        sleep(3000);
+        sleep(1000);
         //wait for the servo
-        jewelServo.setPosition(servoHalfDistance);
+        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-boardMoveDistance,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        sleep(1000);
 
-        jewelServo.setPosition(Utils.getJewelOrder() == JewelDetector.JewelOrder.RED_BLUE ? servoFullDistance : servoNoDistance);
+
+        String movement = "180,36.0,-180,0\n" +
+                "268.7546357332317,19.038979978472838,-88.75463573323168,1\n";
+
+        //calculate and move to the position to get the glyph in the box
+        PathBasedMovement.followPath(movement,sideColor,robot.getLeftDriveMotors(),robot.getRightDriveMotors(),gyro);
 
         //End OpMode
         stop();
