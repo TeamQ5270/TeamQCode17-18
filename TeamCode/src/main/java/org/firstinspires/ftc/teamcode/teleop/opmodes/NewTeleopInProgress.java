@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
@@ -26,6 +27,8 @@ public class NewTeleopInProgress extends LinearOpMode {
     private final double motorZeroPower = 0.0;
     private final double joystickZero = 0.0;
     private final int weirdFourInMecanumCalcs = 4;
+
+    private boolean encoderLimEnabled = true;
 
     @Override
     public void runOpMode() {
@@ -99,9 +102,9 @@ public class NewTeleopInProgress extends LinearOpMode {
             robot.getMotorRelicArm().setPower(motorZeroPower);
         }
 
-        if (gamepad2.y || gamepad2.a) {
-            rotateClaw();
-        }
+        /*if (gamepad2.y || gamepad2.a) {
+            rotateClawCR();
+        }*/
 
         if (gamepad2.x) {
             openRelicClaw();
@@ -109,8 +112,12 @@ public class NewTeleopInProgress extends LinearOpMode {
             closeRelicClaw();
         }
 
-        if (gamepad2.dpad_up && gamepad2.x) {
-            robot.resetLiftEncoder();
+        if (gamepad2.dpad_up) {
+            encoderLimEnabled = false;
+            robot.getMotorLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.getMotorLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else {
+            encoderLimEnabled = true;
         }
     }
 
@@ -146,10 +153,14 @@ public class NewTeleopInProgress extends LinearOpMode {
     private void glyphLift() {
         if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
                 && robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
-                && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()) {
+                && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()
+                && encoderLimEnabled) {
 
             robot.getMotorLift().setPower(gamepad2.right_stick_y);
 
+        } else if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
+                && !encoderLimEnabled) {
+            robot.getMotorLift().setPower(gamepad2.right_stick_y);
         } else {
             //Allow lift to return to the safe zone if it is at max or min
             if (gamepad2.right_stick_y > joystickZero
@@ -163,7 +174,6 @@ public class NewTeleopInProgress extends LinearOpMode {
                 robot.getMotorLift().setPower(motorZeroPower);
             }
         }
-
     }
 
 
@@ -252,6 +262,14 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
 
     }
+
+/*    private void rotateClawCR() {
+        if (gamepad2.a) {
+            robot.getRelicCR().setPower(-0.5);
+        } else if (gamepad2.y) {
+            robot.getRelicCR().setPower(0.5);
+        }
+    }*/
 
     private void openRelicClaw() {
 

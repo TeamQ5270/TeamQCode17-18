@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.utilities;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 
@@ -88,8 +89,8 @@ public class MultiMotor {
         return Math.max(min, Math.min(max, val));
     }
 
-    public static void bestTurn(DcMotor[] motors, DcMotor[] leftMotors, DcMotor[] rightMotors, int heading, GyroSensor gyro) {
-        while (!MultiMotor.turnBetter(leftMotors, rightMotors, (int) heading, gyro.getHeading(), 0.005f, 1)) {}
+    public static void bestTurn(DcMotor[] motors, DcMotor[] leftMotors, DcMotor[] rightMotors, int heading, GyroSensor gyro, LinearOpMode mode) {
+        while (!MultiMotor.turnBetter(leftMotors, rightMotors, (int) heading, gyro.getHeading(), 0.005f, 1)&&mode.opModeIsActive()) {}
         MultiMotor.setPower(motors, 0);
     }
 }

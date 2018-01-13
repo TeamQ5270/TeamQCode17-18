@@ -23,7 +23,7 @@ public class JerryRiggedAuto extends LinearOpMode {
 
     //TODO verify and correct these constants
     private final double maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private double straightPower = 0.75f;           //power when moving
+    private double straightPower = 0.5f;           //power when moving
     private double turnPower = 0.25f;               //when turning
     private double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
     private double servoFullDistance = 1f;          //pivoted towards the jewel sensor
@@ -61,24 +61,27 @@ public class JerryRiggedAuto extends LinearOpMode {
         /* ----- GAME STARTED ----- */
 
         //get the jewel and knock it off
-        float boardMoveDistance = 13.2f;
+        float boardMoveDistance = 11.5f;
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
+        sleep(500);
         //move to the jewel
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),boardMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),boardMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
-        sleep(1000);
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(500);
         //knock off the jewel
         //get the color of the jewel and swing servo
         jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
-        sleep(1000);
+        sleep(1500);
         //wait for the servo
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-boardMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
-        sleep(1000);
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(500);
 
         //End OpMode
         stop();

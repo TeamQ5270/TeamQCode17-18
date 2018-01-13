@@ -31,10 +31,13 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         Robot robot = new Robot();
         robot.init(hardwareMap);
 
+
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
 
         GyroSensor gyro = hardwareMap.get(GyroSensor.class, "Sensor Gyro");     //Gyro to use when turning
+
+        gyro.calibrate();
 
         Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
 
@@ -57,35 +60,45 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         /* ----- GAME STARTED ----- */
 
         //get the jewel and knock it off
-        float boardMoveDistance = 13.2f;
+        float boardMoveDistance = 11.5f;
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
         //move to the jewel
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),boardMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),boardMoveDistance,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
-        sleep(1000);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(500);
         //knock off the jewel
         //get the color of the jewel and swing servo
         jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
-        sleep(1000);
+        sleep(1500);
         //wait for the servo
         MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-boardMoveDistance,(float)straightPower,4);
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
         sleep(1000);
 
         //turn 90 degrees
-        MultiMotor.bestTurn(robot.getDriveMotors(),robot.getLeftDriveMotors(),robot.getRightDriveMotors(),90,gyro);
+        sleep(1000);
+        MultiMotor.turnToPositionAndyMark40(robot.getDriveMotors(),robot.getLeftDriveMotors(),90,(float)turnPower);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
         //go straight for a bit
         MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),36,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
         //turn 90 degrees
-        MultiMotor.bestTurn(robot.getDriveMotors(),robot.getLeftDriveMotors(),robot.getRightDriveMotors(),90,gyro);
+        sleep(1000);
+        MultiMotor.turnToPositionAndyMark40(robot.getDriveMotors(),robot.getLeftDriveMotors(),90,(float)turnPower);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
         //go straight for a bit
         MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),18.6f,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())) {}
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
 
         //End OpMode
         stop();

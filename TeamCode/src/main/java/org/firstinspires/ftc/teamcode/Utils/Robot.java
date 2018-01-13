@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -21,7 +22,7 @@ public class Robot {
     private Servo leftServo = null;
     private Servo rightServo = null;
 
-    private Servo relicRotatorServo = null;
+    private CRServo relicRotatorServo = null;
     private Servo relicClawServo = null;
 
     //declare other variables
@@ -153,7 +154,7 @@ public class Robot {
         leftServo = hwMap.servo.get("Servo Glyph L");
         rightServo = hwMap.servo.get("Servo Glyph R");
 
-        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
+        relicRotatorServo = hwMap.crservo.get("Servo Relic Rotator");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
 
         //assign motor directions
@@ -263,7 +264,7 @@ public class Robot {
         return relicLimitRetracted;
     }
 
-    public Servo getRelicRotatorServo() {
+    public CRServo getRelicRotatorServo() {
         return relicRotatorServo;
     }
 
