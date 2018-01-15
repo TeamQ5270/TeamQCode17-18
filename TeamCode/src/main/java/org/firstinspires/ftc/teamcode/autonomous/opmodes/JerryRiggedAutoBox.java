@@ -17,13 +17,12 @@ public class JerryRiggedAutoBox extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    //TODO verify and correct these constants
     private final double maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private double straightPower = 0.75f;           //power when moving
-    private double turnPower = 0.25f;               //when turning
-    private double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
-    private double servoFullDistance = 1f;          //pivoted towards the jewel sensor
-    private double servoNoDistance = 0f;            //away from the jewel sensor
+    private final double straightPower = 0.75f;           //power when moving
+    private final double turnPower = 0.25f;               //when turning
+    private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
+    private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
+    private final double servoNoDistance = 0f;            //away from the jewel sensor
 
     @Override
     public void runOpMode() {
@@ -58,7 +57,7 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         runtime.reset();
 
         /* ----- GAME STARTED ----- */
-
+/*
         //get the jewel and knock it off
         float boardMoveDistance = 11.5f;
         //move the servo out
@@ -71,7 +70,7 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         sleep(500);
         //knock off the jewel
         //get the color of the jewel and swing servo
-        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
+        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) *//* Servo is facing the same jewel as the side *//*
                 ? servoFullDistance:servoNoDistance);
         sleep(1500);
         //wait for the servo
@@ -79,7 +78,21 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
-        sleep(1000);
+        sleep(1000);*/
+//go straight for a bit
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),1,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+
+
+        //grab the cube
+        robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
+
+
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-1,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
 
         //turn 90 degrees
         sleep(1000);
@@ -87,7 +100,7 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
         //go straight for a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),36,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-36,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
         //turn 90 degrees
@@ -96,9 +109,19 @@ public class JerryRiggedAutoBox extends LinearOpMode {
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
         //go straight for a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),18.6f,(float)straightPower,4);
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-18.6f,(float)straightPower,4);
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
+
+
+        robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
+
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),6f,(float)straightPower,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+
+
 
         //End OpMode
         stop();

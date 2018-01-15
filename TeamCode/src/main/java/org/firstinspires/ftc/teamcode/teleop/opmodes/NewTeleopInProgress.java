@@ -102,15 +102,26 @@ public class NewTeleopInProgress extends LinearOpMode {
             robot.getMotorRelicArm().setPower(motorZeroPower);
         }
 
-        /*if (gamepad2.y || gamepad2.a) {
-            rotateClawCR();
+        /*if (gamepad2.a) {
+            robot.getRelicRotatorCR().setPower(0.25);
+        } else if (gamepad2.y){
+            robot.getRelicRotatorCR().setPower(-0.25);
+        } else {
+            robot.getRelicRotatorCR().setPower(-0.5);
         }*/
 
-        if (gamepad2.x) {
-            openRelicClaw();
-        } else if (gamepad2.b) {
-            closeRelicClaw();
+        if (gamepad2.a || gamepad2.y) {
+            rotateClaw();
         }
+
+
+
+        if (gamepad2.x) {
+            robot.getRelicClawServo().setPosition(0);
+        }
+
+        if (gamepad2.b) {
+            robot.getRelicClawServo().setPosition(1);        }
 
         if (gamepad2.dpad_up) {
             encoderLimEnabled = false;
@@ -215,13 +226,6 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
-    /*private void siumulGlyph() {
-        ThreadedServoMovement moveLeftServo = new ThreadedServoMovement
-                (robot.getLeftServo(), robot.getClawPosition());
-        ThreadedServoMovement moveRightServo = new ThreadedServoMovement
-                (robot.getRightServo(), robot.getGlyphServoMaxPosition() - robot.getClawPosition());
-    }*/
-
     private void zeroGlyphClaw() {
         robot.getLeftServo().setPosition(0); //sorry for magic numbers
         robot.getRightServo().setPosition(1);
@@ -250,46 +254,58 @@ public class NewTeleopInProgress extends LinearOpMode {
     }
 
     private void rotateClaw() {
-        //TODO finish this method
 
-        robot.getRelicRotatorServo().setPosition(robot.getRelicRotatorServoPosition());
+        /*robot.getRelicRotatorServo().setPosition(robot.getRelicRotatorServoPosition());
         if (robot.getRelicRotatorServoPosition() >= robot.getRelicRotatorServoMinPosition()
                 && gamepad2.y) {
             robot.setRelicRotatorServoPosition(robot.getRelicRotatorServoPosition() + robot.getServoIncrement());
         } else if (robot.getRelicRotatorServoPosition() <= robot.getRelicRotatorServoMaxPosition()
                 && gamepad2.a) {
             robot.setRelicRotatorServoPosition(robot.getRelicRotatorServoPosition() - robot.getServoIncrement());
+        }*/
+
+        if (gamepad2.a) {
+            robot.getRelicRotatorServo().setPosition(1);
+
+        } else if (gamepad2.y) {
+            robot.getRelicRotatorServo().setPosition(0);
         }
 
     }
 
 /*    private void rotateClawCR() {
         if (gamepad2.a) {
-            robot.getRelicCR().setPower(-0.5);
+            robot.getRelicRotatorCR().setPower(-0.5);
         } else if (gamepad2.y) {
-            robot.getRelicCR().setPower(0.5);
+            robot.getRelicRotatorCR().setPower(0.5);
+        } else {
+            robot.getRelicRotatorCR().setPower(0);
         }
     }*/
 
     private void openRelicClaw() {
 
-        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
+        /*robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
 
         if (robot.getRelicClawServoPosition() >= robot.getRelicClawServoMinPosition()) {
 
             robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() + robot.getServoIncrement());
-        }
+        }*/
+
+        robot.getRelicClawServo().setPosition(0.4);
 
     }
 
     private void closeRelicClaw() {
 
-        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
-        if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
+        /*if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
 
             robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() - robot.getServoIncrement());
         }
 
+        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());*/
+
+        robot.getRelicClawServo().setPosition(0.1);
 
     }
 }
