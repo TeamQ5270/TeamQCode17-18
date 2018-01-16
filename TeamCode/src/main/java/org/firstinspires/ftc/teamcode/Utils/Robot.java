@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 
 public class Robot {
@@ -22,6 +24,7 @@ public class Robot {
     private Servo rightServo = null;
 
     private Servo relicRotatorServo = null;
+    private CRServo relicRotatorCR = null;
     private Servo relicClawServo = null;
 
     //declare other variables
@@ -29,10 +32,19 @@ public class Robot {
 
     //declare glyph claw variables
     //adjust these to adjust how far the claw opens and closes
-    private static final double glyphServoMaxPosition = 0.65; //closed
+    private static final double glyphServoMaxPosition = 0.55; //closed
     private static final double glyphServoMinPosition = 0.1; //open
-    private double clawPosition = 0.0; //start open, with servos at minimum position
+    private double clawPosition = glyphServoMinPosition; //start open, with servos at minimum position
 
+
+    //left servo
+    private static final double lGlyphMin = 0.1;
+    private static final double lGlyphMax = 0.65;
+    private double lGlyphPos = lGlyphMin;
+
+    private static final double rGlyphMin = 0.65;
+    private static final double rGlyphMax = 0.1;
+    private double rGlyphPos = rGlyphMin;
 
     //relic rotator servo
     private static final double relicRotatorServoMaxPosition = 1.0;
@@ -50,10 +62,10 @@ public class Robot {
 
     //lift limit variables
     private final int liftTop = -5600;
-    private final int liftBottom = 50;
+    private final int liftBottom = -120;
 
     private final int relicLimitExtended = 7000;
-    private final int relicLimitRetracted = 50;
+    private final int relicLimitRetracted = -50;
 
     HardwareMap hwMap = null;
 
@@ -146,6 +158,9 @@ public class Robot {
 
         relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
+        //relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
+
+        //relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
 
         //assign motor directions
         //keep the directions as follows or else bad stuff happens:
@@ -161,7 +176,10 @@ public class Robot {
         motorRelicArm.setDirection(DcMotor.Direction.FORWARD);
     }
 
-
+    public void resetLiftEncoder() {
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
     public DcMotor[] getDriveMotors() {
 
@@ -175,6 +193,10 @@ public class Robot {
             motorRightBack
         };
     }
+
+    /*public CRServo getRelicRotatorCR() {
+        return relicRotatorCR;
+    }*/
 
     public DcMotor[] getLeftDriveMotors() {
 
