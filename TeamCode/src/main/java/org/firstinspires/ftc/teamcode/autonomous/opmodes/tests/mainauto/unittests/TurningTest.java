@@ -19,7 +19,7 @@ public class TurningTest extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     private final double maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private final double straightPower = 0.5f;           //power when moving
+    private final double straightPower = 0.25f;           //power when moving
     private final double turnPower = 0.25f;               //when turning
     private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
