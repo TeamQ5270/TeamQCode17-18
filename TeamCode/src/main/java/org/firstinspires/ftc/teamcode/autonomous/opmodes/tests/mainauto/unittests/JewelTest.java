@@ -70,7 +70,7 @@ public class JewelTest extends LinearOpMode {
         //wait for the servo
         jewelServo.setPosition(servoHalfDistance);
 
-        jewelServo.setPosition(Utils.getJewelOrder() == JewelDetector.JewelOrder.RED_BLUE ? servoFullDistance : servoNoDistance);
+//        jewelServo.setPosition(Utils.getJewelOrder() == JewelDetector.JewelOrder.RED_BLUE ? servoFullDistance : servoNoDistance);
 
         //End OpMode
         stop();
