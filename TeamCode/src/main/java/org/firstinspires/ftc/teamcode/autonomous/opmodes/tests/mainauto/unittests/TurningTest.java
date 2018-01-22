@@ -18,9 +18,9 @@ public class TurningTest extends LinearOpMode {
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    private final double maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private final double straightPower = 0.25f;           //power when moving
-    private final double turnPower = 0.25f;               //when turning
+    private final float maxTimeVuforia = 5;        //max time (in seconds) to look for a target
+    private final float straightPower = 0.25f;           //power when moving
+    private final float turnPower = 0.25f;               //when turning
     private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
     private final double servoNoDistance = 0f;            //away from the jewel sensor
@@ -58,75 +58,52 @@ public class TurningTest extends LinearOpMode {
         runtime.reset();
 
         /* ----- GAME STARTED ----- */
-        float boardMoveDistance = 9f;
+        float boardMoveDistance = 8f;
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
+
         //move to the jewel
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),boardMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),boardMoveDistance,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
-        sleep(1500);
+        MultiMotor.bestMove(robot,boardMoveDistance,straightPower,this);
+
         //knock off the jewel
         //get the color of the jewel and swing servo
         jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
         sleep(1500);
+
         //wait for the servo
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),-boardMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-boardMoveDistance,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
-        sleep(1500);
+        MultiMotor.bestMove(robot,-boardMoveDistance,straightPower,this);
 
         //go straight for a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),1,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
-
+        MultiMotor.bestMove(robot,1,straightPower,this);
 
         //grab the cube
         robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
         robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
-
-
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-1,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        MultiMotor.bestMove(robot,-1,straightPower,this);
 
         //turn 90 degrees
-        sleep(1000);
-        MultiMotor.turnToPositionAndyMark40(robot.getDriveMotors(),robot.getLeftDriveMotors(),90,(float)turnPower);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(100);
+        MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
         //go straight for a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-36,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        MultiMotor.bestMove(robot,-36,straightPower,this);
         //turn 90 degrees
-        sleep(1000);
-        MultiMotor.turnToPositionAndyMark40(robot.getDriveMotors(),robot.getLeftDriveMotors(),90,(float)turnPower);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
-        //go straight for a bit
-        ElapsedTime stalltimer = new ElapsedTime();
-        stalltimer.reset();
-        stalltimer.startTime();
-        int timeoutTime = 3;
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),-18.6f,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()&&stalltimer.time()<=timeoutTime) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(100);
+        MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
 
-        sleep(1000);
+        //go straight for a bit
+        sleep(100);
+        MultiMotor.bestMove(robot,-18.6f,straightPower,2,this);
+
+        sleep(100);
         robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
         robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
 
-        sleep(1500);
-        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),6f,(float)straightPower,4);
-        while (MultiMotor.busyMotors(robot.getDriveMotors())&&opModeIsActive()) {}
-        MultiMotor.setPower(robot.getDriveMotors(), 0);
+        sleep(1000);
+        MultiMotor.bestMove(robot,6,straightPower,this);
 
-
+        sleep(100);
+        MultiMotor.bestTurn(robot,180,turnPower,this);
 
         //End OpMode
         stop();

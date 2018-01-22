@@ -4,6 +4,9 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Utils.Robot;
 
 /**
  * Created by John_Kesler on 11/9/2017.
@@ -92,5 +95,25 @@ public class MultiMotor {
     public static void bestTurn(DcMotor[] motors, DcMotor[] leftMotors, DcMotor[] rightMotors, int heading, GyroSensor gyro, LinearOpMode mode) {
         while (!MultiMotor.turnBetter(leftMotors, rightMotors, (int) heading, gyro.getHeading(), 0.005f, 1)&&mode.opModeIsActive()) {}
         MultiMotor.setPower(motors, 0);
+    }
+
+    public static void bestTurn(Robot r, float degrees, float power, LinearOpMode m) {
+        turnToPositionAndyMark40(r.getLeftDriveMotors(),r.getRightDriveMotors(),degrees,power);
+        while (MultiMotor.busyMotors(r.getDriveMotors())&&m.opModeIsActive()) {}
+        MultiMotor.setPower(r.getDriveMotors(), 0);
+    }
+
+    public static void bestMove(Robot robot, float distance, float power, LinearOpMode m) {
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),distance,power,4);
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&m.opModeIsActive()) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
+    }
+
+    public static void bestMove(Robot robot, float distance, float power, float timeout, LinearOpMode m) {
+        MultiMotor.moveToPositionAndyMark40(robot.getDriveMotors(),distance,power,4);
+        ElapsedTime stalltimer = new ElapsedTime();
+        stalltimer.reset();
+        while (MultiMotor.busyMotors(robot.getDriveMotors())&&m.opModeIsActive()&&stalltimer.seconds()<=timeout) {}
+        MultiMotor.setPower(robot.getDriveMotors(), 0);
     }
 }
