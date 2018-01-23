@@ -9,8 +9,10 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
+import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="JerryRiggedTurnTest")
 public class TurningTest extends LinearOpMode {
@@ -53,6 +55,29 @@ public class TurningTest extends LinearOpMode {
         //get side of the field that the robot is on
         boolean sideField = false;  //true if on doublebox side
 
+        //Read the vuforia vumark(tm)
+        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
+        while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
+            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+                telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
+                telemetry.update();
+                break;
+            }
+            targetImage = vuforiaManager.getvisibleTarget();
+        }
+        telemetry.addData("Vuforia Target: ", targetImage.toString());
+
+        float chargeDistance = -33;
+        switch(targetImage) {
+            case LEFT:
+                chargeDistance+=6;
+                break;
+            case RIGHT:
+                chargeDistance-=6;
+                break;
+        }
+
         //Wait For Play, Start Timer
         waitForStart();
         runtime.reset();
@@ -81,12 +106,12 @@ public class TurningTest extends LinearOpMode {
 
         //turn 90 degrees
         sleep(100);
-        MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
+        MultiMotor.bestTurn(robot,sideColor?-90:90,turnPower,this);
         //go straight for a bit
-        MultiMotor.bestMove(robot,-33,straightPower,3,this);
+        MultiMotor.bestMove(robot,chargeDistance,straightPower,3,this);
         //turn 90 degrees
         sleep(100);
-        MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
+        MultiMotor.bestTurn(robot,sideColor?-90:90,turnPower,this);
 
         sleep(100);
         robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
