@@ -19,7 +19,7 @@ public class TurningTest extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
 
     private final float maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private final float straightPower = 0.25f;           //power when moving
+    private final float straightPower = 1f;           //power when moving
     private final float turnPower = 0.25f;               //when turning
     private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
@@ -63,7 +63,7 @@ public class TurningTest extends LinearOpMode {
         jewelServo.setPosition(servoHalfDistance);
 
         //move to the jewel
-        MultiMotor.bestMove(robot,boardMoveDistance,straightPower,this);
+        MultiMotor.bestMove(robot,boardMoveDistance,straightPower/2,this);
 
         //knock off the jewel
         //get the color of the jewel and swing servo
@@ -72,35 +72,32 @@ public class TurningTest extends LinearOpMode {
         sleep(1500);
 
         //wait for the servo
-        MultiMotor.bestMove(robot,-boardMoveDistance,straightPower,this);
-
-        //go straight for a bit
-        MultiMotor.bestMove(robot,1,straightPower,this);
+        MultiMotor.bestMove(robot,-boardMoveDistance-2,straightPower,this);
 
         //grab the cube
         robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
         robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
-        MultiMotor.bestMove(robot,-1,straightPower,this);
+        MultiMotor.bestMove(robot,-4,straightPower,this);
 
         //turn 90 degrees
         sleep(100);
         MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
         //go straight for a bit
-        MultiMotor.bestMove(robot,-36,straightPower,this);
+        MultiMotor.bestMove(robot,-33,straightPower,3,this);
         //turn 90 degrees
         sleep(100);
         MultiMotor.bestTurn(robot,sideColor?270:90,turnPower,this);
 
+        sleep(100);
+        robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
+        robot.getRightServo().setPosition(1-robot.getGlyphServoMinPosition());
+
         //go straight for a bit
-        sleep(100);
-        MultiMotor.bestMove(robot,-18.6f,straightPower,2,this);
+        sleep(1500);
+        MultiMotor.bestMove(robot,-100f,straightPower,2,this);
 
         sleep(100);
-        robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
-        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
-
-        sleep(1000);
-        MultiMotor.bestMove(robot,6,straightPower,this);
+        MultiMotor.bestMove(robot,10,straightPower,this);
 
         sleep(100);
         MultiMotor.bestTurn(robot,180,turnPower,this);
