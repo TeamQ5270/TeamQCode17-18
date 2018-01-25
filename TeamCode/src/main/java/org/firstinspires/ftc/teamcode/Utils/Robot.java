@@ -24,7 +24,7 @@ public class Robot {
     private Servo rightServo = null;
 
     private Servo relicRotatorServo = null;
-    private CRServo relicRotatorCR = null;
+    private Servo relicRotator2Servo = null;
     private Servo relicClawServo = null;
 
     //declare other variables
@@ -157,6 +157,7 @@ public class Robot {
         rightServo = hwMap.servo.get("Servo Glyph R");
 
         relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
+        relicRotator2Servo = hwMap.servo.get("Servo Relic Rotator 2");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
         //relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
 
@@ -313,5 +314,9 @@ public class Robot {
 
     public void setRelicRotatorServoPosition(double relicRotatorServoPosition) {
         this.relicRotatorServoPosition = relicRotatorServoPosition;
+    }
+
+    public Servo getRelicRotator2Servo() {
+        return relicRotator2Servo;
     }
 }

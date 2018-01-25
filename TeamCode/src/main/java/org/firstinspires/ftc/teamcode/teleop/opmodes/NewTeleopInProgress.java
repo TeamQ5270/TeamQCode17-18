@@ -121,13 +121,13 @@ public class NewTeleopInProgress extends LinearOpMode {
         if (gamepad2.b) {
             robot.getRelicClawServo().setPosition(1);        }
 
-        /*if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_up) {
             encoderLimEnabled = false;
             robot.getMotorLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.getMotorLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         } else {
             encoderLimEnabled = true;
-        }*/
+        }
 
 
     }
@@ -179,6 +179,9 @@ public class NewTeleopInProgress extends LinearOpMode {
 
             } else if (gamepad2.right_stick_y < joystickZero
                     && robot.getMotorLift().getCurrentPosition() >= robot.getLiftBottom()) {
+                robot.getMotorLift().setPower(gamepad2.right_stick_y);
+            } else if (!encoderLimEnabled
+                    && Math.abs(gamepad2.right_stick_y) > joystickZero) {
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
             } else {
                 robot.getMotorLift().setPower(motorZeroPower);
