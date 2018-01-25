@@ -33,6 +33,7 @@ public class TurningTest extends LinearOpMode {
         Robot robot = new Robot();
         robot.init(hardwareMap);
 
+
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
 
