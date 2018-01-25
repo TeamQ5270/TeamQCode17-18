@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="SensorUnitTest")
+@Disabled
 public class SensorUnitTest extends LinearOpMode {
 
     //How long the game has run

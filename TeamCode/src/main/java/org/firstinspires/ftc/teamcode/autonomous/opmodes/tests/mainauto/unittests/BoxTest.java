@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.mainauto.unittes
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="Cryptobox Unit Test")
+@Disabled
 public class BoxTest extends LinearOpMode {
 
     //How long the game has run

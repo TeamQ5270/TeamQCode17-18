@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.mainauto.unittes
 import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="Jewel Unit Test")
+@Disabled
 public class JewelTest extends LinearOpMode {
 
     //How long the game has run
