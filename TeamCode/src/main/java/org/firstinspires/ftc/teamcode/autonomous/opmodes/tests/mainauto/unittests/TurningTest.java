@@ -22,7 +22,7 @@ public class TurningTest extends LinearOpMode {
 
     private final float maxTimeVuforia = 5;        //max time (in seconds) to look for a target
     private final float straightPower = 1f;           //power when moving
-    private final float turnPower = 0.25f;               //when turning
+    private final float turnPower = 0.5f;               //when turning
     private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
     private final double servoNoDistance = 0f;            //away from the jewel sensor
@@ -32,7 +32,6 @@ public class TurningTest extends LinearOpMode {
         //initialize robot
         Robot robot = new Robot();
         robot.init(hardwareMap);
-
 
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
@@ -58,7 +57,7 @@ public class TurningTest extends LinearOpMode {
         //Read the vuforia vumark(tm)
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
+        while (!opModeIsActive()) {                                           //while the timeout has not occued
             if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 telemetry.update();
@@ -67,6 +66,27 @@ public class TurningTest extends LinearOpMode {
             targetImage = vuforiaManager.getvisibleTarget();
         }
         telemetry.addData("Vuforia Target: ", targetImage.toString());
+        telemetry.update();
+
+        //Wait For Play, Start Timer
+        waitForStart();
+        runtime.reset();
+
+        /* ----- GAME STARTED ----- */
+        if (targetImage==RelicRecoveryVuMark.UNKNOWN) {
+            //rotate to the left and get the other image
+            MultiMotor.bestTurn(robot,30,1,this);
+            while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
+                if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+                    telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
+                    telemetry.update();
+                    break;
+                }
+                targetImage = vuforiaManager.getvisibleTarget();
+            }
+            telemetry.addData("Vuforia Target: ", targetImage.toString());
+            telemetry.update();
+        }
 
         float chargeDistance = -33;
         switch(targetImage) {
@@ -78,11 +98,6 @@ public class TurningTest extends LinearOpMode {
                 break;
         }
 
-        //Wait For Play, Start Timer
-        waitForStart();
-        runtime.reset();
-
-        /* ----- GAME STARTED ----- */
         float boardMoveDistance = 8f;
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
