@@ -76,8 +76,8 @@ public class AutonomousAudienceSide extends LinearOpMode {
         if (targetImage==RelicRecoveryVuMark.UNKNOWN) {
             //rotate to the left and get the other image
             MultiMotor.bestTurn(robot,30,1,this);
-            while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
-                if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+            while (runtime.seconds()<=maxTimeVuforia) {                                           //while the timeout has not occued
+                if (vuforiaManager.getvisibleTarget() != RelicRecoveryVuMark.UNKNOWN){   //If the camera has detected anything
                     telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                     telemetry.update();
                     break;
@@ -86,6 +86,7 @@ public class AutonomousAudienceSide extends LinearOpMode {
             }
             telemetry.addData("Vuforia Target: ", targetImage.toString());
             telemetry.update();
+            MultiMotor.bestTurn(robot,-30,1,this);
         }
 
         float chargeDistance = -33;
@@ -109,7 +110,7 @@ public class AutonomousAudienceSide extends LinearOpMode {
         //get the color of the jewel and swing servo
         jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
                 ? servoFullDistance:servoNoDistance);
-        sleep(1500);
+        sleep(500);
 
         //wait for the servo
         MultiMotor.bestMove(robot,-boardMoveDistance-2,straightPower,this);
@@ -133,7 +134,7 @@ public class AutonomousAudienceSide extends LinearOpMode {
         robot.getRightServo().setPosition(1-robot.getGlyphServoMinPosition());
 
         //go straight for a bit
-        sleep(1500);
+        sleep(100);
         MultiMotor.bestMove(robot,-100f,straightPower,2,this);
 
         sleep(100);

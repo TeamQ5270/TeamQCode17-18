@@ -61,7 +61,7 @@ public class Robot {
     private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
 
     //lift limit variables
-    private final int liftTop = -5600;
+    private final int liftTop = -5300;
     private final int liftBottom = -120;
 
     private final int relicLimitExtended = 7000;
