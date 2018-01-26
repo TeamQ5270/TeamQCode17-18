@@ -17,13 +17,12 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="ServoUnitTest")
-@Disabled
 public class ServoUnitTest extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
 
-    private double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
+    private double servoHalfDistance = 0.45f;        //The distance for the jewel servo to be straight out
     private double servoFullDistance = 1f;          //pivoted towards the jewel sensor
     private double servoNoDistance = 0f;            //away from the jewel sensor
 

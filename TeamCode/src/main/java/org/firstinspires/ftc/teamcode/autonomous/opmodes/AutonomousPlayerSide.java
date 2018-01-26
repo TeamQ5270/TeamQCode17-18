@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Autonomous Audience Side")
-public class AutonomousAudienceSide extends LinearOpMode {
+@Autonomous(name="Autonomous Player Side")
+public class AutonomousPlayerSide extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
@@ -22,7 +22,7 @@ public class AutonomousAudienceSide extends LinearOpMode {
     private final float maxTimeVuforia = 5;        //max time (in seconds) to look for a target
     private final float straightPower = 1f;           //power when moving
     private final float turnPower = 0.5f;               //when turning
-    private final double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
+    private final double servoHalfDistance = 0.45f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
     private final double servoNoDistance = 0f;            //away from the jewel sensor
 
