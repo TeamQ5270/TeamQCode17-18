@@ -50,6 +50,7 @@ public class Robot {
     private static final double relicRotatorServoMaxPosition = 1.0;
     private static final double relicRotatorServoMinPosition = 0.0;
     private double relicRotatorServoPosition = relicRotatorServoMinPosition; //start at one extreme
+    private CRServo relicRotatorCR;
 
     //relic claw servo
     private static final double relicClawServoMaxPosition = 1.0;
@@ -159,9 +160,9 @@ public class Robot {
         relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
         relicRotator2Servo = hwMap.servo.get("Servo Relic Rotator 2");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
-        //relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
+        relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
 
-        //relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
+        relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
 
         //assign motor directions
         //keep the directions as follows or else bad stuff happens:
@@ -195,9 +196,9 @@ public class Robot {
         };
     }
 
-    /*public CRServo getRelicRotatorCR() {
+    public CRServo getRelicRotatorCR() {
         return relicRotatorCR;
-    }*/
+    }
 
     public DcMotor[] getLeftDriveMotors() {
 
