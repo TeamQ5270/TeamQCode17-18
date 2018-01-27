@@ -27,6 +27,8 @@ public class Robot {
     private Servo relicRotator2Servo = null;
     private Servo relicClawServo = null;
 
+    private CRServo relicRotatorCR = null;
+
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
 
@@ -156,10 +158,9 @@ public class Robot {
         leftServo = hwMap.servo.get("Servo Glyph L");
         rightServo = hwMap.servo.get("Servo Glyph R");
 
-        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
-        relicRotator2Servo = hwMap.servo.get("Servo Relic Rotator 2");
+        //relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
-        //relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
+        relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
 
         //relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
 
@@ -195,9 +196,9 @@ public class Robot {
         };
     }
 
-    /*public CRServo getRelicRotatorCR() {
+    public CRServo getRelicRotatorCR() {
         return relicRotatorCR;
-    }*/
+    }
 
     public DcMotor[] getLeftDriveMotors() {
 
