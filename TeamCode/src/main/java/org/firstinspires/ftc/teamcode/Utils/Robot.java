@@ -52,7 +52,6 @@ public class Robot {
     private static final double relicRotatorServoMaxPosition = 1.0;
     private static final double relicRotatorServoMinPosition = 0.0;
     private double relicRotatorServoPosition = relicRotatorServoMinPosition; //start at one extreme
-    private CRServo relicRotatorCR;
 
     //relic claw servo
     private static final double relicClawServoMaxPosition = 1.0;
@@ -67,8 +66,8 @@ public class Robot {
     private final int liftTop = -5300;
     private final int liftBottom = -120;
 
-    private final int relicLimitExtended = 7000;
-    private final int relicLimitRetracted = -50;
+    private final int relicLimitExtended = 9999;
+    private final int relicLimitRetracted = -9999;
 
     HardwareMap hwMap = null;
 

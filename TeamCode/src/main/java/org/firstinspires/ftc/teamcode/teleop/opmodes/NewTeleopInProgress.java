@@ -28,6 +28,9 @@ public class NewTeleopInProgress extends LinearOpMode {
     private final double joystickZero = 0.0;
     private final int weirdFourInMecanumCalcs = 4;
 
+    private final float servoGrabSpeed = 0.05f;
+    private float servoGrabPosition = 0;
+
     private boolean encoderLimEnabled = true;
 
     @Override
@@ -120,10 +123,12 @@ public class NewTeleopInProgress extends LinearOpMode {
 
         //relic claw
         if (gamepad2.b) {
-            robot.getRelicClawServo().setPosition(1);
+            servoGrabPosition=servoGrabPosition+servoGrabSpeed<=1?servoGrabPosition+servoGrabSpeed:1;
         } else if (gamepad2.a) {
-            robot.getRelicClawServo().setPosition(0);
+            servoGrabPosition=servoGrabPosition+servoGrabSpeed>=0?servoGrabPosition-servoGrabSpeed:0;
         }//end relic claw
+
+        robot.getRelicClawServo().setPosition(servoGrabPosition);
 
 
 
@@ -132,10 +137,12 @@ public class NewTeleopInProgress extends LinearOpMode {
             encoderLimEnabled = false;
             robot.getMotorLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.getMotorLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        }
+        else if (gamepad2.dpad_down) {
             robot.getMotorRelicArm().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.getMotorRelicArm().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        } else {
+        }
+        else {
             encoderLimEnabled = true;
         }
 
@@ -247,17 +254,17 @@ public class NewTeleopInProgress extends LinearOpMode {
 
         if (robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitExtended()
                 && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitRetracted()) {
-            robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+            robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
         } else {
             //Allow lift to return to the safe zone if it is at max or min
-            if (gamepad2.left_stick_y > joystickZero
+            if (-gamepad2.left_stick_y > joystickZero
                     && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitExtended()) {
-                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+                robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
 
-            } else if (gamepad2.left_stick_y < joystickZero
+            } else if (-gamepad2.left_stick_y < joystickZero
                     && robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitRetracted()) {
 
-                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+                robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
 
             } else {
                 robot.getMotorRelicArm().setPower(motorZeroPower);
@@ -291,7 +298,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         if (gamepad2.right_trigger > robot.getDeadzone()) {
             robot.getRelicRotatorCR().setPower(-gamepad2.right_trigger);
         } else if (gamepad2.left_trigger > robot.getDeadzone()) {
-            robot.getRelicRotatorCR().setPower(gamepad1.left_trigger);
+            robot.getRelicRotatorCR().setPower(gamepad2.left_trigger);
         }
     }
 

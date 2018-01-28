@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Autonomous non-audience Side")
-public class AutonomousPlayerSide extends LinearOpMode {
+@Autonomous(name="Autonomous aud Side RUN THIS ONE FOR AUDIENCE")
+public class AutonomousAudienceSide extends LinearOpMode {
 
     //How long the game has run
     private final ElapsedTime runtime = new ElapsedTime();
@@ -52,7 +52,7 @@ public class AutonomousPlayerSide extends LinearOpMode {
         boolean sideColor = colorR>colorB;  //true if red
 
         //get side of the field that the robot is on
-        boolean sideField = false;  //true if on doublebox side
+        boolean sideField = true;  //true if on doublebox side
 
         //Read the vuforia vumark(tm)
         VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
@@ -119,21 +119,21 @@ public class AutonomousPlayerSide extends LinearOpMode {
         robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
         robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
 
-
         MultiMotor.bestMove(robot,-4,straightPower,this);
 
         //turn 90 degrees
         sleep(100);
-        MultiMotor.bestTurn(robot,sideColor?-270:270,turnPower,this);
+        MultiMotor.bestTurn(robot,sideColor?-90:90,turnPower,this);
         //go straight for a bit
         MultiMotor.bestMove(robot,chargeDistance,straightPower,3,this);
         //turn 90 degrees
         sleep(100);
-        MultiMotor.bestTurn(robot,sideColor?-270:270,turnPower,this);
+        MultiMotor.bestTurn(robot,sideColor?-90:90,turnPower,this);
 
         sleep(100);
         robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
         robot.getRightServo().setPosition(1-robot.getGlyphServoMinPosition());
+
 
         //go straight for a bit
         sleep(100);
