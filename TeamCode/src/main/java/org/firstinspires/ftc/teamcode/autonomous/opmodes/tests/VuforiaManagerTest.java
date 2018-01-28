@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -50,6 +51,7 @@ import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+@Disabled
 @Autonomous(name="VisionTarkerManagerTes", group="Linear Opmode")
 public class VuforiaManagerTest extends LinearOpMode {
 

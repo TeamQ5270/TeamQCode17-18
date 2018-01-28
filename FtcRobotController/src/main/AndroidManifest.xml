@@ -2,10 +2,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.qualcomm.ftcrobotcontroller"
-          android:versionCode="24"
-          android:versionName="3.4">
+          android:versionCode="25"
+          android:versionName="3.5">
 
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <supports-screens   android:resizeable="true"
+      android:smallScreens="true"
+      android:normalScreens="true"
+      android:largeScreens="true"
+      android:anyDensity="true" />
+
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-feature android:name="android.hardware.camera" android:required="false"/>
+  <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+  <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+  <uses-feature android:name="android.hardware.camera.front.autofocus" android:required="false"/>
+
+  <!--&lt;!&ndash; Allows access to the flashlight &ndash;&gt;-->
+  <!--<permission android:name="android.permission.FLASHLIGHT"-->
+      <!--android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"-->
+      <!--android:protectionLevel="normal"-->
+      <!--android:label="@string/permlab_flashlight" />-->
+  <!-- Allows access to the flashlight -->
+
+  <!--<permission android:name="android.permission.FLASHLIGHT"-->
+      <!--android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"-->
+      <!--android:protectionLevel="normal"-->
+      <!--android:label="@string/permlab_flashlight" />-->
 
   <application
     android:allowBackup="true"

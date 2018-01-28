@@ -36,6 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
+@Disabled
 @Autonomous(name = "Color Sensor Display")
 public class ColorSensorDisplay extends OpMode {
 
