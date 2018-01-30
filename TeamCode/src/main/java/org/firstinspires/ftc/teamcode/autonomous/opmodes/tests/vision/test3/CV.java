@@ -90,7 +90,7 @@ public class CV implements CameraBridgeViewBase.CvCameraViewListener2{
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Utils.setJewelOrder(detectors.getJewelDetector().getCurrentOrder());
-        return detectors.processJewel(inputFrame.rgba());
+        return detectors.processGlyph(inputFrame.rgba());
     }
 
     @Override
