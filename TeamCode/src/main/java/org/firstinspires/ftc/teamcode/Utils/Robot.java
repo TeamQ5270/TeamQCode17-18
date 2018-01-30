@@ -24,8 +24,10 @@ public class Robot {
     private Servo rightServo = null;
 
     private Servo relicRotatorServo = null;
-    private CRServo relicRotatorCR = null;
+    private Servo relicRotator2Servo = null;
     private Servo relicClawServo = null;
+
+    private CRServo relicRotatorCR = null;
 
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
@@ -61,11 +63,11 @@ public class Robot {
     private static final double servoIncrement = 0.008; //adjust this to adjust the speed of all servos
 
     //lift limit variables
-    private final int liftTop = -5600;
+    private final int liftTop = -5300;
     private final int liftBottom = -120;
 
-    private final int relicLimitExtended = 7000;
-    private final int relicLimitRetracted = -50;
+    private final int relicLimitExtended = 9999;
+    private final int relicLimitRetracted = -9999;
 
     HardwareMap hwMap = null;
 
@@ -156,11 +158,11 @@ public class Robot {
         leftServo = hwMap.servo.get("Servo Glyph L");
         rightServo = hwMap.servo.get("Servo Glyph R");
 
-        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
+        //relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
         relicClawServo = hwMap.servo.get("Servo Relic Claw");
-        //relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
+        relicRotatorCR = hwMap.crservo.get("Servo Relic Rotator");
 
-        //relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
+        relicRotatorCR.setDirection(CRServo.Direction.FORWARD);
 
         //assign motor directions
         //keep the directions as follows or else bad stuff happens:
@@ -194,9 +196,9 @@ public class Robot {
         };
     }
 
-    /*public CRServo getRelicRotatorCR() {
+    public CRServo getRelicRotatorCR() {
         return relicRotatorCR;
-    }*/
+    }
 
     public DcMotor[] getLeftDriveMotors() {
 
@@ -313,5 +315,9 @@ public class Robot {
 
     public void setRelicRotatorServoPosition(double relicRotatorServoPosition) {
         this.relicRotatorServoPosition = relicRotatorServoPosition;
+    }
+
+    public Servo getRelicRotator2Servo() {
+        return relicRotator2Servo;
     }
 }

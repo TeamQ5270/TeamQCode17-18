@@ -18,13 +18,14 @@ public class RelicTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double rotatorServoPos = Utils.map(gamepad2.left_stick_y, -1, 1, 0, 1);
+
             double clawServoPos = Utils.map(gamepad2.right_stick_y, -1, 1, 0, 1);
 
-            robot.getRelicRotatorServo().setPosition(rotatorServoPos);
+
+            robot.getRelicRotatorCR().setPower(-gamepad1.right_stick_y);
             robot.getRelicClawServo().setPosition(clawServoPos);
 
-            telemetry.addData("Rotator Servo: ", rotatorServoPos);
+
             telemetry.addData("Claw Servo: ", clawServoPos);
             telemetry.update();
         }

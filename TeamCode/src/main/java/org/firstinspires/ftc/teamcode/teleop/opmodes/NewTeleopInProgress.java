@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
-@TeleOp(name = "Refactored TeleOp Drive Code IN PROGRESS", group = "Linear Opmode")
+@TeleOp(name = "TeleOp Drive Code - Current Version", group = "Linear Opmode")
 
 public class NewTeleopInProgress extends LinearOpMode {
 
@@ -28,6 +28,9 @@ public class NewTeleopInProgress extends LinearOpMode {
     private final double joystickZero = 0.0;
     private final int weirdFourInMecanumCalcs = 4;
 
+    private final float servoGrabSpeed = 0.05f;
+    private float servoGrabPosition = 0;
+
     private boolean encoderLimEnabled = true;
 
     @Override
@@ -43,6 +46,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         //wait until driver presses PLAY
         waitForStart();
 
+        //sets glyph claw to open
         zeroGlyphClaw();
 
         //run until OpMode is stopped
@@ -51,12 +55,13 @@ public class NewTeleopInProgress extends LinearOpMode {
 
             telemetry.addData("Lift position: ", robot.getMotorLift().getCurrentPosition());
             telemetry.update();
-
             telemetry.addData("Lift servo position: ", robot.getClawPosition());
         }
     }
 
     private void controlRobot() {
+
+        //mecanum driving
         if (Math.abs(gamepad1.left_stick_x) > robot.getDeadzone()
                 || Math.abs(gamepad1.left_stick_y) > robot.getDeadzone()
                 || Math.abs(gamepad1.right_stick_x) > robot.getDeadzone()) {
@@ -68,8 +73,10 @@ public class NewTeleopInProgress extends LinearOpMode {
                 && Math.abs(gamepad1.right_stick_y) < robot.getDeadzone()) {
 
             mecanumDriveStop();
-        }
+        } //end mecanum driving
 
+
+        //glyph lift
         if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()) {
 
             glyphLift();
@@ -78,11 +85,9 @@ public class NewTeleopInProgress extends LinearOpMode {
             robot.getMotorLift().setPower(motorZeroPower);
         } else {
             robot.getMotorLift().setPower(motorZeroPower);
-        }
+        } //end glyph lift
 
-        if (Math.abs(gamepad2.right_stick_y) <= robot.getDeadzone()) {
-            robot.getMotorLift().setPower(motorZeroPower);
-        }
+
 
         if (gamepad2.left_bumper) {
             openGlyphClaw();
@@ -90,44 +95,56 @@ public class NewTeleopInProgress extends LinearOpMode {
             closeGlyphClaw();
         }
 
-        if (Math.abs(gamepad2.right_trigger) > robot.getDeadzone()
+        /*if (Math.abs(gamepad2.right_trigger) > robot.getDeadzone()
                 || Math.abs(gamepad2.left_trigger) > robot.getDeadzone()) {
             glyphClawTriggers();
-        }
+        }*/
 
+
+        //relic arm
         if (Math.abs(gamepad2.left_stick_y) > robot.getDeadzone()) {
             relicArm();
         } else if (Math.abs(gamepad2.left_stick_y) <= robot.getDeadzone()) {
             robot.getMotorRelicArm().setPower(motorZeroPower);
         } else {
             robot.getMotorRelicArm().setPower(motorZeroPower);
-        }
-
-        if (Math.abs(gamepad2.left_stick_y) <= robot.getDeadzone()) {
-            robot.getMotorRelicArm().setPower(motorZeroPower);
-        }
+        }//end relic arm
 
 
-        if (gamepad2.a || gamepad2.y) {
-            rotateClaw();
-        }
+        //rotator
+        if (gamepad2.left_trigger > robot.getDeadzone()
+                || gamepad2.right_trigger > robot.getDeadzone()) {
+            rotateClawCR();
+        } else {
+            robot.getRelicRotatorCR().setPower(0);
+        } //end rotator
 
 
 
-        if (gamepad2.x) {
-            //relic claw servo
-        }
-
+        //relic claw
         if (gamepad2.b) {
-            robot.getRelicClawServo().setPosition(1);        }
+            servoGrabPosition=servoGrabPosition+servoGrabSpeed<=1?servoGrabPosition+servoGrabSpeed:1;
+        } else if (gamepad2.a) {
+            servoGrabPosition=servoGrabPosition+servoGrabSpeed>=0?servoGrabPosition-servoGrabSpeed:0;
+        }//end relic claw
 
-        /*if (gamepad2.dpad_up) {
+        robot.getRelicClawServo().setPosition(servoGrabPosition);
+
+
+
+        //encoder limits enabled
+        if (gamepad2.dpad_up) {
             encoderLimEnabled = false;
             robot.getMotorLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.getMotorLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        } else {
+        }
+        else if (gamepad2.dpad_down) {
+            robot.getMotorRelicArm().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.getMotorRelicArm().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        else {
             encoderLimEnabled = true;
-        }*/
+        }
 
 
     }
@@ -135,8 +152,8 @@ public class NewTeleopInProgress extends LinearOpMode {
     private void mecanumDrive() {
 
         //weird trig
-        double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x)
+        double r = Math.hypot(-gamepad1.left_stick_x * 2, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x * 2)
                 - Math.PI / weirdFourInMecanumCalcs;
         double rightX = -gamepad1.right_stick_x;
         final double v1 = r * Math.cos(robotAngle) + rightX;
@@ -179,6 +196,9 @@ public class NewTeleopInProgress extends LinearOpMode {
 
             } else if (gamepad2.right_stick_y < joystickZero
                     && robot.getMotorLift().getCurrentPosition() >= robot.getLiftBottom()) {
+                robot.getMotorLift().setPower(gamepad2.right_stick_y);
+            } else if (!encoderLimEnabled
+                    && Math.abs(gamepad2.right_stick_y) > joystickZero) {
                 robot.getMotorLift().setPower(gamepad2.right_stick_y);
             } else {
                 robot.getMotorLift().setPower(motorZeroPower);
@@ -234,17 +254,17 @@ public class NewTeleopInProgress extends LinearOpMode {
 
         if (robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitExtended()
                 && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitRetracted()) {
-            robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+            robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
         } else {
             //Allow lift to return to the safe zone if it is at max or min
-            if (gamepad2.left_stick_y > joystickZero
+            if (-gamepad2.left_stick_y > joystickZero
                     && robot.getMotorRelicArm().getCurrentPosition() <= robot.getRelicLimitExtended()) {
-                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+                robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
 
-            } else if (gamepad2.left_stick_y < joystickZero
+            } else if (-gamepad2.left_stick_y < joystickZero
                     && robot.getMotorRelicArm().getCurrentPosition() >= robot.getRelicLimitRetracted()) {
 
-                robot.getMotorRelicArm().setPower(gamepad2.left_stick_y);
+                robot.getMotorRelicArm().setPower(-gamepad2.left_stick_y);
 
             } else {
                 robot.getMotorRelicArm().setPower(motorZeroPower);
@@ -252,6 +272,8 @@ public class NewTeleopInProgress extends LinearOpMode {
         }
     }
 
+
+    @Deprecated
     private void rotateClaw() {
 
         /*robot.getRelicRotatorServo().setPosition(robot.getRelicRotatorServoPosition());
@@ -272,42 +294,26 @@ public class NewTeleopInProgress extends LinearOpMode {
 
     }
 
-/*    private void rotateClawCR() {
-        if (gamepad2.a) {
-            robot.getRelicRotatorCR().setPower(-0.5);
-        } else if (gamepad2.y) {
-            robot.getRelicRotatorCR().setPower(0.5);
-        } else {
-            robot.getRelicRotatorCR().setPower(0);
+    private void rotateClawCR() {
+        if (gamepad2.right_trigger > robot.getDeadzone()) {
+            robot.getRelicRotatorCR().setPower(-gamepad2.right_trigger);
+        } else if (gamepad2.left_trigger > robot.getDeadzone()) {
+            robot.getRelicRotatorCR().setPower(gamepad2.left_trigger);
         }
-    }*/
+    }
 
     private void openRelicClaw() {
-
-        /*robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());
-
-        if (robot.getRelicClawServoPosition() >= robot.getRelicClawServoMinPosition()) {
-
-            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() + robot.getServoIncrement());
-        }*/
-
-        robot.getRelicClawServo().setPosition(0.4);
+        robot.getRelicClawServo().setPosition(1.0);
 
     }
 
     private void closeRelicClaw() {
 
-        /*if (robot.getRelicClawServoPosition() <= robot.getRelicClawServoMaxPosition()) {
-
-            robot.setRelicClawServoPosition(robot.getRelicClawServoPosition() - robot.getServoIncrement());
-        }
-
-        robot.getRelicClawServo().setPosition(robot.getRelicClawServoPosition());*/
-
         robot.getRelicClawServo().setPosition(0.1);
 
     }
 
+    @Deprecated
     private void glyphClawTriggers() {
         robot.getLeftServo().setPosition(gamepad2.left_trigger);
         robot.getRightServo().setPosition(1.0 - gamepad2.right_trigger);

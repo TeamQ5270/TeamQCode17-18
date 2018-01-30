@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes.tests;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 /**
  * Created by Sheridan_Page on 1/6/2018.
  */
-
+@Disabled
 public class GlyphClawEvaluator extends LinearOpMode{
 
     Robot robot = new Robot();

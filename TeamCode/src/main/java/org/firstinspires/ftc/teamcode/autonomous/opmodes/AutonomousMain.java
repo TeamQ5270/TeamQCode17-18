@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="Main Autonomous")
+@Disabled
 public class AutonomousMain extends LinearOpMode {
 
     //How long the game has run
