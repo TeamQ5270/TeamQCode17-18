@@ -22,7 +22,7 @@ public class AutonomousJewel extends LinearOpMode {
     private final float maxTimeVuforia = 5;        //max time (in seconds) to look for a target
     private final float straightPower = 0.5f;           //power when moving
     private final float turnPower = 0.25f;               //when turning
-    private final double servoHalfDistance = 0.45f;        //The distance for the jewel servo to be straight out
+    private final double servoHalfDistance = 0.6f;        //The distance for the jewel servo to be straight out
     private final double servoFullDistance = 1f;          //pivoted towards the jewel sensor
     private final double servoNoDistance = 0f;            //away from the jewel sensor
 
@@ -36,9 +36,6 @@ public class AutonomousJewel extends LinearOpMode {
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
 
-        GyroSensor gyro = hardwareMap.get(GyroSensor.class, "Sensor Gyro");     //Gyro to use when turning
-
-        gyro.calibrate();
 
         Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
 
@@ -67,10 +64,11 @@ public class AutonomousJewel extends LinearOpMode {
         //get the color of the jewel and swing servo
         jewelServo.setPosition(servoFullDistance);
         sleep(500);
-        float jewelMoveDistance = 2;
-        MultiMotor.bestMove(robot,jewelMoveDistance,straightPower/2,this);
+        float jewelMoveDistance = 20f;
+        MultiMotor.bestMove(robot,jewelMoveDistance*(jewelColor.red()<=jewelColor.blue()^sideColor?1:-1),straightPower/2,this);
         sleep(500);
         jewelServo.setPosition(servoHalfDistance);
+        sleep(10000);
         //End OpMode
         stop();
     }
