@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Autonomous jewel")
+@Autonomous(name="Autonomous jewel test")
 public class AutonomousJewel extends LinearOpMode {
 
     //How long the game has run
@@ -63,17 +63,14 @@ public class AutonomousJewel extends LinearOpMode {
         //move the servo out
         jewelServo.setPosition(servoHalfDistance);
 
-        //move to the jewel
-        MultiMotor.bestMove(robot,boardMoveDistance,straightPower/2,this);
-
         //knock off the jewel
         //get the color of the jewel and swing servo
-        jewelServo.setPosition((jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
-                ? servoFullDistance:servoNoDistance);
+        jewelServo.setPosition(servoFullDistance);
         sleep(500);
-
-        //wait for the servo
-        MultiMotor.bestMove(robot,-boardMoveDistance-2,straightPower,this);
+        float jewelMoveDistance = 2;
+        MultiMotor.bestMove(robot,jewelMoveDistance,straightPower/2,this);
+        sleep(500);
+        jewelServo.setPosition(servoHalfDistance);
         //End OpMode
         stop();
     }
