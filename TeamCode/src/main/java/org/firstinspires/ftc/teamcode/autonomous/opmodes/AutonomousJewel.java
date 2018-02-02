@@ -59,6 +59,8 @@ public class AutonomousJewel extends LinearOpMode {
 
         SubFunctions.getVumark(5,this);
 
+        sleep(30000);
+
         stop();
     }
 }

@@ -31,8 +31,9 @@ public class SubFunctions {
         //Read the vuforia vumark(tm)
         VuforiaManager vuforiaManager = new VuforiaManager(opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName()));
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (!opMode.opModeIsActive()&& !opMode.isStarted()) {                                           //while the timeout has not occued
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+        while (opMode.opModeIsActive()&& !opMode.isStarted()) {
+            targetImage = vuforiaManager.getvisibleTarget();//while the timeout has not occued
+            if (targetImage != RelicRecoveryVuMark.UNKNOWN){   //If the camera has detected anything
                 opMode.telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 opMode.telemetry.update();
                 break;
@@ -49,16 +50,29 @@ public class SubFunctions {
         RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
         ElapsedTime timer = new ElapsedTime();
         timer.reset();
-        while (!opMode.opModeIsActive()&&timer.seconds()<=seconds) {                                           //while the timeout has not occued
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
+        while (opMode.opModeIsActive()&&timer.seconds()<=seconds) {                                           //while the timeout has not occued
+            targetImage = vuforiaManager.getvisibleTarget();
+            if ((targetImage!= RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
                 opMode.telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
                 opMode.telemetry.update();
                 break;
             }
-            targetImage = vuforiaManager.getvisibleTarget();
         }
         opMode.telemetry.addData("Vuforia Target: ", targetImage.toString());
         opMode.telemetry.update();
         return targetImage;
+    }
+    public static float getMoveDistance(RelicRecoveryVuMark targetImage, boolean sideColor) {
+
+        float chargeDistance = -33;
+        switch(targetImage) {
+            case LEFT:
+                chargeDistance+=6*(sideColor?1:-1);
+                break;
+            case RIGHT:
+                chargeDistance-=6*(sideColor?1:-1);
+                break;
+        }
+        return chargeDistance;
     }
 }
