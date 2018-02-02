@@ -54,6 +54,11 @@ public class AutonomousJewel extends LinearOpMode {
             e.printStackTrace();
         }
 
+        telemetry.addData("moving","yes");
+        telemetry.update();
+
+        SubFunctions.getVumark(5,this);
+
         stop();
     }
 }
