@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop.opmodes.utilities;
+package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,12 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
-@TeleOp(name = "TeleOp Drive Code for New Robot", group = "Linear Opmode")
+@TeleOp(name = "TeleOp Drive Code New Robot", group = "Linear Opmode")
 
 public class TeleopDriveTestNew extends LinearOpMode {
 
     //make Robot object
-    private Robot robot = new Robot();
+    private Robot robot = new Robot(true);
 
     //these variables get rid of magic numbers - you're welcome, Matthew
     //indices of motor values returned by robot.getDriveMotors()
