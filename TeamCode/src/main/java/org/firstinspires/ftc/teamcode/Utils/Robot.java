@@ -19,6 +19,10 @@ public class Robot {
     private DcMotor motorLift = null;
     private DcMotor motorRelicArm = null;
 
+    //new things
+
+
+
     //declare servos
     private Servo leftServo = null;
     private Servo rightServo = null;

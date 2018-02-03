@@ -11,10 +11,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
+import org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
+
+import static android.R.attr.x;
 
 @Autonomous(name="ServoUnitTest")
 public class ServoUnitTest extends LinearOpMode {
@@ -44,24 +47,12 @@ public class ServoUnitTest extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("NoDistance", servoNoDistance);
             telemetry.update();
-            jewelServo.setPosition(servoNoDistance);
+            jewelServo.setPosition(AutoConstants.jewelExtended);
             sleep(1000);
-
             telemetry.addData("HalfDistance", servoHalfDistance);
             telemetry.update();
-            jewelServo.setPosition(servoHalfDistance);
+            jewelServo.setPosition(AutoConstants.jewelRetracted);
             sleep(1000);
-
-            telemetry.addData("FullDistance", servoFullDistance);
-            telemetry.update();
-            jewelServo.setPosition(servoFullDistance);
-            sleep(1000);
-
-            telemetry.addData("ServoDirection (ASSUMING RED SIDE OF FIELD)", !(jewelColor.red()>jewelColor.blue()^true)); //assume robot is on red side
-            telemetry.update();
-            jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^true) /* Servo is facing the same jewel as the side */
-                    ? servoFullDistance:servoNoDistance);
-            sleep(3000);
         }
 
         //End OpMode

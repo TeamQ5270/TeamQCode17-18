@@ -10,8 +10,8 @@ public class AutoConstants {
     public static float minPower = 0.0f;
     public static float maxPower = 1.0f;
 
-    public static float jewelRetracted = 0.6f;
+    public static float jewelRetracted = 0.4f;
     public static float jewelExtended = 1.0f;
 
-    public static float jewelMoveDistance = 10f;
+    public static float jewelMoveDistance = 5f;
 }

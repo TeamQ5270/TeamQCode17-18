@@ -19,13 +19,14 @@ import static java.lang.Thread.sleep;
  */
 
 public class SubFunctions {
-    public static void runJewel(Servo jewelServo, LynxI2cColorRangeSensor colorSensor, boolean sideColor, Robot robot, LinearOpMode opMode) throws java.lang.InterruptedException {
+    public static float runJewel(Servo jewelServo, LynxI2cColorRangeSensor colorSensor, boolean sideColor, Robot robot, LinearOpMode opMode) throws java.lang.InterruptedException {
         jewelServo.setPosition(AutoConstants.jewelExtended);
         sleep(300);
         float moveDistance = AutoConstants.jewelMoveDistance*(colorSensor.red()<=colorSensor.blue()^sideColor?1:-1);
         MultiMotor.bestMove(robot,moveDistance,AutoConstants.straightPower/2,opMode);
         sleep(300);
         new ThreadedServoMovement(jewelServo,AutoConstants.jewelRetracted).run();
+        return moveDistance;
     }
     public static RelicRecoveryVuMark getVumarkBefore(LinearOpMode opMode) {
         //Read the vuforia vumark(tm)
@@ -63,7 +64,6 @@ public class SubFunctions {
         return targetImage;
     }
     public static float getMoveDistance(RelicRecoveryVuMark targetImage, boolean sideColor) {
-
         float chargeDistance = -33;
         switch(targetImage) {
             case LEFT:
@@ -74,5 +74,18 @@ public class SubFunctions {
                 break;
         }
         return chargeDistance;
+    }
+    public static float transferDegrees(float degrees, boolean side) {
+        return side?-degrees:degrees;
+    }
+    public static void moveClawsIn(Robot robot) {
+        //grab the cube
+        robot.getLeftServo().setPosition(robot.getGlyphServoMaxPosition());
+        robot.getRightServo().setPosition(robot.getGlyphServoMaxPosition());
+    }
+    public static void moveClawsOut(Robot robot) {
+        robot.getLeftServo().setPosition(robot.getGlyphServoMinPosition());
+        robot.getRightServo().setPosition(1-robot.getGlyphServoMinPosition());
+
     }
 }
