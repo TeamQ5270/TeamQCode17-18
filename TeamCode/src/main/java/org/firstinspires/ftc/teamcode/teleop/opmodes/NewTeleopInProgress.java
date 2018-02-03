@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -53,7 +52,7 @@ public class NewTeleopInProgress extends LinearOpMode {
         while (opModeIsActive()) {
             controlRobot();
 
-            telemetry.addData("Lift position: ", robot.getMotorLift().getCurrentPosition());
+            telemetry.addData("Lift position: ", robot.getMotorGlyphLift().getCurrentPosition());
             telemetry.update();
             telemetry.addData("Lift servo position: ", robot.getClawPosition());
         }
@@ -82,9 +81,9 @@ public class NewTeleopInProgress extends LinearOpMode {
             glyphLift();
 
         } else if (Math.abs(gamepad2.right_stick_y) <= robot.getDeadzone()) {
-            robot.getMotorLift().setPower(motorZeroPower);
+            robot.getMotorGlyphLift().setPower(motorZeroPower);
         } else {
-            robot.getMotorLift().setPower(motorZeroPower);
+            robot.getMotorGlyphLift().setPower(motorZeroPower);
         } //end glyph lift
 
 
@@ -135,8 +134,8 @@ public class NewTeleopInProgress extends LinearOpMode {
         //encoder limits enabled
         if (gamepad2.dpad_up) {
             encoderLimEnabled = false;
-            robot.getMotorLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.getMotorLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.getMotorGlyphLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.getMotorGlyphLift().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         else if (gamepad2.dpad_down) {
             robot.getMotorRelicArm().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -182,26 +181,26 @@ public class NewTeleopInProgress extends LinearOpMode {
 
 
         if (Math.abs(gamepad2.right_stick_y) > robot.getDeadzone()
-                && robot.getMotorLift().getCurrentPosition() >= robot.getLiftTop()
-                && robot.getMotorLift().getCurrentPosition() <= robot.getLiftBottom()
+                && robot.getMotorGlyphLift().getCurrentPosition() >= robot.getLiftTop()
+                && robot.getMotorGlyphLift().getCurrentPosition() <= robot.getLiftBottom()
                 && encoderLimEnabled) {
 
-            robot.getMotorLift().setPower(gamepad2.right_stick_y);
+            robot.getMotorGlyphLift().setPower(gamepad2.right_stick_y);
 
         } else {
             //Allow lift to return to the safe zone if it is at max or min
             if (gamepad2.right_stick_y > joystickZero
-                    && robot.getMotorLift().getCurrentPosition() <= robot.getLiftTop()) {
-                robot.getMotorLift().setPower(gamepad2.right_stick_y);
+                    && robot.getMotorGlyphLift().getCurrentPosition() <= robot.getLiftTop()) {
+                robot.getMotorGlyphLift().setPower(gamepad2.right_stick_y);
 
             } else if (gamepad2.right_stick_y < joystickZero
-                    && robot.getMotorLift().getCurrentPosition() >= robot.getLiftBottom()) {
-                robot.getMotorLift().setPower(gamepad2.right_stick_y);
+                    && robot.getMotorGlyphLift().getCurrentPosition() >= robot.getLiftBottom()) {
+                robot.getMotorGlyphLift().setPower(gamepad2.right_stick_y);
             } else if (!encoderLimEnabled
                     && Math.abs(gamepad2.right_stick_y) > joystickZero) {
-                robot.getMotorLift().setPower(gamepad2.right_stick_y);
+                robot.getMotorGlyphLift().setPower(gamepad2.right_stick_y);
             } else {
-                robot.getMotorLift().setPower(motorZeroPower);
+                robot.getMotorGlyphLift().setPower(motorZeroPower);
             }
         }
     }

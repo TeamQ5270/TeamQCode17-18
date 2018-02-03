@@ -16,12 +16,14 @@ public class Robot {
     private DcMotor motorRightFront = null;
     private DcMotor motorLeftBack = null;
     private DcMotor motorRightBack = null;
-    private DcMotor motorLift = null;
+    private DcMotor motorGlyphLift = null;
     private DcMotor motorRelicArm = null;
 
     //new things
-
-
+    private DcMotor motorLift = null; //this is the apeture motor
+    private DcMotor motorFlipper = null;
+    private DcMotor motorIntakeLeft = null;
+    private DcMotor motorIntakeRight = null;
 
     //declare servos
     private Servo leftServo = null;
@@ -75,12 +77,20 @@ public class Robot {
 
     HardwareMap hwMap = null;
 
-    boolean standardInit;
+    InitTypes initType;
     boolean driveMotorBrakes;
 
     //standard constructor
+    public Robot(boolean newBot) {
+        if (newBot) {
+            initType = InitTypes.NEWBOT;
+        }
+        else {
+            this.initType = InitTypes.OLDBOT;
+        }
+    }
     public Robot() {
-        standardInit = true;
+        this(false); //TODO Update this for the new robot
     }
 
     /*
@@ -90,72 +100,118 @@ public class Robot {
     * @param driveMotorBraking set drive motor zero power behavior
     *
     */
-    public Robot(boolean driveMotorBraking) {
-        standardInit = false;
+    public Robot(InitTypes initType) {
+        this.initType= initType;
     }
 
 
 
     public void init(HardwareMap ahwMap) {
-        if (standardInit) {
-            standardInit(ahwMap);
-        } else {
-            customInit(ahwMap);
+        switch (this.initType) {
+            case CLASSIC:
+                oldGetConfig(ahwMap);
+                standardInit(ahwMap);
+                break;
+            case CUSTOMSHERIDAN:
+                oldGetConfig(ahwMap);
+                standardInit(ahwMap);
+                customInit(ahwMap);
+                break;
+            case NEWBOT:
+                newInit(ahwMap);
+                break;
+            case OLDBOT:
+                oldGetConfig(ahwMap);
+                standardInit(ahwMap);
+                oldInit(ahwMap);
+            default:
+                newInit(ahwMap);
+                break;
         }
     }
 
-    private void standardInit(HardwareMap ahwMap) {
+    private void oldInit(HardwareMap ahwMap) {
         hwMap = ahwMap;
+        motorLeftFront = hwMap.dcMotor.get("Motor Drive FL");
+        motorLeftBack = hwMap.dcMotor.get("Motor Drive RL");
+        motorRightFront = hwMap.dcMotor.get("Motor Drive FR");
+        motorRightBack = hwMap.dcMotor.get("Motor Drive RR");
 
-        getConfig(ahwMap);
+        motorLeftFront.setDirection(DcMotor.Direction.FORWARD);
+        motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
+        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
+        motorRightBack.setDirection(DcMotor.Direction.REVERSE);
 
-        //set zero power behavior to BRAKE
-        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorGlyphLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //reset lift encoder to zero, then enable lift encoder for lift limiter
-        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorGlyphLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorGlyphLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         motorRelicArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRelicArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    private void newInit(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+        motorLeftFront = hwMap.dcMotor.get("Motor Drive FL");
+        motorLeftBack = hwMap.dcMotor.get("Motor Drive RL");
+        motorRightFront = hwMap.dcMotor.get("Motor Drive FR");
+        motorRightBack = hwMap.dcMotor.get("Motor Drive RR");
+        motorLeftFront.setDirection(DcMotor.Direction.FORWARD);
+        motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
+        motorRightFront.setDirection(DcMotor.Direction.REVERSE);
+        motorRightBack.setDirection(DcMotor.Direction.REVERSE);
+
+        motorLift = hwMap.dcMotor.get("Motor Lift");
+        motorLift.setDirection(DcMotor.Direction.FORWARD);
+
+        motorFlipper = hwMap.dcMotor.get("Motor Carry");
+        motorFlipper.setDirection(DcMotor.Direction.FORWARD);
+
+        motorIntakeLeft = hwMap.dcMotor.get("Motor Intake L");
+        motorIntakeRight = hwMap.dcMotor.get("Motor Intake R");
+        motorIntakeLeft.setDirection(DcMotor.Direction.FORWARD);
+        motorIntakeRight.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    private void standardInit(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+        //set zero power behavior to BRAKE
+        motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
     private void customInit(HardwareMap ahwMap) {
         hwMap = ahwMap;
-
-        getConfig(ahwMap);
-
         if (driveMotorBrakes) {
             motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorGlyphLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         } else if (!driveMotorBrakes) {
             motorLeftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             motorLeftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             motorRightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             motorRightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            motorGlyphLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             motorRelicArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
-    private void getConfig(HardwareMap ahwMap) {
+    private void oldGetConfig(HardwareMap ahwMap) {
         hwMap = ahwMap;
-
         //assign appropriate motors from config to the motors
         motorLeftFront = hwMap.dcMotor.get("Motor Drive FL");
         motorLeftBack = hwMap.dcMotor.get("Motor Drive RL");
         motorRightFront = hwMap.dcMotor.get("Motor Drive FR");
         motorRightBack = hwMap.dcMotor.get("Motor Drive RR");
-        motorLift = hwMap.dcMotor.get("Motor Glyph");
+        motorGlyphLift = hwMap.dcMotor.get("Motor Glyph");
         motorRelicArm = hwMap.dcMotor.get("Motor Relic");
 
         //assign appropriate servos from config to the servos
@@ -178,13 +234,13 @@ public class Robot {
         motorLeftBack.setDirection(DcMotor.Direction.FORWARD);
         motorRightFront.setDirection(DcMotor.Direction.REVERSE);
         motorRightBack.setDirection(DcMotor.Direction.REVERSE);
-        motorLift.setDirection(DcMotor.Direction.FORWARD);
+        motorGlyphLift.setDirection(DcMotor.Direction.FORWARD);
         motorRelicArm.setDirection(DcMotor.Direction.FORWARD);
     }
 
     public void resetLiftEncoder() {
-        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorGlyphLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorGlyphLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public DcMotor[] getDriveMotors() {
@@ -231,8 +287,8 @@ public class Robot {
         return liftBottom;
     }
 
-    public DcMotor getMotorLift() {
-        return motorLift;
+    public DcMotor getMotorGlyphLift() {
+        return motorGlyphLift;
     }
 
     public DcMotor getMotorRelicArm() {
@@ -323,5 +379,21 @@ public class Robot {
 
     public Servo getRelicRotator2Servo() {
         return relicRotator2Servo;
+    }
+
+    public DcMotor getMotorLift() {
+        return motorLift;
+    }
+
+    public DcMotor getMotorFlipper() {
+        return motorFlipper;
+    }
+
+    public DcMotor getMotorIntakeLeft() {
+        return motorIntakeLeft;
+    }
+
+    public DcMotor getMotorIntakeRight() {
+        return motorIntakeRight;
     }
 }
