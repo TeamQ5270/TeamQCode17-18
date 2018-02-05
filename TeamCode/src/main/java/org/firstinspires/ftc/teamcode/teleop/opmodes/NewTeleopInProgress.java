@@ -151,7 +151,7 @@ public class NewTeleopInProgress extends LinearOpMode {
     private void mecanumDrive() {
 
         //weird trig
-        double r = Math.hypot(-gamepad1.left_stick_x * 2, gamepad1.left_stick_y);
+        /*double r = Math.hypot(-gamepad1.left_stick_x * 2, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x * 2)
                 - Math.PI / weirdFourInMecanumCalcs;
         double rightX = -gamepad1.right_stick_x;
@@ -164,9 +164,46 @@ public class NewTeleopInProgress extends LinearOpMode {
         robot.getDriveMotors()[mLeftFrontIdx].setPower(v1);
         robot.getDriveMotors()[mRightFrontIdx].setPower(v2);
         robot.getDriveMotors()[mLeftBackIdx].setPower(v3);
-        robot.getDriveMotors()[mRightBackIdx].setPower(v4);
+        robot.getDriveMotors()[mRightBackIdx].setPower(v4);*/
 
         //if sticks are within deadzone, set all drive motor powers to 0
+
+        final double K = 1;
+
+        double forward = gamepad1.left_stick_y * -1;
+        double right = gamepad1.left_stick_x;
+        double clockwise = gamepad1.right_stick_x;
+
+        clockwise = K * clockwise;
+
+        double front_left = forward + clockwise + right;
+        double front_right = forward - clockwise - right;
+        double rear_left = forward + clockwise - right;
+        double rear_right = forward - clockwise + right;
+
+       double max = Math.abs(front_left);
+        if (Math.abs(front_right)>max) {
+            max = Math.abs(front_right);
+        }
+        if (Math.abs(rear_left)>max) {
+            max = Math.abs(rear_left);
+        }
+        if (Math.abs(rear_right)>max) {
+            max = Math.abs(rear_right);
+        }
+
+        if (max > 1){
+            front_left/=max;
+            front_right/=max;
+            rear_left/=max;
+            rear_right/=max;
+        }
+        robot.getDriveMotors()[mLeftFrontIdx].setPower(front_left);
+        robot.getDriveMotors()[mRightFrontIdx].setPower(front_right);
+        robot.getDriveMotors()[mLeftBackIdx].setPower(rear_left);
+        robot.getDriveMotors()[mRightBackIdx].setPower(rear_right);
+
+
 
     }
 
