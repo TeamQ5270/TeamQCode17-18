@@ -20,7 +20,7 @@ public class Robot {
     private DcMotor motorRelicArm = null;
 
     //new things
-    private DcMotor motorLift = null; //this is the apeture motor
+    private DcMotorSimple motorLift = null; //this is the apeture motor
     private DcMotor motorFlipper = null;
     private DcMotor motorIntakeLeft = null;
     private DcMotor motorIntakeRight = null;
@@ -381,7 +381,7 @@ public class Robot {
         return relicRotator2Servo;
     }
 
-    public DcMotor getMotorLift() {
+    public DcMotorSimple getMotorLift() {
         return motorLift;
     }
 
