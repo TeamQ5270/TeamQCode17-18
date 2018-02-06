@@ -63,7 +63,7 @@ public class MultiMotor {
     public static void turnToPositionAndyMark40(DcMotor[] leftMotors, DcMotor[] rightMotors, float degrees, float power) {
         //Get the distance for each wheel set
         float tickPerDeg = 13.8f;
-        float convertedDistance = tickPerDeg*degrees*1.33333333333f;
+        float convertedDistance = tickPerDeg*degrees*AutoConstants.turnCoefficient;
 
         //Move motors
         moveToPosition(leftMotors,(int)convertedDistance,power);
