@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement
 public class NewLiftTester extends LinearOpMode {
 
     //make Robot object
-    private Robot robot = new Robot();
-
     //these variables get rid of magic numbers - you're welcome, Matthew
     //indices of motor values returned by robot.getDriveMotors()
     //left front -- right front -- left back -- right back
@@ -33,15 +31,13 @@ public class NewLiftTester extends LinearOpMode {
 
     private boolean encoderLimEnabled = true;
 
-    private final float liftSpeed = 0.05f;
+    private final float liftSpeed = 0.5f;
 
     @Override
     public void runOpMode() {
 
-        DcMotorSimple m = hardwareMap.get(DcMotorSimple.class, "Lift Motor");
-
-        //initialize robot
-        robot.init(hardwareMap);
+        DcMotor m = hardwareMap.get(DcMotor.class, "Lift Motor");
+        m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //start telemetry
         telemetry.addData("Status", "Initialized");
@@ -56,7 +52,7 @@ public class NewLiftTester extends LinearOpMode {
                 m.setPower(liftSpeed);
             }
             else if (gamepad1.b) {
-                m.setPower(-liftSpeed);
+                m.setPower(-0.3);
             }
             else {
                 m.setPower(0);
