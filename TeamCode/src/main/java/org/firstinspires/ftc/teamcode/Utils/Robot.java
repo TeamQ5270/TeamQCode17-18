@@ -67,8 +67,8 @@ public class Robot {
     private double relicClawServoPosition = relicClawServoMinPosition;
 
     //lift final extender limits
-    public static final float servoPullPulled = 0.5f;
-    public static final float servoPullRetracted = 1.0f;
+    public static final float servoPullPulled = 0.7f;
+    public static final float servoPullRetracted = 0f;
 
 
     //declare general servo variables
