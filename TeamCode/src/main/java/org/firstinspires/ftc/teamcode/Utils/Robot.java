@@ -35,6 +35,8 @@ public class Robot {
 
     private CRServo relicRotatorCR = null;
 
+    private Servo glyphExtender = null;
+
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
 
@@ -63,6 +65,10 @@ public class Robot {
     private static final double relicClawServoMaxPosition = 1.0;
     private static final double relicClawServoMinPosition = 0.0;
     private double relicClawServoPosition = relicClawServoMinPosition;
+
+    //lift final extender limits
+    public static final float servoPullPulled = 0.5f;
+    public static final float servoPullRetracted = 1.0f;
 
 
     //declare general servo variables
@@ -174,6 +180,8 @@ public class Robot {
         motorIntakeRight = hwMap.dcMotor.get("Motor Intake R");
         motorIntakeLeft.setDirection(DcMotor.Direction.FORWARD);
         motorIntakeRight.setDirection(DcMotor.Direction.REVERSE);
+
+        glyphExtender = hwMap.servo.get("Servo Pull");
     }
 
     private void standardInit(HardwareMap ahwMap) {
@@ -396,4 +404,6 @@ public class Robot {
     public DcMotor getMotorIntakeRight() {
         return motorIntakeRight;
     }
+
+    public Servo getServoLiftPuller() { return glyphExtender; }
 }

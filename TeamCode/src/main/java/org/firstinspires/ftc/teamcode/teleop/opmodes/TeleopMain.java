@@ -21,7 +21,7 @@ public class TeleopMain extends LinearOpMode {
     private final double joystickZero = 0.0;
     private final int weirdFourInMecanumCalcs = 4;
 
-    private final float liftSpeed = 0.05f; //5% lift speed
+    private final float liftSpeed = 0.5f; //5% lift speed
 
     @Override
     public void runOpMode() {
@@ -55,13 +55,21 @@ public class TeleopMain extends LinearOpMode {
 
         //control lift
         if (gamepad1.a) { //raise the lift
-            robot.getMotorLift().setPower(-liftSpeed);
+            robot.getMotorLift().setPower(liftSpeed);
         }
         else if (gamepad1.b) { //lower the lift
-            robot.getMotorLift().setPower(-liftSpeed);
+            robot.getMotorLift().setPower(-liftSpeed*0.5);
         }
         else {
             robot.getMotorLift().setPower(0);
+        }
+
+        //extend the glyph thing if rtriggered is preseed
+        if (gamepad1.right_trigger>0.1) {
+            robot.getServoLiftPuller().setPosition(Robot.servoPullPulled);
+        }
+        else {
+            robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
         }
     }
 

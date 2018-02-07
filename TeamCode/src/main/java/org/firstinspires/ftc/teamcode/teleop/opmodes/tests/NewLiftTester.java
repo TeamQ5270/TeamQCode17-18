@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
@@ -39,6 +40,8 @@ public class NewLiftTester extends LinearOpMode {
         DcMotor m = hardwareMap.get(DcMotor.class, "Lift Motor");
         m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        Servo s = hardwareMap.get(Servo.class, "Servo Pull");
+
         //start telemetry
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -56,6 +59,16 @@ public class NewLiftTester extends LinearOpMode {
             }
             else {
                 m.setPower(0);
+            }
+
+
+
+            //extend the glyph thing if rtriggered is preseed
+            if (gamepad1.right_trigger>0.1) {
+                s.setPosition(Robot.servoPullPulled);
+            }
+            else {
+                s.setPosition(Robot.servoPullRetracted);
             }
         }
     }
