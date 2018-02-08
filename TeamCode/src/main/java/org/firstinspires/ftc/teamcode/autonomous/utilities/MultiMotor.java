@@ -70,6 +70,16 @@ public class MultiMotor {
         moveToPosition(rightMotors,(int)-convertedDistance,power);
     }
 
+    public static void turnToPositionAndyMark40(DcMotor[] leftMotors, DcMotor[] rightMotors, float degrees, float power, float turnCoof) {
+        //Get the distance for each wheel set
+        float tickPerDeg = 13.8f;
+        float convertedDistance = tickPerDeg*degrees*turnCoof;
+
+        //Move motors
+        moveToPosition(leftMotors,(int)convertedDistance,power);
+        moveToPosition(rightMotors,(int)-convertedDistance,power);
+    }
+
     public static boolean turnBetter(DcMotor[] left, DcMotor[] right, int targetPosition, int currentPosition, float speed, float okErrror) {
         setOpMode(left, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         setOpMode(right, DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -115,5 +125,10 @@ public class MultiMotor {
         stalltimer.reset();
         while (MultiMotor.busyMotors(robot.getDriveMotors())&&m.opModeIsActive()&&stalltimer.seconds()<=timeout) {}
         MultiMotor.setPower(robot.getDriveMotors(), 0);
+    }
+    public static void bestTurn(Robot r, float degrees, float power, LinearOpMode m, float turnCoof) {
+        turnToPositionAndyMark40(r.getLeftDriveMotors(),r.getRightDriveMotors(),degrees,power, turnCoof);
+        while (MultiMotor.busyMotors(r.getDriveMotors())&&m.opModeIsActive()) {}
+        MultiMotor.setPower(r.getDriveMotors(), 0);
     }
 }
