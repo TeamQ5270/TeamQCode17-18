@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
+
 @TeleOp(name = "R&P Lift Tester", group = "Linear Opmode")
 
 public class NewLiftTester extends LinearOpMode {
@@ -42,6 +44,10 @@ public class NewLiftTester extends LinearOpMode {
 
         Servo s = hardwareMap.get(Servo.class, "Servo Pull");
 
+        DcMotor l = hardwareMap.get(DcMotor.class, "Motor Intake L");
+        DcMotor r = hardwareMap.get(DcMotor.class, "Motor Intake R");
+        r.setDirection(REVERSE);
+
         //start telemetry
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -51,25 +57,27 @@ public class NewLiftTester extends LinearOpMode {
 
         //run until OpMode is stopped
         while (opModeIsActive()) {
-            if (gamepad1.a) {
+            if (gamepad2.dpad_up) {
                 m.setPower(liftSpeed);
             }
-            else if (gamepad1.b) {
+            else if (gamepad2.dpad_down) {
                 m.setPower(-0.3);
             }
             else {
                 m.setPower(0);
             }
 
-
-
             //extend the glyph thing if rtriggered is preseed
-            if (gamepad1.right_trigger>0.1) {
+            if (!gamepad2.right_bumper) {
                 s.setPosition(Robot.servoPullPulled);
             }
             else {
                 s.setPosition(Robot.servoPullRetracted);
             }
+
+            //move the intake wheels at the speed of the trigger
+            l.setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
+            r.setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
         }
     }
 }
