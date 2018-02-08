@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
@@ -23,7 +24,7 @@ public class TurnCooefTester extends LinearOpMode {
     @Override
     public void runOpMode() {
         //initialize robot
-        Robot robot = new Robot();
+        Robot robot = new Robot(InitTypes.NEWBOT);
         robot.init(hardwareMap);
 
 

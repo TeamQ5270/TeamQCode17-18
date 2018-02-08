@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
@@ -24,7 +25,7 @@ public class AutonomousJewel extends LinearOpMode {
     @Override
     public void runOpMode() {
         //initialize robot
-        Robot robot = new Robot();
+        Robot robot = new Robot(InitTypes.NEWBOT);
         robot.init(hardwareMap);
 
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
@@ -69,7 +70,6 @@ public class AutonomousJewel extends LinearOpMode {
         }
         telemetry.addData("stage","charge");
         telemetry.update();
-        SubFunctions.moveClawsIn(robot);
         //move to be ready to turn into the box
         MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideColor), AutoConstants.straightPower,this);
         telemetry.addData("stage","turn to face crypto");
@@ -79,7 +79,6 @@ public class AutonomousJewel extends LinearOpMode {
         telemetry.addData("stage","going into the box");
         telemetry.update();
         //move into the box
-        SubFunctions.moveClawsOut(robot);
         MultiMotor.bestMove(robot,-15,AutoConstants.straightPower/2,4,this);
         telemetry.addData("stage","out of box");
         telemetry.update();
