@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 public class Robot {
     //declare motors
-    /* Declare OpMode members. */
+ /* Declare OpMode members. */
 
     //declare motors
     private DcMotor motorLeftFront = null;
@@ -90,8 +90,7 @@ public class Robot {
     public Robot(boolean newBot) {
         if (newBot) {
             initType = InitTypes.NEWBOT;
-        }
-        else {
+        } else {
             this.initType = InitTypes.OLDBOT;
         }
     }
@@ -100,14 +99,14 @@ public class Robot {
     }
 
     /*
-    * This constructor is useful for initializing the robot differently than normal
-    * (e.g not having drive motors brake).
-    *
-    * @param driveMotorBraking set drive motor zero power behavior
-    *
-    */
+     * This constructor is useful for initializing the robot differently than normal
+     * (e.g not having drive motors brake).
+     *
+     * @param driveMotorBraking set drive motor zero power behavior
+     *
+     */
     public Robot(InitTypes initType) {
-        this.initType= initType;
+        this.initType = initType;
     }
 
 
@@ -257,10 +256,10 @@ public class Robot {
         //keep these in the same order or bad stuff happens
 
         return new DcMotor[] {
-            motorLeftFront,
-            motorRightFront,
-            motorLeftBack,
-            motorRightBack
+                motorLeftFront,
+                motorRightFront,
+                motorLeftBack,
+                motorRightBack
         };
     }
 
@@ -277,9 +276,9 @@ public class Robot {
     }
 
     public DcMotor[] getRightDriveMotors() {
-        return new DcMotor[]  {
-            motorRightFront,
-            motorRightBack
+        return new DcMotor[] {
+                motorRightFront,
+                motorRightBack
         };
     }
 
@@ -367,9 +366,19 @@ public class Robot {
         return relicRotatorServoMinPosition;
     }
 
-    public DcMotor[] getDiagonalLeft() { return new DcMotor[] {motorLeftFront, motorRightBack}; };
+    public DcMotor[] getDiagonalLeft() {
+        return new DcMotor[] {
+                motorLeftFront,
+                motorRightBack
+        };
+    };
 
-    public DcMotor[] getDiagonalRight() { return new DcMotor[] {motorRightFront, motorLeftBack}; };
+    public DcMotor[] getDiagonalRight() {
+        return new DcMotor[] {
+                motorRightFront,
+                motorLeftBack
+        };
+    };
 
     //setters
 
@@ -405,5 +414,7 @@ public class Robot {
         return motorIntakeRight;
     }
 
-    public Servo getServoLiftPuller() { return glyphExtender; }
+    public Servo getServoLiftPuller() {
+        return glyphExtender;
+    }
 }
