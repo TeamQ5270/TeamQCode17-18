@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.teleop.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
+import org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
@@ -34,6 +36,9 @@ public class TeleopMain extends LinearOpMode {
 
         //wait until driver presses PLAY
         waitForStart();
+
+        //raise the jewel arm
+        hardwareMap.get(Servo.class, "Servo Jewel").setPosition(AutoConstants.jewelRetracted);
 
         //run until OpMode is stopped
         while (opModeIsActive()) {
