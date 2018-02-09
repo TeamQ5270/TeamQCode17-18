@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "Slide Limit Evaluator", group = "Linear Opmode")
-
+@Disabled
 public class SlideLimitEvaluator extends LinearOpMode {
 
     // Declare OpMode members.

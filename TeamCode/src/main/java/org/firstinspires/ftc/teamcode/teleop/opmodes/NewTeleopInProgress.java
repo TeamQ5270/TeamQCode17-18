@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
 @TeleOp(name = "TeleOp Drive Code - Current Version", group = "Linear Opmode")
-
+@Disabled
 public class NewTeleopInProgress extends LinearOpMode {
 
     //make Robot object
