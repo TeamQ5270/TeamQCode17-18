@@ -16,6 +16,10 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.SubFunctions;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
+//TODO Turn around before putting it into the bin
+//TODO Flip the thing into the box
+//TODO Jewel auto is on the audience side
+
 @Autonomous(name="Autonomous jewel test")
 public class AutonomousJewel extends LinearOpMode {
 

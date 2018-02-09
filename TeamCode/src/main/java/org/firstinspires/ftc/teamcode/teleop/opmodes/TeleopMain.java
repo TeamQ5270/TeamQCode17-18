@@ -58,10 +58,10 @@ public class TeleopMain extends LinearOpMode {
             mecanumDriveStop();
         } //end mecanum driving
 
-        if (gamepad2.left_stick_y>0.1) {
+        if (gamepad2.left_stick_y<-0.1) {
             robot.getMotorLift().setPower(liftSpeed);
         }
-        else if (gamepad2.left_stick_y<-0.1) {
+        else if (gamepad2.left_stick_y>0.1) {
             robot.getMotorLift().setPower(-0.3);
         }
         else {
@@ -69,7 +69,7 @@ public class TeleopMain extends LinearOpMode {
         }
 
         //extend the glyph thing if rtriggered is preseed
-        if (gamepad2.right_bumper) {
+        if (gamepad2.a) {
             robot.getServoLiftPuller().setPosition(Robot.servoPullPulled);
         }
         else {
@@ -79,8 +79,11 @@ public class TeleopMain extends LinearOpMode {
         if (gamepad2.right_stick_y>0.1) {
             robot.getServoPush().setPosition(1);
         }
-        else {
+        else if (gamepad2.right_stick_y<-0.1) {
             robot.getServoPush().setPosition(0);
+        }
+        else {
+            robot.getServoPush().setPosition(0.5f);
         }
 
         //move the intake wheels at the speed of the trigger

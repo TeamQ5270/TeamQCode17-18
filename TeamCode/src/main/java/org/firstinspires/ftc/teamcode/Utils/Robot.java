@@ -187,6 +187,10 @@ public class Robot {
         pusher = hwMap.servo.get("Servo Push");
     }
 
+    private void initRelic(HardwareMap hwMap) {
+
+    }
+
     private void standardInit(HardwareMap ahwMap) {
         hwMap = ahwMap;
         //set zero power behavior to BRAKE
