@@ -15,5 +15,5 @@ public class AutoConstants {
 
     public static final float jewelMoveDistance = 5f;
 
-    public static final float turnCoefficient = 1.49f; //old is 4f/3f
+    public static final float turnCoefficient = 4f/3f; //old is 4f/3f
 }

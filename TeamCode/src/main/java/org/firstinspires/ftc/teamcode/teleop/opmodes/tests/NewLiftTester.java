@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
 
@@ -39,7 +40,9 @@ public class NewLiftTester extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        DcMotor m = hardwareMap.get(DcMotor.class, "Lift Motor");
+        Robot rbt = new Robot(InitTypes.NEWBOT);
+
+        DcMotor m = hardwareMap.get(DcMotor.class, "Motor Lift");
         m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Servo s = hardwareMap.get(Servo.class, "Servo Pull");
@@ -68,7 +71,7 @@ public class NewLiftTester extends LinearOpMode {
             }
 
             //extend the glyph thing if rtriggered is preseed
-            if (!gamepad2.right_bumper) {
+            if (gamepad2.right_bumper) {
                 s.setPosition(Robot.servoPullPulled);
             }
             else {

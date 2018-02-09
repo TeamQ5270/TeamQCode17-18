@@ -95,7 +95,7 @@ public class Robot {
         }
     }
     public Robot() {
-        this(false); //TODO Update this for the new robot
+        this(false); //TODO Dont Update this for the new robot
     }
 
     /*
@@ -171,9 +171,6 @@ public class Robot {
 
         motorLift = hwMap.dcMotor.get("Motor Lift");
         motorLift.setDirection(DcMotor.Direction.FORWARD);
-
-        motorFlipper = hwMap.dcMotor.get("Motor Carry");
-        motorFlipper.setDirection(DcMotor.Direction.FORWARD);
 
         motorIntakeLeft = hwMap.dcMotor.get("Motor Intake L");
         motorIntakeRight = hwMap.dcMotor.get("Motor Intake R");

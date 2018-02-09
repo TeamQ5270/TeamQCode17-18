@@ -58,24 +58,27 @@ public class TeleopMain extends LinearOpMode {
             mecanumDriveStop();
         } //end mecanum driving
 
-        //control lift
-        if (gamepad1.a) { //raise the lift
+        if (gamepad2.dpad_up) {
             robot.getMotorLift().setPower(liftSpeed);
         }
-        else if (gamepad1.b) { //lower the lift
-            robot.getMotorLift().setPower(-liftSpeed*0.5);
+        else if (gamepad2.dpad_down) {
+            robot.getMotorLift().setPower(-0.3);
         }
         else {
             robot.getMotorLift().setPower(0);
         }
 
         //extend the glyph thing if rtriggered is preseed
-        if (gamepad1.right_trigger>0.1) {
+        if (gamepad2.right_bumper) {
             robot.getServoLiftPuller().setPosition(Robot.servoPullPulled);
         }
         else {
             robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
         }
+
+        //move the intake wheels at the speed of the trigger
+        robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
+        robot.getMotorIntakeRight().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
     }
 
     private void mecanumDrive() {
