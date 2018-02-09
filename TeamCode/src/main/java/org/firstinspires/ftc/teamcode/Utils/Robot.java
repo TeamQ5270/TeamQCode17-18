@@ -37,6 +37,8 @@ public class Robot {
 
     private Servo glyphExtender = null;
 
+    private Servo pusher = null;
+
     //declare other variables
     private double deadzone = 0.1; //deadzone for joysticks
 
@@ -68,7 +70,7 @@ public class Robot {
 
     //lift final extender limits
     public static final float servoPullPulled = 0.7f;
-    public static final float servoPullRetracted = 0f;
+    public static final float servoPullRetracted = 0.1f;
 
 
     //declare general servo variables
@@ -80,6 +82,9 @@ public class Robot {
 
     private final int relicLimitExtended = 9999;
     private final int relicLimitRetracted = -9999;
+
+    public static final float pushSpeed = 0.2f;
+
 
     HardwareMap hwMap = null;
 
@@ -178,6 +183,8 @@ public class Robot {
         motorIntakeRight.setDirection(DcMotor.Direction.REVERSE);
 
         glyphExtender = hwMap.servo.get("Servo Pull");
+
+        pusher = hwMap.servo.get("Servo Push");
     }
 
     private void standardInit(HardwareMap ahwMap) {
@@ -413,5 +420,9 @@ public class Robot {
 
     public Servo getServoLiftPuller() {
         return glyphExtender;
+    }
+
+    public Servo getServoPush() {
+        return pusher;
     }
 }

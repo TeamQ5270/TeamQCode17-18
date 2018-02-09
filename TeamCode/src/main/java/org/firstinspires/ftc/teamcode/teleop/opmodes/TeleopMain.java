@@ -58,10 +58,10 @@ public class TeleopMain extends LinearOpMode {
             mecanumDriveStop();
         } //end mecanum driving
 
-        if (gamepad2.dpad_up) {
+        if (gamepad2.left_stick_y>0.1) {
             robot.getMotorLift().setPower(liftSpeed);
         }
-        else if (gamepad2.dpad_down) {
+        else if (gamepad2.left_stick_y<-0.1) {
             robot.getMotorLift().setPower(-0.3);
         }
         else {
@@ -74,6 +74,13 @@ public class TeleopMain extends LinearOpMode {
         }
         else {
             robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
+        }
+
+        if (gamepad2.right_stick_y>0.1) {
+            robot.getServoPush().setPosition(1);
+        }
+        else {
+            robot.getServoPush().setPosition(0);
         }
 
         //move the intake wheels at the speed of the trigger
