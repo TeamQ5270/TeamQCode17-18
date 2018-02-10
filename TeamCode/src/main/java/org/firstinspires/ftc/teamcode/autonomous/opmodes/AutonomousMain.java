@@ -20,7 +20,7 @@ import static org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants.
 
 public class AutonomousMain {
 
-    public static void runOpMode(LinearOpMode opMode, boolean side) {
+    public static void runOpMode(LinearOpMode opMode, boolean sideField) {
         HardwareMap hardwareMap = opMode.hardwareMap;
         //initialize robot
         Robot robot = new Robot(InitTypes.NEWBOT);
@@ -38,9 +38,6 @@ public class AutonomousMain {
         int colorR = boardColor.red();
         int colorB = boardColor.blue();
         boolean sideColor = colorR>colorB;  //true if red
-
-        //get side of the field that the robot is on
-        boolean sideField = false;  //true if on not audience side
 
         //Wait For Play, Start Timer
         opMode.waitForStart();
@@ -94,7 +91,6 @@ public class AutonomousMain {
         printConsole("moving out of crypto", opMode);
 
         //further out
-        MultiMotor.bestMove(robot,5,AutoConstants.straightPower/2,opMode);
         printConsole("complete", opMode);
 
         opMode.sleep(30000);
