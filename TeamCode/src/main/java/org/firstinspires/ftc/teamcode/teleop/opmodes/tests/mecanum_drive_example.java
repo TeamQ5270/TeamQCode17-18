@@ -53,7 +53,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 @Disabled
 @TeleOp(name="Mecanum Drive Example", group="Linear Opmode")  // @Autonomous(...) is the other common choice
-
 public class mecanum_drive_example extends LinearOpMode {
 
     /* Declare OpMode members. */

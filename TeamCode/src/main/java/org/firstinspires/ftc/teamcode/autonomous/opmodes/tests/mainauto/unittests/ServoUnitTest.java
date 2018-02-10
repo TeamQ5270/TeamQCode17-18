@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 import static android.R.attr.x;
 
 @Autonomous(name="ServoUnitTest")
+@Disabled
 public class ServoUnitTest extends LinearOpMode {
 
     //How long the game has run
