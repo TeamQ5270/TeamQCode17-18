@@ -76,13 +76,13 @@ public class SubFunctions {
         return chargeDistance;
     }
     public static float getTurnDistance(RelicRecoveryVuMark targetImage, boolean sideColor) {
-        float turnDistance = -163; //for center
+        float turnDistance = -163*(sideColor?-1:1); //for center
         switch(targetImage) {
             case LEFT:
-                turnDistance = -174;
+                turnDistance = -174*(sideColor?-1:1);
                 break;
             case RIGHT:
-                turnDistance = -157;
+                turnDistance = -157*(sideColor?-1:1);
                 break;
         }
         return turnDistance;
