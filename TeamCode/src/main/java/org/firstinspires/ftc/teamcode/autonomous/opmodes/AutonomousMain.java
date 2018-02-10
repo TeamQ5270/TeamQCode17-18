@@ -4,48 +4,35 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
+import org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.PathBasedMovement;
-import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
+import org.firstinspires.ftc.teamcode.autonomous.utilities.SubFunctions;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
-@Autonomous(name="Main Autonomous")
-@Disabled
-public class AutonomousMain extends LinearOpMode {
+import static java.lang.Runtime.getRuntime;
+import static org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants.straightPower;
 
-    //How long the game has run
-    private final ElapsedTime runtime = new ElapsedTime();
+public class AutonomousMain {
 
-    //TODO verify and correct these constants
-    private final double maxTimeVuforia = 5;        //max time (in seconds) to look for a target
-    private double straightPower = 0.75f;           //power when moving
-    private double turnPower = 0.25f;               //when turning
-    private double servoHalfDistance = 0.5f;        //The distance for the jewel servo to be straight out
-    private double servoFullDistance = 1f;          //pivoted towards the jewel sensor
-    private double servoNoDistance = 0f;            //away from the jewel sensor
-
-    @Override
-    public void runOpMode() {
+    public static void runOpMode(LinearOpMode opMode, boolean side) {
+        HardwareMap hardwareMap = opMode.hardwareMap;
         //initialize robot
-        Robot robot = new Robot();
+        Robot robot = new Robot(InitTypes.NEWBOT);
         robot.init(hardwareMap);
 
         LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
         LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
 
-        GyroSensor gyro = hardwareMap.get(GyroSensor.class, "Sensor Gyro");     //Gyro to use when turning
-
         Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
 
         //Let user know that robot has been initialized
-        telemetry.addData("Status", "Core Initialized");
-        telemetry.update();
+        printConsole("initialized", opMode);
 
         //get color of the side the robot is on
         int colorR = boardColor.red();
@@ -53,95 +40,70 @@ public class AutonomousMain extends LinearOpMode {
         boolean sideColor = colorR>colorB;  //true if red
 
         //get side of the field that the robot is on
-        boolean sideField = false;  //true if on doublebox side
+        boolean sideField = false;  //true if on not audience side
 
         //Wait For Play, Start Timer
-        waitForStart();
-        runtime.reset();
+        opMode.waitForStart();
 
-        /* ----- GAME STARTED ----- */
-
-        //Read the vuforia vumark(tm)
-        //TODO make this code a bit more readable
-        VuforiaManager vuforiaManager = new VuforiaManager(hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
-        RelicRecoveryVuMark targetImage = RelicRecoveryVuMark.UNKNOWN;
-        while (getRuntime()<maxTimeVuforia) {                                           //while the timeout has not occued
-            if (!(vuforiaManager.getvisibleTarget() == RelicRecoveryVuMark.UNKNOWN)){   //If the camera has detected anything
-                telemetry.addData("Vuforia Target: ", targetImage.toString());          //Report and quit loop
-                telemetry.update();
-                break;
-            }
-            targetImage = vuforiaManager.getvisibleTarget();
+        float moveBack = 0;
+        try {
+            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
         }
-        telemetry.addData("Vuforia Target: ", targetImage.toString());
-
-        //get the jewel and knock it off
-        //move the servo out
-        jewelServo.setPosition(servoHalfDistance);
-        //move to the jewel
-        //TODO get the correct move distance
-        double jewelMoveDistance = 16.5;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)jewelMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)jewelMoveDistance,(float)straightPower,4);
-        //knock off the jewel
-        //get the color of the jewel and swing servo
-        jewelServo.setPosition(!(jewelColor.red()>jewelColor.blue()^sideColor) /* Servo is facing the same jewel as the side */
-                ? servoFullDistance:servoNoDistance);
-        //wait for the servo
-        jewelServo.setPosition(servoNoDistance);
-
-        //go to cryptobox starting position using the movetoposition algorithm thing
-        //TODO get the correct movement paths for the robot
-        String moveA = "133.74095479282474,53.26531532699925,-133.74095479282474,1\n" +
-                "271.7899106082461,13.247843249861067,-138.04895581542135,-1\n";
-        String moveB = "231.70983680775691,20.033740861092753,-231.70983680775691,1\n" +
-                "180,7.448275862068965,51.709836807756915,-1\n";
-        String move = sideField?moveB:moveA;
-        PathBasedMovement.followPath(move, sideColor, robot.getLeftDriveMotors(), robot.getRightDriveMotors(), gyro);
-
-        //calculate and move to the position to get the glyph in the box
-        //TODO verify the movement distanced for each step of the glyph movement
-        double cryptoboxMoveDistance = 0.0;
-        switch (targetImage) {
-            case UNKNOWN:
-                cryptoboxMoveDistance=23.0;
-                break;
-            case CENTER:
-                cryptoboxMoveDistance=4.0;
-                break;
-            case LEFT:
-                cryptoboxMoveDistance=10.0;
-                break;
-            case RIGHT:
-                cryptoboxMoveDistance=19.0;
-                break;
+        catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
         }
-        double cryptoboxMoveDistanceOut=23.0-cryptoboxMoveDistance;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(),(float)cryptoboxMoveDistance,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(),-(float)cryptoboxMoveDistance,(float)straightPower,4);
 
-        //put the glyph in the box
-        //strafe to the side
-        //TODO get the correct value for this
-        double strafeDistanceOutOfCryptoBox = 6;
-        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalRight(),(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
-        MultiMotor.moveToPositionAndyMark40(robot.getDiagonalLeft(),-(float)strafeDistanceOutOfCryptoBox,(float)straightPower,4);
+        printConsole("moving back into alignment for vumark", opMode);
+        //move forwards back onto the board
+        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
 
-        //TODO get turning into the cryptobox and deploying the glyph
-        //turn to the right
-        MultiMotor.turnToPositionAndyMark40(robot.getLeftDriveMotors(),robot.getRightDriveMotors(),270,(float)turnPower);
-        //move into box
-        float distanceIntoBox = 6;
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(), distanceIntoBox, (float)straightPower, 4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(), -distanceIntoBox, (float)straightPower, 4);
-        //release grabbers
-        new ThreadedServoMovement(robot.getLeftServo(),robot.getGlyphServoMinPosition()).run();
-        new ThreadedServoMovement(robot.getRightServo(),robot.getGlyphServoMaxPosition()).run();
-        //move back a bit
-        MultiMotor.moveToPositionAndyMark40(robot.getLeftDriveMotors(), -distanceIntoBox/2, (float)straightPower, 4);
-        MultiMotor.moveToPositionAndyMark40(robot.getRightDriveMotors(), distanceIntoBox/2, (float)straightPower, 4);
+        printConsole("locking onto vumark", opMode);
+        RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);
 
-        //End OpMode
-        stop();
+        //turn to face the correct box
+        if (sideField) {
+            MultiMotor.bestTurn(robot,180,AutoConstants.turnPower,opMode);
+        }
+        printConsole("aligning with box", opMode);
+
+        //move to be ready to turn into the box
+        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideColor), AutoConstants.straightPower,opMode);
+        printConsole("facing box", opMode);
+
+        //turn -90 degrees again
+        MultiMotor.bestTurn(robot,SubFunctions.transferDegrees(-90,sideField),AutoConstants.turnPower,opMode);
+        printConsole("entering box", opMode);
+
+        //move into the box
+        MultiMotor.bestMove(robot,-15,AutoConstants.straightPower/2,4,opMode);
+        printConsole("moving out of box", opMode);
+
+        //and out
+        MultiMotor.bestMove(robot,1,AutoConstants.straightPower/2,opMode);
+        printConsole("raising lift", opMode);
+
+        //and flip in
+        robot.getMotorFlipper().setPower(-0.1);
+        opMode.sleep(1000);
+        robot.getMotorFlipper().setPower(0);
+        printConsole("flipping lift", opMode);
+
+        robot.getServoLiftPuller().setPosition(Robot.servoPullPulled);
+        opMode.sleep(1000);
+        robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
+        printConsole("moving out of crypto", opMode);
+
+        //further out
+        MultiMotor.bestMove(robot,5,AutoConstants.straightPower/2,opMode);
+        printConsole("complete", opMode);
+
+        opMode.sleep(30000);
+
+        opMode.stop();
+    }
+
+    public static void printConsole(String print, LinearOpMode mode) {
+        mode.telemetry.addData("stage", print);
+        mode.telemetry.update();
     }
 }
