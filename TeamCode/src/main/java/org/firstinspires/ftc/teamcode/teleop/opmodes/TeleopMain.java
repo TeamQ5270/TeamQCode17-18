@@ -87,8 +87,8 @@ public class TeleopMain extends LinearOpMode {
         }
 
         //move the intake wheels at the speed of the trigger
-        robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
-        robot.getMotorIntakeRight().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
+        robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger/2);
+        robot.getMotorIntakeRight().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger/2);
     }
 
     private void mecanumDrive() {

@@ -19,8 +19,7 @@ import static java.lang.Runtime.getRuntime;
 import static org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants.straightPower;
 
 public class AutonomousMain {
-
-    public static void runOpMode(LinearOpMode opMode, boolean sideField) {
+    public static void runOutsideOpMode(LinearOpMode opMode, boolean sideField) {
         HardwareMap hardwareMap = opMode.hardwareMap;
         //initialize robot
         Robot robot = new Robot(InitTypes.NEWBOT);
@@ -38,6 +37,61 @@ public class AutonomousMain {
         int colorR = boardColor.red();
         int colorB = boardColor.blue();
         boolean sideColor = colorR>colorB;  //true if red
+        sideField = sideField^sideColor;
+
+        //Wait For Play, Start Timer
+        opMode.waitForStart();
+
+        float moveBack = 0;
+        try {
+            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
+        }
+        catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        printConsole("moving back into alignment for vumark", opMode);
+        //move forwards back onto the board
+        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
+
+        printConsole("locking onto vumark", opMode);
+        RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);
+
+        //turn to face the cryptobox (move into for 50inches
+        printConsole("Turning to face correct column", opMode);
+        MultiMotor.bestTurn(robot,SubFunctions.getTurnDistance(target,sideField),AutoConstants.turnPower,opMode);
+
+        //move into the cryptobox (50inches)
+        printConsole("Moving into the cryptobox", opMode);
+        MultiMotor.bestMove(robot,-50,AutoConstants.straightPower/2,3,opMode);
+
+        //dispense glyph
+        printConsole("Dispensing glyph... your drink will be ready soon", opMode);
+        MultiMotor.bestMove(robot,4,AutoConstants.straightPower,opMode);
+        robot.moveIntakeSpeed(-1);
+        opMode.sleep(1000);
+        robot.moveIntakeSpeed(0);
+    }
+
+    public static void runCenterOpMode(LinearOpMode opMode, boolean sideField) {
+        HardwareMap hardwareMap = opMode.hardwareMap;
+        //initialize robot
+        Robot robot = new Robot(InitTypes.NEWBOT);
+        robot.init(hardwareMap);
+
+        LynxI2cColorRangeSensor jewelColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Jewel");      //Color sensor onboard jewel arm
+        LynxI2cColorRangeSensor boardColor = hardwareMap.get(LynxI2cColorRangeSensor.class, "Sensor Color Ground");     //sensor to read the board
+
+        Servo jewelServo = hardwareMap.get(Servo.class, "Servo Jewel");     //Jewel servo
+
+        //Let user know that robot has been initialized
+        printConsole("initialized", opMode);
+
+        //get color of the side the robot is on
+        int colorR = boardColor.red();
+        int colorB = boardColor.blue();
+        boolean sideColor = colorR>colorB;  //true if red
+        sideField = sideField^sideColor;
 
         //Wait For Play, Start Timer
         opMode.waitForStart();
@@ -64,7 +118,7 @@ public class AutonomousMain {
         printConsole("aligning with box", opMode);
 
         //move to be ready to turn into the box
-        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideColor), AutoConstants.straightPower,opMode);
+        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideField), AutoConstants.straightPower,opMode);
         printConsole("facing box", opMode);
 
         //turn -90 degrees again
