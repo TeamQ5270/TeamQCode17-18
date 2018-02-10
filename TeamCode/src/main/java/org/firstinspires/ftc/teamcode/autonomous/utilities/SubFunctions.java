@@ -21,9 +21,9 @@ import static java.lang.Thread.sleep;
 public class SubFunctions {
     public static float runJewel(Servo jewelServo, LynxI2cColorRangeSensor colorSensor, boolean sideColor, Robot robot, LinearOpMode opMode) throws java.lang.InterruptedException {
         jewelServo.setPosition(AutoConstants.jewelExtended);
-        sleep(300);
+        sleep(1000);
         float moveDistance = AutoConstants.jewelMoveDistance*(colorSensor.red()<=colorSensor.blue()^sideColor?1:-1);
-        MultiMotor.bestMove(robot,moveDistance,AutoConstants.straightPower/2,opMode);
+        MultiMotor.bestMove(robot,moveDistance,AutoConstants.straightPower/2,3,opMode);
         sleep(300);
         new ThreadedServoMovement(jewelServo,AutoConstants.jewelRetracted).run();
         return moveDistance;

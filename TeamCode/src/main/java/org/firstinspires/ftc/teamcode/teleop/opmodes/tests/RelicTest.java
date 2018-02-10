@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Relic Servo Range Tester", group =  "Linear Opmode")
-@Disabled
 public class RelicTest extends LinearOpMode {
 
     @Override

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Utils.InitTypes;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
+import org.firstinspires.ftc.teamcode.Utils.Utils;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.AutoConstants;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.utilities.ThreadedServoMovement;
@@ -23,7 +24,7 @@ public class TeleopMain extends LinearOpMode {
     private final double joystickZero = 0.0;
     private final int weirdFourInMecanumCalcs = 4;
 
-    private final float liftSpeed = 0.5f; //5% lift speed
+    private final float liftSpeed = 0.3f;
 
     @Override
     public void runOpMode() {
@@ -76,19 +77,31 @@ public class TeleopMain extends LinearOpMode {
             robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
         }
 
-        if (gamepad2.right_stick_y>0.1) {
-            robot.getServoPush().setPosition(1);
-        }
-        else if (gamepad2.right_stick_y<-0.1) {
-            robot.getServoPush().setPosition(0);
-        }
-        else {
-            robot.getServoPush().setPosition(0.5f);
-        }
+//        if (gamepad2.right_stick_y>0.1) {
+//            robot.getServoPush().setPosition(0);
+//        }
+//        else if (gamepad2.right_stick_y<-0.1) {
+//            robot.getServoPush().setPosition(0.3f);
+//        }
+//        else {
+//            robot.getServoPush().setPosition(1);
+//        }
+//        if (gamepad2.b) {
+//            robot.getServoPush().setPosition(1);
+//        }
 
         //move the intake wheels at the speed of the trigger
-        robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger/2);
-        robot.getMotorIntakeRight().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger/2);
+        robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
+        robot.getMotorIntakeRight().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
+//
+//        //move the claw using sheridan's magic cose
+//        double clawServoPos = Utils.map((gamepad2.dpad_up?1:0)+(gamepad2.dpad_down?-1:0), -1, 1, 0, 1);
+//        double rotatorPos = Utils.map((gamepad2.dpad_right?0.59f:0.5f), -1, 1, 0, 1);
+//        robot.getRelicClawServo().setPosition(clawServoPos);
+//        robot.getRelicRotatorServo().setPosition(rotatorPos);
+//
+//        //x is out, y is in
+//        robot.getMotorRelicArm().setPower(((gamepad2.x?0.3:0)+(gamepad2.y?-0.3:0))*(gamepad2.x||gamepad2.y?1:0));
     }
 
     private void mecanumDrive() {
@@ -98,10 +111,18 @@ public class TeleopMain extends LinearOpMode {
         double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x * 2)
                 - Math.PI / weirdFourInMecanumCalcs;
         double rightX = -gamepad1.right_stick_x;
-        final double v1 = r * Math.cos(robotAngle) + rightX;
-        final double v2 = r * Math.sin(robotAngle) - rightX;
-        final double v3 = r * Math.sin(robotAngle) + rightX;
-        final double v4 = r * Math.cos(robotAngle) - rightX;
+        double v1 = r * Math.cos(robotAngle) + rightX;
+        double v2 = r * Math.sin(robotAngle) - rightX;
+        double v3 = r * Math.sin(robotAngle) + rightX;
+        double v4 = r * Math.cos(robotAngle) - rightX;
+
+        //if the right trigger is held, invert controls
+        if (gamepad1.right_trigger>0.1) {
+            v1*=-1;
+            v2*=-1;
+            v3*=-1;
+            v4*=-1;
+        }
 
         //set calculated powers to motors
         robot.getDriveMotors()[0].setPower(v1);

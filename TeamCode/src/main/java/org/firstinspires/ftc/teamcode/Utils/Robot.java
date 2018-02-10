@@ -184,7 +184,12 @@ public class Robot {
 
         glyphExtender = hwMap.servo.get("Servo Pull");
 
-        pusher = hwMap.servo.get("Servo Push");
+//        pusher = hwMap.servo.get("Servo Push");
+//
+//        relicClawServo = hwMap.servo.get("Servo Relic Claw");
+//        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
+//
+//        motorRelicArm = hwMap.dcMotor.get("Motor Relic Arm");
     }
 
     private void initRelic(HardwareMap hwMap) {

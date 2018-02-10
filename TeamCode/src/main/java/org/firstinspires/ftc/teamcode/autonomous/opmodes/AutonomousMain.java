@@ -41,18 +41,19 @@ public class AutonomousMain {
 
         //Wait For Play, Start Timer
         opMode.waitForStart();
+        jewelServo.setPosition(AutoConstants.jewelRetracted);
 
-        float moveBack = 0;
-        try {
-            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
-        }
-        catch (java.lang.InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        printConsole("moving back into alignment for vumark", opMode);
-        //move forwards back onto the board
-        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
+//        float moveBack = 0;
+//        try {
+//            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
+//        }
+//        catch (java.lang.InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        printConsole("moving back into alignment for vumark", opMode);
+//        //move forwards back onto the board
+//        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,3,opMode);
 
         printConsole("locking onto vumark", opMode);
         RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);
@@ -67,10 +68,15 @@ public class AutonomousMain {
 
         //dispense glyph
         printConsole("Dispensing glyph... your drink will be ready soon", opMode);
-        MultiMotor.bestMove(robot,4,AutoConstants.straightPower,opMode);
+        MultiMotor.bestMove(robot,4,AutoConstants.straightPower,3,opMode);
         robot.moveIntakeSpeed(-1);
         opMode.sleep(1000);
         robot.moveIntakeSpeed(0);
+
+        jewelServo.setPosition(AutoConstants.jewelExtended);
+
+        opMode.sleep(30000);
+        opMode.stop();
     }
 
     public static void runCenterOpMode(LinearOpMode opMode, boolean sideField) {
@@ -95,18 +101,18 @@ public class AutonomousMain {
 
         //Wait For Play, Start Timer
         opMode.waitForStart();
+        jewelServo.setPosition(AutoConstants.jewelRetracted);
+//        float moveBack = 0;
+//        try {
+//            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
+//        }
+//        catch (java.lang.InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
-        float moveBack = 0;
-        try {
-            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
-        }
-        catch (java.lang.InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        printConsole("moving back into alignment for vumark", opMode);
-        //move forwards back onto the board
-        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
+//        printConsole("moving back into alignment for vumark", opMode);
+//        //move forwards back onto the board
+//        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
 
         printConsole("locking onto vumark", opMode);
         RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);
@@ -118,7 +124,7 @@ public class AutonomousMain {
         printConsole("aligning with box", opMode);
 
         //move to be ready to turn into the box
-        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideField), AutoConstants.straightPower,opMode);
+        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideField), AutoConstants.straightPower, 4, opMode);
         printConsole("facing box", opMode);
 
         //turn -90 degrees again
@@ -142,6 +148,8 @@ public class AutonomousMain {
         MultiMotor.bestMove(robot,4,AutoConstants.straightPower/2,opMode);
         robot.moveIntakeSpeed(0);
         printConsole("complete", opMode);
+
+        jewelServo.setPosition(AutoConstants.jewelExtended);
 
         opMode.sleep(30000);
 
