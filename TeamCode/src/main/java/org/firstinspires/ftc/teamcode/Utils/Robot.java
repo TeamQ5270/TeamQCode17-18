@@ -429,4 +429,10 @@ public class Robot {
     public Servo getServoPush() {
         return pusher;
     }
+
+    public void moveIntakeSpeed(float speed) {
+        getMotorIntakeLeft().setPower(speed);
+        getMotorIntakeRight().setPower(speed);
+    }
+
 }

@@ -68,7 +68,7 @@ public class AutonomousMain {
         printConsole("facing box", opMode);
 
         //turn -90 degrees again
-        MultiMotor.bestTurn(robot,SubFunctions.transferDegrees(-90,sideField),AutoConstants.turnPower,opMode);
+        MultiMotor.bestTurn(robot,SubFunctions.transferDegrees(90,sideField),AutoConstants.turnPower,opMode);
         printConsole("entering box", opMode);
 
         //move into the box
@@ -77,20 +77,16 @@ public class AutonomousMain {
 
         //and out
         MultiMotor.bestMove(robot,1,AutoConstants.straightPower/2,opMode);
-        printConsole("raising lift", opMode);
+        printConsole("spitting glyph", opMode);
 
-        //and flip in
-        robot.getMotorFlipper().setPower(-0.1);
-        opMode.sleep(1000);
-        robot.getMotorFlipper().setPower(0);
-        printConsole("flipping lift", opMode);
-
-        robot.getServoLiftPuller().setPosition(Robot.servoPullPulled);
-        opMode.sleep(1000);
-        robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
-        printConsole("moving out of crypto", opMode);
+        //use intake to spit out
+        robot.moveIntakeSpeed(-1);
+        opMode.sleep(500);
+        printConsole("moving back out of crypto", opMode);
 
         //further out
+        MultiMotor.bestMove(robot,4,AutoConstants.straightPower/2,opMode);
+        robot.moveIntakeSpeed(0);
         printConsole("complete", opMode);
 
         opMode.sleep(30000);
