@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous.opmodes.vision;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name = "Vision Autonomous")
+@Disabled
 public class VisionManager extends LinearOpMode {
 
     //Game Timer

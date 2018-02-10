@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.autonomous.utilities.MultiMotor;
 import org.firstinspires.ftc.teamcode.autonomous.vuforia.VuforiaManager;
 
 @Autonomous(name="Autonomous aud Side RUN THIS ONE FOR AUDIENCE")
+@Disabled
 public class AutonomousAudienceSide extends LinearOpMode {
 
     //How long the game has run

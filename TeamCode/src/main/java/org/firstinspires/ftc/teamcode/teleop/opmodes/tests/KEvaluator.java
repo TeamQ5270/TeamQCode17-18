@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.teleop.opmodes.tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Utils.Robot;
 
 @TeleOp(name = "K Value Evaluator",group = "Linear Opmode")
+@Disabled
 public class KEvaluator extends LinearOpMode {
 
     private Robot robot = new Robot();

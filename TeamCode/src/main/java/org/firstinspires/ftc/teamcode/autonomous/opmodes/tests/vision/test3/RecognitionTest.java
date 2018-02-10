@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3;
 
 import com.disnodeteam.dogecv.detectors.JewelDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.autonomous.opmodes.tests.vision.test3.Util
 /**
  * Created by Matthew_Modi on 12/1/2017.
  */
-
+@Disabled
 @Autonomous(name = "Glyph Recognition Test 3")
 public class RecognitionTest extends LinearOpMode {
 
