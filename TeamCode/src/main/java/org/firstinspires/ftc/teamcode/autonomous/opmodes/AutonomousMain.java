@@ -64,11 +64,11 @@ public class AutonomousMain {
 
         //move into the cryptobox (50inches)
         printConsole("Moving into the cryptobox", opMode);
-        MultiMotor.bestMove(robot,-50,AutoConstants.straightPower/2,3,opMode);
+        MultiMotor.bestMove(robot,-50,AutoConstants.straightPower/2,10,opMode);
 
         //dispense glyph
         printConsole("Dispensing glyph... your drink will be ready soon", opMode);
-        MultiMotor.bestMove(robot,4,AutoConstants.straightPower,3,opMode);
+        MultiMotor.bestMove(robot,7,AutoConstants.straightPower,3,opMode);
         robot.moveIntakeSpeed(-1);
         opMode.sleep(1000);
         robot.moveIntakeSpeed(0);
@@ -124,7 +124,7 @@ public class AutonomousMain {
         printConsole("aligning with box", opMode);
 
         //move to be ready to turn into the box
-        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideField), AutoConstants.straightPower, 4, opMode);
+        MultiMotor.bestMove(robot,SubFunctions.getMoveDistance(target,sideField), AutoConstants.straightPower, 10, opMode);
         printConsole("facing box", opMode);
 
         //turn -90 degrees again
@@ -145,7 +145,7 @@ public class AutonomousMain {
         printConsole("moving back out of crypto", opMode);
 
         //further out
-        MultiMotor.bestMove(robot,4,AutoConstants.straightPower/2,opMode);
+        MultiMotor.bestMove(robot,7,AutoConstants.straightPower/2,opMode);
         robot.moveIntakeSpeed(0);
         printConsole("complete", opMode);
 

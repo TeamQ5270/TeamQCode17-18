@@ -77,18 +77,18 @@ public class TeleopMain extends LinearOpMode {
             robot.getServoLiftPuller().setPosition(Robot.servoPullRetracted);
         }
 
-//        if (gamepad2.right_stick_y>0.1) {
-//            robot.getServoPush().setPosition(0);
-//        }
-//        else if (gamepad2.right_stick_y<-0.1) {
-//            robot.getServoPush().setPosition(0.3f);
-//        }
-//        else {
-//            robot.getServoPush().setPosition(1);
-//        }
-//        if (gamepad2.b) {
-//            robot.getServoPush().setPosition(1);
-//        }
+        if (gamepad2.right_stick_y>0.1) {
+            robot.getServoPush().setPosition(0);
+        }
+        else if (gamepad2.right_stick_y<-0.1) {
+            robot.getServoPush().setPosition(0.3f);
+        }
+        else {
+            robot.getServoPush().setPosition(1);
+        }
+        if (gamepad2.b) {
+            robot.getServoPush().setPosition(1);
+        }
 
         //move the intake wheels at the speed of the trigger
         robot.getMotorIntakeLeft().setPower(gamepad2.right_trigger>gamepad2.left_trigger?gamepad2.right_trigger:-gamepad2.left_trigger);
@@ -102,6 +102,10 @@ public class TeleopMain extends LinearOpMode {
 //
 //        //x is out, y is in
 //        robot.getMotorRelicArm().setPower(((gamepad2.x?0.3:0)+(gamepad2.y?-0.3:0))*(gamepad2.x||gamepad2.y?1:0));
+
+        if (gamepad1.a) {
+            hardwareMap.get(Servo.class, "Servo Jewel").setPosition(AutoConstants.jewelExtended);
+        }
     }
 
     private void mecanumDrive() {
