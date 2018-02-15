@@ -189,7 +189,7 @@ public class Robot {
 //        relicClawServo = hwMap.servo.get("Servo Relic Claw");
 //        relicRotatorServo = hwMap.servo.get("Servo Relic Rotator");
 //
-//        motorRelicArm = hwMap.dcMotor.get("Motor Relic Arm");
+        motorRelicArm = hwMap.dcMotor.get("Motor Relic Arm");
     }
 
     private void initRelic(HardwareMap hwMap) {
