@@ -43,17 +43,17 @@ public class AutonomousMain {
         opMode.waitForStart();
         jewelServo.setPosition(AutoConstants.jewelRetracted);
 
-//        float moveBack = 0;
-//        try {
-//            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
-//        }
-//        catch (java.lang.InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        printConsole("moving back into alignment for vumark", opMode);
-//        //move forwards back onto the board
-//        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,3,opMode);
+        float moveBack = 0;
+        try {
+            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
+        }
+        catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        printConsole("moving back into alignment for vumark", opMode);
+        //move forwards back onto the board
+        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,3,opMode);
 
         printConsole("locking onto vumark", opMode);
         RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);
@@ -102,17 +102,17 @@ public class AutonomousMain {
         //Wait For Play, Start Timer
         opMode.waitForStart();
         jewelServo.setPosition(AutoConstants.jewelRetracted);
-//        float moveBack = 0;
-//        try {
-//            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
-//        }
-//        catch (java.lang.InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        float moveBack = 0;
+        try {
+            moveBack = SubFunctions.runJewel(jewelServo, jewelColor, sideColor, robot, opMode);
+        }
+        catch (java.lang.InterruptedException e) {
+            e.printStackTrace();
+        }
 
-//        printConsole("moving back into alignment for vumark", opMode);
-//        //move forwards back onto the board
-//        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
+        printConsole("moving back into alignment for vumark", opMode);
+        //move forwards back onto the board
+        MultiMotor.bestMove(robot,-moveBack, AutoConstants.straightPower,opMode);
 
         printConsole("locking onto vumark", opMode);
         RelicRecoveryVuMark target = SubFunctions.getVumark(5,opMode);

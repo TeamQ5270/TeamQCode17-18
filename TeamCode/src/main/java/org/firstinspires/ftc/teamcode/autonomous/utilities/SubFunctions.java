@@ -65,6 +65,7 @@ public class SubFunctions {
     }
     public static float getMoveDistance(RelicRecoveryVuMark targetImage, boolean sideColor) {
         float chargeDistance = -33;
+        sideColor = !sideColor;
         switch(targetImage) {
             case LEFT:
                 chargeDistance+=6*(sideColor?1:-1);
